@@ -342,6 +342,72 @@
 }
 
 /* ===================================
+   Gallery Card (Admin)
+   =================================== */
+
+.section-description {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.gallery-grid-editor {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.gallery-card-admin {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+}
+
+.gallery-preview {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background-color: var(--gray-light);
+}
+
+.gallery-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-inputs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.gallery-inputs input {
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.gallery-inputs input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+.gallery-inputs input[type="url"] {
+    font-family: monospace;
+    font-size: 0.8rem;
+}
+
+/* ===================================
    Settings Form
    =================================== */
 
@@ -551,5 +617,14 @@
     
     .submission-details {
         grid-template-columns: 1fr;
+    }
+    
+    .gallery-card-admin {
+        flex-direction: column;
+    }
+    
+    .gallery-preview {
+        width: 100%;
+        height: 200px;
     }
 }

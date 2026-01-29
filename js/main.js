@@ -51,6 +51,20 @@ function renderMenu(menuData) {
    Schedule Rendering
    =================================== */
 
+// Detect if user is on Apple device (iOS/macOS)
+function isAppleDevice() {
+    return /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent) && !window.MSStream;
+}
+
+// Generate maps URL based on device
+function getMapsUrl(address) {
+    const encodedAddress = encodeURIComponent(address);
+    if (isAppleDevice()) {
+        return `https://maps.apple.com/?q=${encodedAddress}`;
+    }
+    return `https://www.google.com/maps/search/?api=1&query=${encodedAddress}`;
+}
+
 function renderSchedule(scheduleData) {
     const scheduleList = document.getElementById('schedule-list');
     if (!scheduleList || !scheduleData) return;
@@ -66,10 +80,29 @@ function renderSchedule(scheduleData) {
         const scheduleItem = document.createElement('div');
         scheduleItem.className = 'schedule-item';
         
+        // Build address row if address exists
+        let addressHtml = '';
+        let mapsUrl = '';
+        if (item.address) {
+            mapsUrl = getMapsUrl(item.address);
+            addressHtml = `
+                <div class="schedule-address-row">
+                    <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="schedule-address-link">${item.address}</a>
+                </div>`;
+        }
+        
+        // Location can be a link if address exists
+        const locationHtml = item.address 
+            ? `<a href="${mapsUrl}" target="_blank" rel="noopener noreferrer" class="schedule-location-link">${item.location}</a>`
+            : `<span class="schedule-location">${item.location}</span>`;
+        
         scheduleItem.innerHTML = `
-            <span class="schedule-day">${item.day}</span>
-            <span class="schedule-location">${item.location}</span>
-            <span class="schedule-time">${item.time}</span>
+            <div class="schedule-main-row">
+                <span class="schedule-day">${item.day}</span>
+                ${locationHtml}
+                <span class="schedule-time">${item.time}</span>
+            </div>
+            ${addressHtml}
         `;
         
         scheduleList.appendChild(scheduleItem);
@@ -95,32 +128,45 @@ function renderTestimonials(testimonials) {
 }
 
 /* ===================================
-   Gallery Rendering
+   Gallery Marquee Rendering
    =================================== */
 
 function renderGallery(galleryData) {
-    const gallery = document.getElementById('gallery');
-    if (!gallery) return;
+    const galleryTrack = document.getElementById('gallery-track');
+    if (!galleryTrack) return;
     
-    gallery.innerHTML = '';
+    galleryTrack.innerHTML = '';
     
     if (!galleryData || galleryData.length === 0) {
-        gallery.innerHTML = `
-            <div class="gallery-placeholder">
-                <p>Gallery images coming soon</p>
-            </div>
-        `;
+        const marquee = document.getElementById('gallery-marquee');
+        if (marquee) {
+            marquee.innerHTML = `
+                <div class="gallery-placeholder-marquee">
+                    <p>Gallery images coming soon</p>
+                </div>
+            `;
+        }
         return;
     }
     
-    galleryData.forEach(image => {
-        const img = document.createElement('img');
-        img.className = 'gallery-image';
-        img.src = image.src;
-        img.alt = image.alt || 'Lazy Coffee Co.';
-        img.loading = 'lazy';
-        gallery.appendChild(img);
-    });
+    // Create gallery items
+    const createGalleryItems = () => {
+        return galleryData.map(image => `
+            <div class="gallery-item">
+                <img src="${image.src}" alt="${image.alt || 'Lazy Coffee Co.'}" loading="lazy">
+            </div>
+        `).join('');
+    };
+    
+    // Duplicate images for seamless infinite scroll
+    // We need at least 2 sets of images for the loop to work smoothly
+    const imagesHtml = createGalleryItems();
+    galleryTrack.innerHTML = imagesHtml + imagesHtml;
+    
+    // Adjust animation speed based on number of images
+    const itemCount = galleryData.length;
+    const animationDuration = Math.max(20, itemCount * 5); // Min 20s, 5s per image
+    galleryTrack.style.animationDuration = `${animationDuration}s`;
 }
 
 /* ===================================

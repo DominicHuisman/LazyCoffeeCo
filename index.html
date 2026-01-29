@@ -9,6 +9,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -33,15 +36,15 @@
 
     <!-- Hero Section -->
     <header class="hero">
-        <div class="hero-bg"></div>
+        <div class="hero-bg" data-parallax></div>
         <div class="hero-content">
-            <h1 class="hero-title">LAZY COFFEE CO.</h1>
-            <p class="hero-subtitle">Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
-            <div class="hero-buttons">
+            <h1 class="hero-title" data-animate="hero">LAZY COFFEE CO.</h1>
+            <p class="hero-subtitle" data-animate="hero">Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
+            <div class="hero-buttons" data-animate="hero">
                 <a href="#schedule" class="btn btn-primary">View Schedule</a>
                 <a href="#booking" class="btn btn-secondary">Book Catering</a>
             </div>
-            <p class="hero-instagram">Follow us on Instagram for daily locations & specials.</p>
+            <p class="hero-instagram" data-animate="hero">Follow us on Instagram for daily locations & specials.</p>
         </div>
     </header>
 
@@ -49,15 +52,15 @@
     <section class="features">
         <div class="container">
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card" data-animate="fade-up">
                     <h3>Specialty Coffee + Matcha</h3>
                     <p>Small-batch, quality ingredients</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-animate="fade-up">
                     <h3>Weekly Pop-Ups</h3>
                     <p>Markets, gyms & events</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card" data-animate="fade-up">
                     <h3>Event & Catering Services</h3>
                     <p>Weddings · Corporate · Parties</p>
                 </div>
@@ -68,14 +71,10 @@
     <!-- Schedule Section -->
     <section id="schedule" class="schedule-section">
         <div class="container">
-            <div class="schedule-card">
+            <div class="schedule-card" data-animate="fade-up">
                 <h2 class="schedule-title">This Week's Schedule</h2>
                 <div class="schedule-list" id="schedule-list">
                     <!-- Schedule items will be loaded dynamically -->
-                </div>
-                <div class="schedule-buttons">
-                    <a href="#" class="btn btn-dark">Get Directions</a>
-                    <a href="#" class="btn btn-dark">See Full Schedule »</a>
                 </div>
             </div>
         </div>
@@ -84,8 +83,8 @@
     <!-- Catering Section -->
     <section id="catering" class="catering-section">
         <div class="container">
-            <h2 class="section-title">Catering + Events</h2>
-            <p class="catering-subtitle">Craft Coffee & Matcha for Your Next Event</p>
+            <h2 class="section-title" data-animate="words">Catering + Events</h2>
+            <p class="catering-subtitle" data-animate="fade-up">Craft Coffee & Matcha for Your Next Event</p>
             <div class="catering-features">
                 <ul class="catering-list">
                     <li>Full Service Espresso Bar</li>
@@ -104,26 +103,36 @@
     <!-- Testimonials Section -->
     <section class="testimonials-section">
         <div class="container">
-            <h2 class="section-title">As Seen Around South Florida</h2>
+            <h2 class="section-title" data-animate="words">As Seen Around South Florida</h2>
             <div class="testimonials-quotes">
-                <p class="quote">"Best matcha in town!"</p>
-                <p class="quote">"Amazing service, our guests loved it!"</p>
-                <p class="quote">"Perfect for any special event!"</p>
+                <p class="quote" data-animate="fade-up">"Best matcha in town!"</p>
+                <p class="quote" data-animate="fade-up">"Amazing service, our guests loved it!"</p>
+                <p class="quote" data-animate="fade-up">"Perfect for any special event!"</p>
             </div>
-            <div class="testimonials-gallery" id="gallery">
-                <!-- Gallery images will be loaded here -->
-                <div class="gallery-placeholder">
-                    <p>Gallery images coming soon</p>
-                </div>
-            </div>
+        </div>
+        <!-- Gallery Marquee - Full Width -->
+        <div class="gallery-marquee" id="gallery-marquee">
+            <a href="https://www.instagram.com/lazycoffeeco" target="_blank" rel="noopener" class="gallery-track" id="gallery-track">
+                <!-- Gallery images will be duplicated here for infinite scroll -->
+            </a>
+        </div>
+        <div class="gallery-cta">
+            <a href="https://www.instagram.com/lazycoffeeco" target="_blank" rel="noopener" class="instagram-link">
+                <span>Follow @lazycoffeeco</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
         </div>
     </section>
 
     <!-- Booking Form Section -->
     <section id="booking" class="booking-section">
         <div class="container">
-            <h2 class="section-title">Book Lazy Coffee Co.</h2>
-            <form class="booking-form" id="booking-form">
+            <h2 class="section-title" data-animate="words">Book Lazy Coffee Co.</h2>
+            <form class="booking-form" id="booking-form" data-animate="fade-up">
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Name" required>
                 </div>
@@ -193,5 +202,6 @@
 
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/animations.js" defer></script>
 </body>
 </html>

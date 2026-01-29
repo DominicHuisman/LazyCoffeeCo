@@ -47,6 +47,7 @@
         <nav class="admin-nav">
             <button class="admin-nav-item active" data-section="menu">Menu</button>
             <button class="admin-nav-item" data-section="schedule">Schedule</button>
+            <button class="admin-nav-item" data-section="gallery">Gallery</button>
             <button class="admin-nav-item" data-section="testimonials">Testimonials</button>
             <button class="admin-nav-item" data-section="settings">Settings</button>
             <button class="admin-nav-item" data-section="submissions">Submissions</button>
@@ -73,6 +74,18 @@
                 </div>
                 <div id="schedule-editor" class="editor-container">
                     <!-- Schedule items will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Gallery Section -->
+            <section id="section-gallery" class="admin-section">
+                <div class="section-header">
+                    <h2>Gallery Images</h2>
+                    <button class="btn btn-primary" id="add-gallery-image">+ Add Image</button>
+                </div>
+                <p class="section-description">Add image URLs to display in the scrolling gallery. Images link to your Instagram.</p>
+                <div id="gallery-editor" class="editor-container gallery-grid-editor">
+                    <!-- Gallery items will be rendered here -->
                 </div>
             </section>
 

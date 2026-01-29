@@ -87,6 +87,7 @@ function loadAllEditors() {
     
     renderMenuEditor(data.menu);
     renderScheduleEditor(data.schedule);
+    renderGalleryEditor(data.gallery);
     renderTestimonialsEditor(data.testimonials);
     loadSettings(data);
     renderSubmissions();
@@ -222,8 +223,9 @@ function renderScheduleEditor(scheduleData) {
         card.className = 'schedule-card-admin';
         
         card.innerHTML = `
-            <input type="text" value="${escapeHtml(item.day)}" placeholder="Day" onchange="updateSchedule(${index}, 'day', this.value)">
-            <input type="text" value="${escapeHtml(item.location)}" placeholder="Location" onchange="updateSchedule(${index}, 'location', this.value)">
+            <input type="text" value="${escapeHtml(item.day)}" placeholder="Day (e.g. Thursday)" onchange="updateSchedule(${index}, 'day', this.value)">
+            <input type="text" value="${escapeHtml(item.location)}" placeholder="Location Name" onchange="updateSchedule(${index}, 'location', this.value)">
+            <input type="text" value="${escapeHtml(item.address || '')}" placeholder="Address (for Maps link)" onchange="updateSchedule(${index}, 'address', this.value)">
             <input type="text" value="${escapeHtml(item.time)}" placeholder="Time" onchange="updateSchedule(${index}, 'time', this.value)">
             <button class="icon-btn delete" onclick="deleteScheduleItem(${index})">×</button>
         `;
@@ -248,6 +250,7 @@ function addScheduleItem() {
         id: Date.now(),
         day: 'Day',
         location: 'Location',
+        address: '',
         time: '9:00 AM - 12:00 PM'
     });
     saveData(data);
@@ -316,6 +319,71 @@ function deleteTestimonial(index) {
     data.testimonials.splice(index, 1);
     saveData(data);
     renderTestimonialsEditor(data.testimonials);
+    showSaveIndicator();
+}
+
+/* ===================================
+   Gallery Editor
+   =================================== */
+
+function renderGalleryEditor(galleryData) {
+    const container = document.getElementById('gallery-editor');
+    container.innerHTML = '';
+    
+    if (!galleryData || galleryData.length === 0) {
+        container.innerHTML = '<p class="no-submissions">No gallery images yet. Click "Add Image" to add one.</p>';
+        return;
+    }
+    
+    galleryData.forEach((image, index) => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card-admin';
+        
+        card.innerHTML = `
+            <div class="gallery-preview">
+                <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || 'Gallery image')}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22>No Image</text></svg>'">
+            </div>
+            <div class="gallery-inputs">
+                <input type="url" value="${escapeHtml(image.src)}" placeholder="Image URL (https://...)" onchange="updateGalleryImage(${index}, 'src', this.value)">
+                <input type="text" value="${escapeHtml(image.alt || '')}" placeholder="Alt text (optional)" onchange="updateGalleryImage(${index}, 'alt', this.value)">
+            </div>
+            <button class="icon-btn delete" onclick="deleteGalleryImage(${index})">×</button>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+function updateGalleryImage(index, field, value) {
+    const data = getData();
+    if (!data.gallery) data.gallery = [];
+    data.gallery[index][field] = value;
+    saveData(data);
+    renderGalleryEditor(data.gallery);
+    showSaveIndicator();
+}
+
+function addGalleryImage() {
+    const data = getData();
+    if (!data.gallery) {
+        data.gallery = [];
+    }
+    data.gallery.push({
+        src: '',
+        alt: 'Coffee photo'
+    });
+    saveData(data);
+    renderGalleryEditor(data.gallery);
+    showSaveIndicator();
+}
+
+function deleteGalleryImage(index) {
+    if (!confirm('Delete this gallery image?')) return;
+    
+    const data = getData();
+    data.gallery.splice(index, 1);
+    saveData(data);
+    renderGalleryEditor(data.gallery);
     showSaveIndicator();
 }
 
@@ -490,6 +558,7 @@ function exportSubmissions() {
 function initAddButtons() {
     document.getElementById('add-category').addEventListener('click', addCategory);
     document.getElementById('add-schedule').addEventListener('click', addScheduleItem);
+    document.getElementById('add-gallery-image').addEventListener('click', addGalleryImage);
     document.getElementById('add-testimonial').addEventListener('click', addTestimonial);
 }
 
