@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Lazy Coffee Co.</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-card">
+            <h1>Admin Portal</h1>
+            <p class="login-subtitle">Lazy Coffee Co.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Enter Password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+            <p class="login-error" id="login-error" style="display: none;">Incorrect password</p>
+            <a href="index.html" class="back-link">← Back to Website</a>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-dashboard" class="admin-dashboard" style="display: none;">
+        <!-- Admin Header -->
+        <header class="admin-header">
+            <div class="admin-header-content">
+                <div class="admin-brand">
+                    <span class="logo-lazy">LAZY</span> <span class="logo-coffee">COFFEE CO.</span>
+                    <span class="admin-badge">Admin</span>
+                </div>
+                <div class="admin-actions">
+                    <a href="index.html" class="btn btn-secondary" target="_blank">View Site</a>
+                    <button id="logout-btn" class="btn btn-dark">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Admin Navigation -->
+        <nav class="admin-nav">
+            <button class="admin-nav-item active" data-section="menu">Menu</button>
+            <button class="admin-nav-item" data-section="schedule">Schedule</button>
+            <button class="admin-nav-item" data-section="testimonials">Testimonials</button>
+            <button class="admin-nav-item" data-section="settings">Settings</button>
+            <button class="admin-nav-item" data-section="submissions">Submissions</button>
+        </nav>
+
+        <!-- Admin Content -->
+        <main class="admin-content">
+            <!-- Menu Section -->
+            <section id="section-menu" class="admin-section active">
+                <div class="section-header">
+                    <h2>Menu Management</h2>
+                    <button class="btn btn-primary" id="add-category">+ Add Category</button>
+                </div>
+                <div id="menu-editor" class="editor-container">
+                    <!-- Categories will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Schedule Section -->
+            <section id="section-schedule" class="admin-section">
+                <div class="section-header">
+                    <h2>Weekly Schedule</h2>
+                    <button class="btn btn-primary" id="add-schedule">+ Add Event</button>
+                </div>
+                <div id="schedule-editor" class="editor-container">
+                    <!-- Schedule items will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section id="section-testimonials" class="admin-section">
+                <div class="section-header">
+                    <h2>Testimonials</h2>
+                    <button class="btn btn-primary" id="add-testimonial">+ Add Quote</button>
+                </div>
+                <div id="testimonials-editor" class="editor-container">
+                    <!-- Testimonials will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="section-settings" class="admin-section">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-form">
+                    <div class="settings-group">
+                        <h3>Business Information</h3>
+                        <div class="form-group">
+                            <label>Business Name</label>
+                            <input type="text" id="setting-name" placeholder="Lazy Coffee Co.">
+                        </div>
+                        <div class="form-group">
+                            <label>Tagline</label>
+                            <input type="text" id="setting-tagline" placeholder="Premium coffee + ceremonial matcha...">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="setting-email" placeholder="hello@lazycoffeeco.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="tel" id="setting-phone" placeholder="(555) 123-4567">
+                        </div>
+                        <div class="form-group">
+                            <label>Instagram URL</label>
+                            <input type="url" id="setting-instagram" placeholder="https://instagram.com/lazycoffeeco">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>Integrations</h3>
+                        <div class="form-group">
+                            <label>CRM Webhook URL</label>
+                            <input type="url" id="setting-crm" placeholder="https://...">
+                            <small>Form submissions will be sent to this URL</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Calendly URL</label>
+                            <input type="url" id="setting-calendly" placeholder="https://calendly.com/...">
+                            <small>For booking integration</small>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-group">
+                        <h3>Security</h3>
+                        <div class="form-group">
+                            <label>Change Admin Password</label>
+                            <input type="password" id="new-password" placeholder="New Password">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" id="confirm-password" placeholder="Confirm Password">
+                        </div>
+                        <button class="btn btn-dark" id="change-password">Update Password</button>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="save-settings">Save All Settings</button>
+                </div>
+            </section>
+
+            <!-- Submissions Section -->
+            <section id="section-submissions" class="admin-section">
+                <div class="section-header">
+                    <h2>Form Submissions</h2>
+                    <button class="btn btn-dark" id="export-submissions">Export CSV</button>
+                </div>
+                <div id="submissions-list" class="submissions-container">
+                    <!-- Submissions will be rendered here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- Save Indicator -->
+        <div class="save-indicator" id="save-indicator">
+            <span>✓ Changes saved</span>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+/* ===================================
+   Lazy Coffee Co. - Admin Stylesheet
+   =================================== */
+
+/* ===================================
+   Login Screen
+   =================================== */
+
+.login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--sage-light) 0%, var(--cream) 100%);
+    padding: var(--spacing-md);
+}
+
+.login-card {
+    background-color: var(--white);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.login-card h1 {
+    font-size: 1.75rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.login-subtitle {
+    color: var(--gray);
+    margin-bottom: var(--spacing-md);
+}
+
+.login-error {
+    color: #d32f2f;
+    margin-top: var(--spacing-sm);
+    font-size: 0.9rem;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: var(--spacing-md);
+    color: var(--sage-dark);
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: var(--forest-dark);
+}
+
+/* ===================================
+   Admin Dashboard Layout
+   =================================== */
+
+.admin-body {
+    background-color: var(--off-white);
+}
+
+.admin-dashboard {
+    min-height: 100vh;
+}
+
+/* ===================================
+   Admin Header
+   =================================== */
+
+.admin-header {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray-light);
+    padding: var(--spacing-sm) var(--spacing-md);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.admin-header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+}
+
+.admin-badge {
+    background-color: var(--sage-green);
+    color: var(--white);
+    padding: 4px 10px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+}
+
+.admin-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* ===================================
+   Admin Navigation
+   =================================== */
+
+.admin-nav {
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray-light);
+    padding: 0 var(--spacing-md);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.admin-nav-item {
+    background: none;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--gray);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.admin-nav-item:hover {
+    color: var(--forest-dark);
+}
+
+.admin-nav-item.active {
+    color: var(--forest-dark);
+    border-bottom-color: var(--sage-green);
+    font-weight: 500;
+}
+
+/* ===================================
+   Admin Content
+   =================================== */
+
+.admin-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+}
+
+.admin-section {
+    display: none;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    color: var(--forest-dark);
+}
+
+/* ===================================
+   Editor Container
+   =================================== */
+
+.editor-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* ===================================
+   Category Card (Menu)
+   =================================== */
+
+.category-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--cream);
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.category-header input {
+    flex: 1;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    background: transparent;
+    padding: 8px 0;
+    font-family: var(--font-heading);
+}
+
+.category-header input:focus {
+    outline: none;
+    border-bottom: 2px solid var(--sage-green);
+}
+
+.category-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.category-body {
+    padding: var(--spacing-md);
+}
+
+.item-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.item-row {
+    display: flex;
+    gap: var(--spacing-sm);
+    align-items: center;
+}
+
+.item-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+.item-row input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+.item-note {
+    margin-top: var(--spacing-sm);
+}
+
+.item-note input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px dashed var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+.add-item-btn {
+    margin-top: var(--spacing-sm);
+    padding: 8px 16px;
+    background: none;
+    border: 1px dashed var(--sage-green);
+    color: var(--sage-dark);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.add-item-btn:hover {
+    background-color: var(--sage-light);
+}
+
+/* ===================================
+   Schedule Card
+   =================================== */
+
+.schedule-card-admin {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    display: grid;
+    grid-template-columns: 120px 1fr 180px auto;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.schedule-card-admin input {
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+}
+
+.schedule-card-admin input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+/* ===================================
+   Testimonial Card
+   =================================== */
+
+.testimonial-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+.testimonial-card input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+.testimonial-card input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+/* ===================================
+   Settings Form
+   =================================== */
+
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.settings-group {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+}
+
+.settings-group h3 {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.settings-group .form-group {
+    margin-bottom: var(--spacing-sm);
+}
+
+.settings-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--gray-dark);
+}
+
+.settings-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-sm);
+}
+
+.settings-group input:focus {
+    outline: none;
+    border-color: var(--sage-green);
+}
+
+.settings-group small {
+    display: block;
+    margin-top: 4px;
+    color: var(--gray);
+    font-size: 0.8rem;
+}
+
+/* ===================================
+   Submissions
+   =================================== */
+
+.submissions-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.submission-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+}
+
+.submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.submission-name {
+    font-weight: 600;
+    color: var(--forest-dark);
+}
+
+.submission-date {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.submission-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.submission-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.submission-field label {
+    font-size: 0.75rem;
+    color: var(--gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.submission-field span {
+    color: var(--gray-dark);
+}
+
+.no-submissions {
+    text-align: center;
+    padding: var(--spacing-lg);
+    color: var(--gray);
+}
+
+/* ===================================
+   Buttons
+   =================================== */
+
+.icon-btn {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background-color: var(--gray-light);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.icon-btn:hover {
+    background-color: var(--gray);
+}
+
+.icon-btn.delete {
+    color: #d32f2f;
+}
+
+.icon-btn.delete:hover {
+    background-color: #ffebee;
+}
+
+/* ===================================
+   Save Indicator
+   =================================== */
+
+.save-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--forest-dark);
+    color: var(--white);
+    padding: 12px 24px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.save-indicator.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===================================
+   Responsive
+   =================================== */
+
+@media (max-width: 768px) {
+    .admin-header-content {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    
+    .admin-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .admin-nav {
+        padding: 0;
+    }
+    
+    .admin-nav-item {
+        padding: var(--spacing-sm);
+        font-size: 0.85rem;
+    }
+    
+    .admin-content {
+        padding: var(--spacing-md);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .schedule-card-admin {
+        grid-template-columns: 1fr;
+    }
+    
+    .submission-details {
+        grid-template-columns: 1fr;
+    }
+}

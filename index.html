@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lazy Coffee Co. | Premium Coffee & Matcha Pop-Ups</title>
+    <meta name="description" content="Premium coffee + ceremonial matcha pop-ups across South Florida. Book catering for weddings, parties, and corporate events.">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-lazy">LAZY</span> <span class="logo-coffee">COFFEE CO.</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#catering">Catering</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#booking" class="nav-cta">Book Catering</a>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">LAZY COFFEE CO.</h1>
+            <p class="hero-subtitle">Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
+            <div class="hero-buttons">
+                <a href="#schedule" class="btn btn-primary">View Schedule</a>
+                <a href="#booking" class="btn btn-secondary">Book Catering</a>
+            </div>
+            <p class="hero-instagram">Follow us on Instagram for daily locations & specials.</p>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Specialty Coffee + Matcha</h3>
+                    <p>Small-batch, quality ingredients</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Weekly Pop-Ups</h3>
+                    <p>Markets, gyms & events</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Event & Catering Services</h3>
+                    <p>Weddings · Corporate · Parties</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="schedule-section">
+        <div class="container">
+            <div class="schedule-card">
+                <h2 class="schedule-title">This Week's Schedule</h2>
+                <div class="schedule-list" id="schedule-list">
+                    <!-- Schedule items will be loaded dynamically -->
+                </div>
+                <div class="schedule-buttons">
+                    <a href="#" class="btn btn-dark">Get Directions</a>
+                    <a href="#" class="btn btn-dark">See Full Schedule »</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catering Section -->
+    <section id="catering" class="catering-section">
+        <div class="container">
+            <h2 class="section-title">Catering + Events</h2>
+            <p class="catering-subtitle">Craft Coffee & Matcha for Your Next Event</p>
+            <div class="catering-features">
+                <ul class="catering-list">
+                    <li>Full Service Espresso Bar</li>
+                    <li>Custom Drink Menu</li>
+                    <li>Friendly Baristas</li>
+                </ul>
+                <ul class="catering-list">
+                    <li>Friendly Baristas</li>
+                    <li>Perfect for <strong>Weddings · Parties · Offices</strong></li>
+                </ul>
+            </div>
+            <a href="#booking" class="btn btn-primary">Request a Quote</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="container">
+            <h2 class="section-title">As Seen Around South Florida</h2>
+            <div class="testimonials-quotes">
+                <p class="quote">"Best matcha in town!"</p>
+                <p class="quote">"Amazing service, our guests loved it!"</p>
+                <p class="quote">"Perfect for any special event!"</p>
+            </div>
+            <div class="testimonials-gallery" id="gallery">
+                <!-- Gallery images will be loaded here -->
+                <div class="gallery-placeholder">
+                    <p>Gallery images coming soon</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Form Section -->
+    <section id="booking" class="booking-section">
+        <div class="container">
+            <h2 class="section-title">Book Lazy Coffee Co.</h2>
+            <form class="booking-form" id="booking-form">
+                <div class="form-group">
+                    <input type="text" name="name" placeholder="Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" name="phone" placeholder="Phone" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <select name="inquiry_type" required>
+                        <option value="" disabled selected>Inquiry Type</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="corporate">Corporate Event</option>
+                        <option value="party">Private Party</option>
+                        <option value="market">Market/Pop-up</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="date" name="event_date" placeholder="Event Date" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="guest_count" placeholder="Guest Count" min="1" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="location" placeholder="Location / City" required>
+                </div>
+                <div class="form-group">
+                    <textarea name="message" placeholder="Tell us about your event..." rows="4"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Submit Request</button>
+            </form>
+            <p class="form-success" id="form-success" style="display: none;">Thank you! We'll be in touch soon.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <span class="logo-lazy">LAZY</span> <span class="logo-coffee">COFFEE CO.</span>
+                    <p>Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#schedule">Schedule</a></li>
+                        <li><a href="#catering">Catering</a></li>
+                        <li><a href="#booking">Book Now</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>Follow Us</h4>
+                    <a href="#" class="social-link">Instagram</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Lazy Coffee Co. All rights reserved.</p>
+                <a href="admin.html" class="admin-link">Admin Portal</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
