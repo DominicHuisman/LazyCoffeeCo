@@ -350,9 +350,29 @@ ul {
 }
 
 .hero-instagram {
-    font-size: 0.9rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
     color: var(--gray);
     font-style: italic;
+    letter-spacing: 0.02em;
+}
+
+.hero-instagram .instagram-link {
+    color: inherit;
+    text-decoration: none;
+    font-style: inherit;
+    font-weight: inherit;
+    display: inline;
+    padding: 0;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.hero-instagram .instagram-link:hover {
+    background: none;
+    box-shadow: none;
+    opacity: 0.8;
 }
 
 /* ===================================
@@ -647,7 +667,6 @@ ul {
     gap: var(--spacing-md);
     width: max-content;
     animation: marquee 40s linear infinite;
-    text-decoration: none;
 }
 
 .gallery-track:hover {

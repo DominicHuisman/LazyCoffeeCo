@@ -85,7 +85,6 @@ function initNavigation() {
 function loadAllEditors() {
     const data = getData();
     
-    renderMenuEditor(data.menu);
     renderScheduleEditor(data.schedule);
     renderGalleryEditor(data.gallery);
     renderTestimonialsEditor(data.testimonials);
@@ -556,7 +555,6 @@ function exportSubmissions() {
    =================================== */
 
 function initAddButtons() {
-    document.getElementById('add-category').addEventListener('click', addCategory);
     document.getElementById('add-schedule').addEventListener('click', addScheduleItem);
     document.getElementById('add-gallery-image').addEventListener('click', addGalleryImage);
     document.getElementById('add-testimonial').addEventListener('click', addTestimonial);

@@ -159,14 +159,8 @@ function renderGallery(galleryData) {
     };
     
     // Duplicate images for seamless infinite scroll
-    // We need at least 2 sets of images for the loop to work smoothly
     const imagesHtml = createGalleryItems();
     galleryTrack.innerHTML = imagesHtml + imagesHtml;
-    
-    // Adjust animation speed based on number of images
-    const itemCount = galleryData.length;
-    const animationDuration = Math.max(20, itemCount * 5); // Min 20s, 5s per image
-    galleryTrack.style.animationDuration = `${animationDuration}s`;
 }
 
 /* ===================================
