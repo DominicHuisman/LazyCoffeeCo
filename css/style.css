@@ -1234,17 +1234,17 @@ ul {
    Mobile-Only Animations & Effects
    =================================== */
 
-@media (max-width: 768px) and (hover: none) {
+@media (max-width: 768px) {
     /* Tap feedback for buttons */
     .btn:active {
         transform: scale(0.95);
         transition: transform 0.1s ease;
     }
     
-    /* Subtle pulse on primary CTA buttons */
+    /* Subtle pulse on primary CTA buttons - always visible */
     .hero-buttons .btn-primary,
     .catering-section .btn-primary {
-        animation: mobilePulse 3s ease-in-out infinite;
+        animation: mobilePulse 2.5s ease-in-out infinite;
     }
     
     @keyframes mobilePulse {
@@ -1252,91 +1252,49 @@ ul {
             box-shadow: 0 2px 8px rgba(155, 176, 151, 0.3);
         }
         50% {
-            box-shadow: 0 4px 20px rgba(155, 176, 151, 0.5);
+            box-shadow: 0 6px 25px rgba(155, 176, 151, 0.6);
         }
     }
     
-    /* Fade in cards on scroll */
-    .feature-card {
-        animation: mobileSlideUp 0.6s ease-out both;
+    /* Elements start hidden for scroll animation */
+    .mobile-animate {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
     
-    .feature-card:nth-child(1) { animation-delay: 0.1s; }
-    .feature-card:nth-child(2) { animation-delay: 0.2s; }
-    .feature-card:nth-child(3) { animation-delay: 0.3s; }
-    
-    @keyframes mobileSlideUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .mobile-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
     
-    /* Schedule card entrance */
-    .schedule-card {
-        animation: mobileScaleIn 0.5s ease-out both;
+    /* Staggered delay for feature cards */
+    .feature-card.mobile-animate:nth-child(1) { transition-delay: 0s; }
+    .feature-card.mobile-animate:nth-child(2) { transition-delay: 0.15s; }
+    .feature-card.mobile-animate:nth-child(3) { transition-delay: 0.3s; }
+    
+    /* Quote stagger */
+    .quote.mobile-animate:nth-child(1) { transition-delay: 0s; }
+    .quote.mobile-animate:nth-child(2) { transition-delay: 0.15s; }
+    .quote.mobile-animate:nth-child(3) { transition-delay: 0.3s; }
+    
+    /* Scale animation for schedule card */
+    .schedule-card.mobile-animate {
+        opacity: 0;
+        transform: scale(0.95);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
     
-    @keyframes mobileScaleIn {
-        from {
-            opacity: 0;
-            transform: scale(0.95);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-    
-    /* Quote fade in staggered */
-    .quote {
-        animation: mobileFadeIn 0.6s ease-out both;
-    }
-    
-    .quote:nth-child(1) { animation-delay: 0.15s; }
-    .quote:nth-child(2) { animation-delay: 0.3s; }
-    .quote:nth-child(3) { animation-delay: 0.45s; }
-    
-    @keyframes mobileFadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-    
-    /* Gallery items subtle bounce on load */
-    .gallery-item {
-        animation: mobileGalleryPop 0.4s ease-out both;
-    }
-    
-    @keyframes mobileGalleryPop {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
+    .schedule-card.mobile-animate.visible {
+        opacity: 1;
+        transform: scale(1);
     }
     
     /* Form inputs focus glow */
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
-        animation: mobileInputGlow 0.3s ease forwards;
-    }
-    
-    @keyframes mobileInputGlow {
-        to {
-            box-shadow: 0 0 0 4px rgba(155, 176, 151, 0.25);
-        }
+        box-shadow: 0 0 0 4px rgba(155, 176, 151, 0.3);
     }
     
     /* Instagram link tap effect */
@@ -1350,20 +1308,16 @@ ul {
         border-radius: var(--radius-sm);
     }
     
-    /* Section titles subtle entrance */
-    .section-title {
-        animation: mobileTitleSlide 0.5s ease-out both;
+    /* Section titles animation */
+    .section-title.mobile-animate {
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
     }
     
-    @keyframes mobileTitleSlide {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .section-title.mobile-animate.visible {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 

@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize mobile menu
     initMobileMenu();
+    
+    // Initialize mobile scroll animations
+    initMobileAnimations();
 });
 
 /* ===================================
@@ -277,3 +280,44 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
+
+/* ===================================
+   Mobile Scroll Animations
+   =================================== */
+
+function initMobileAnimations() {
+    // Only run on mobile (under 768px)
+    if (window.innerWidth > 768) return;
+    
+    // Elements to animate on scroll
+    const animateElements = [
+        ...document.querySelectorAll('.feature-card'),
+        ...document.querySelectorAll('.quote'),
+        ...document.querySelectorAll('.schedule-card'),
+        ...document.querySelectorAll('.section-title')
+    ];
+    
+    // Add mobile-animate class to elements
+    animateElements.forEach(el => {
+        el.classList.add('mobile-animate');
+    });
+    
+    // Create intersection observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Stop observing once animated
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    // Observe all elements
+    animateElements.forEach(el => {
+        observer.observe(el);
+    });
+}
