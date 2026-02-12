@@ -1100,6 +1100,22 @@ ul {
         grid-template-columns: 1fr;
     }
     
+    .booking-form {
+        max-width: 100%;
+        overflow: hidden;
+    }
+    
+    .booking-form .form-group {
+        max-width: 100%;
+    }
+    
+    .booking-form .form-group input,
+    .booking-form .form-group select {
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+    
     .booking-form .btn-full {
         max-width: 100%;
         box-sizing: border-box;
@@ -1210,6 +1226,7 @@ ul {
     
     .booking-form {
         padding: 0 var(--spacing-xs);
+        max-width: 100%;
     }
     
     .booking-form .btn-full {
@@ -1224,6 +1241,9 @@ ul {
     .form-group textarea {
         padding: 12px 14px;
         font-size: 0.95rem;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
     
     .form-group input[type="date"] {
