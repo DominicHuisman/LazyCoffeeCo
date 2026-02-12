@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize form handling
     initBookingForm();
+    initReviewForm();
     
     // Initialize mobile menu
     initMobileMenu();
@@ -238,6 +239,49 @@ function saveFormSubmission(data) {
 }
 
 /* ===================================
+   Review Form Handling
+   =================================== */
+
+function initReviewForm() {
+    const form = document.getElementById('review-form');
+    const successMessage = document.getElementById('review-success');
+    
+    if (!form) return;
+    
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Add timestamp
+        data.submitted_at = new Date().toISOString();
+        data.type = 'review';
+        
+        // Save to localStorage
+        saveReview(data);
+        
+        // Show success message
+        form.style.display = 'none';
+        successMessage.style.display = 'block';
+        
+        // Reset after 4 seconds
+        setTimeout(() => {
+            form.reset();
+            form.style.display = 'block';
+            successMessage.style.display = 'none';
+        }, 4000);
+    });
+}
+
+// Save reviews to localStorage
+function saveReview(data) {
+    const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+    reviews.push(data);
+    localStorage.setItem('reviews', JSON.stringify(reviews));
+}
+
+/* ===================================
    Mobile Menu
    =================================== */
 
@@ -294,6 +338,7 @@ function initMobileAnimations() {
         ...document.querySelectorAll('.feature-card'),
         ...document.querySelectorAll('.quote'),
         ...document.querySelectorAll('.schedule-card'),
+        ...document.querySelectorAll('.review-card'),
         ...document.querySelectorAll('.section-title')
     ];
     
