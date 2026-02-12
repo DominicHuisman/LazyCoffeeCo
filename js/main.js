@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize mobile scroll animations
     initMobileAnimations();
+    
+    // Fix gallery animation on mobile
+    initGalleryAnimation();
 });
 
 /* ===================================
@@ -365,4 +368,42 @@ function initMobileAnimations() {
     animateElements.forEach(el => {
         observer.observe(el);
     });
+}
+
+/* ===================================
+   Gallery Animation Fix for Mobile
+   =================================== */
+
+function initGalleryAnimation() {
+    const galleryTrack = document.getElementById('gallery-track');
+    if (!galleryTrack) return;
+    
+    // Force animation restart on mobile
+    const restartAnimation = () => {
+        galleryTrack.style.animation = 'none';
+        // Trigger reflow
+        galleryTrack.offsetHeight;
+        galleryTrack.style.animation = '';
+    };
+    
+    // Restart when page becomes visible (tab switching)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            restartAnimation();
+        }
+    });
+    
+    // Restart animation when gallery scrolls into view
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                restartAnimation();
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    observer.observe(galleryTrack);
+    
+    // Initial kickstart after a short delay (helps on mobile)
+    setTimeout(restartAnimation, 100);
 }
