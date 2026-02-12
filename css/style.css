@@ -5,13 +5,13 @@
 
 :root {
     /* Primary Colors */
-    --sage-green: #9BB09A;
-    --sage-dark: #7A9479;
-    --sage-light: #B5C9B4;
+    --sage-green: #9BB097;
+    --sage-dark: #889E84;
+    --sage-light: #B3C4AE;
     
     /* Secondary Colors */
-    --cream: #F5F2E8;
-    --cream-dark: #E8E4D9;
+    --cream: #F0E8D8;
+    --cream-dark: #D8CFC0;
     --forest: #3D5A4C;
     --forest-dark: #2C4438;
     
@@ -24,8 +24,8 @@
     --black: #1A1A1A;
     
     /* Typography */
-    --font-heading: 'Playfair Display', Georgia, serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-body: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
     
     /* Spacing */
     --spacing-xs: 0.5rem;
@@ -75,7 +75,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-    font-weight: 600;
+    font-weight: 700;
     line-height: 1.2;
     color: var(--forest-dark);
 }
@@ -129,7 +129,7 @@ ul {
 .btn-primary:hover {
     background-color: var(--sage-dark);
     border-color: var(--sage-dark);
-    box-shadow: 0 4px 12px rgba(155, 176, 154, 0.4);
+    box-shadow: 0 4px 12px rgba(155, 176, 151, 0.4);
 }
 
 .btn-primary:active {
@@ -189,7 +189,7 @@ ul {
 
 /* Navbar scroll state */
 .navbar-scrolled {
-    background-color: rgba(245, 242, 232, 0.95);
+    background-color: rgba(240, 232, 216, 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: var(--shadow-md);
@@ -217,16 +217,18 @@ ul {
 .nav-logo {
     font-family: var(--font-heading);
     font-size: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.15em;
     transition: font-size var(--transition-normal) var(--ease-smooth);
 }
 
 .logo-lazy {
-    color: var(--sage-dark);
+    color: var(--sage-green);
+    font-weight: 700;
 }
 
 .logo-coffee {
-    color: var(--forest-dark);
+    color: var(--sage-dark);
     font-weight: 400;
 }
 
@@ -328,11 +330,12 @@ ul {
 }
 
 .hero-title {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(2rem, 6vw, 3.5rem);
     font-weight: 700;
     color: var(--forest-dark);
     margin-bottom: var(--spacing-sm);
-    letter-spacing: 2px;
+    letter-spacing: 0.15em;
+    white-space: nowrap;
 }
 
 .hero-subtitle {
@@ -350,7 +353,7 @@ ul {
 }
 
 .hero-instagram {
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-body);
     font-size: 1rem;
     color: var(--gray);
     font-style: italic;
@@ -811,7 +814,7 @@ ul {
 .form-group textarea:focus {
     outline: none;
     border-color: var(--sage-dark);
-    box-shadow: 0 0 0 3px rgba(155, 176, 154, 0.2);
+    box-shadow: 0 0 0 3px rgba(155, 176, 151, 0.2);
     transform: translateY(-1px);
 }
 
