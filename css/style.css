@@ -66,6 +66,13 @@ html {
     overflow-x: hidden;
 }
 
+/* Force scroll to top on page load */
+@media (max-width: 768px) {
+    html {
+        scroll-padding-top: 0;
+    }
+}
+
 body {
     font-family: var(--font-body);
     font-size: 16px;
@@ -404,7 +411,7 @@ ul {
    =================================== */
 
 .features {
-    padding: var(--spacing-lg) 0;
+    padding: var(--spacing-md) 0;
     background-color: var(--cream);
 }
 
@@ -1121,12 +1128,15 @@ ul {
     
     .testimonials-quotes {
         flex-direction: column;
-        gap: var(--spacing-sm);
-        padding: 0 var(--spacing-sm);
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-md);
+        align-items: center;
     }
     
     .quote {
-        font-size: 0.95rem;
+        font-size: 1rem;
+        text-align: center;
+        max-width: 300px;
     }
 }
 

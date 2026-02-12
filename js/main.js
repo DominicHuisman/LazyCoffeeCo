@@ -5,6 +5,12 @@
    =================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Scroll to top on page load (fixes mobile refresh issue)
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+    
     // Load and render all dynamic content
     const data = getData();
     
