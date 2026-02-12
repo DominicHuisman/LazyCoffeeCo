@@ -96,7 +96,10 @@ const siteData = {
     crmWebhookUrl: "",
     
     // Calendly URL (for booking integration)
-    calendlyUrl: ""
+    calendlyUrl: "",
+    
+    // Data version (increment to force refresh on all devices)
+    version: 2
 };
 
 // Function to save data to localStorage
@@ -108,7 +111,13 @@ function saveData(data) {
 function loadData() {
     const stored = localStorage.getItem('lazyCoffeeData');
     if (stored) {
-        return JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        // If version mismatch, use source data (forces refresh)
+        if (!parsed.version || parsed.version < siteData.version) {
+            saveData(siteData);
+            return siteData;
+        }
+        return parsed;
     }
     // If no stored data, save default and return it
     saveData(siteData);
