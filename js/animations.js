@@ -105,13 +105,24 @@
     // Desktop Animations (GSAP + ScrollTrigger)
     // ===================================
 
+    let desktopRetries = 0;
+    const maxRetries = 30;
+
     function initDesktopAnimations() {
         // Wait for GSAP to load
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            console.warn('GSAP not loaded, retrying...');
-            setTimeout(initDesktopAnimations, 100);
+            desktopRetries++;
+            if (desktopRetries < maxRetries) {
+                console.warn('GSAP not loaded, retrying... (' + desktopRetries + ')');
+                setTimeout(initDesktopAnimations, 100);
+            } else {
+                console.error('GSAP failed to load after ' + maxRetries + ' attempts');
+                showAllElements();
+            }
             return;
         }
+
+        console.log('Desktop animations initializing with GSAP');
 
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
@@ -129,8 +140,11 @@
         // Initialize hover effects
         initHoverEffects();
         
-        // Refresh ScrollTrigger
-        ScrollTrigger.refresh();
+        // Refresh ScrollTrigger after a short delay
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+            console.log('Desktop animations ready');
+        }, 100);
     }
 
     // ===================================
