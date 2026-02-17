@@ -128,11 +128,19 @@
             observer.observe(el);
         });
 
-        // Animate hero immediately with stagger
+        // Animate hero immediately with stagger (skip feature cards on mobile)
         const heroDelay = isMobile ? 0.2 : 0.3;
         const heroStagger = isMobile ? 0.2 : 0.25;
         document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
-            setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
+            if (isMobile && el.classList.contains('feature-card')) {
+                // On mobile, treat feature cards as scroll-triggered instead
+                el.setAttribute('data-animate', 'fade-up');
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(40px)';
+                observer.observe(el);
+            } else {
+                setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
+            }
         });
 
         console.log('Animations ready');
