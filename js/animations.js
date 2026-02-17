@@ -86,6 +86,16 @@
 
         // Initialize hover effects
         initHoverEffects();
+        
+        // Refresh ScrollTrigger after all animations are set up
+        ScrollTrigger.refresh();
+        
+        // Mobile safety net: if animations don't trigger, show everything after 2 seconds
+        if (isMobile) {
+            setTimeout(() => {
+                showAllElements();
+            }, 2000);
+        }
     }
 
     // ===================================
@@ -122,6 +132,14 @@
             el.style.opacity = '1';
             el.style.transform = 'none';
             el.style.filter = 'none';
+        });
+        
+        // Also show word spans
+        const wordSpans = document.querySelectorAll('.word');
+        wordSpans.forEach(span => {
+            span.style.opacity = '1';
+            span.style.transform = 'none';
+            span.style.filter = 'none';
         });
     }
 
