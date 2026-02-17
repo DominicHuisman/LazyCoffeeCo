@@ -55,20 +55,89 @@
             return;
         }
 
+        // Use different animation systems for mobile vs desktop
+        if (isMobile) {
+            initMobileAnimations();
+        } else {
+            initDesktopAnimations();
+        }
+    }
+
+    // ===================================
+    // Mobile Animations (CSS + IntersectionObserver)
+    // More reliable than GSAP on mobile browsers
+    // ===================================
+
+    function initMobileAnimations() {
+        // Add CSS for mobile animations
+        const style = document.createElement('style');
+        style.textContent = `
+            [data-animate="hero"],
+            [data-animate="fade-up"],
+            [data-animate="words"] .word {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            }
+            [data-animate="hero"].visible,
+            [data-animate="fade-up"].visible,
+            [data-animate="words"].visible .word {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Split words for word animations
+        const titles = document.querySelectorAll('[data-animate="words"]');
+        titles.forEach(title => {
+            const text = title.textContent.trim();
+            const words = text.split(/\s+/);
+            title.innerHTML = words.map((word, i) => 
+                `<span class="word" style="display:inline-block;transition-delay:${i * 0.08}s">${word}</span>`
+            ).join(' ');
+        });
+
+        // Create observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -10% 0px'
+        });
+
+        // Observe all animated elements
+        document.querySelectorAll('[data-animate]').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animate hero immediately
+        setTimeout(() => {
+            document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
+                setTimeout(() => el.classList.add('visible'), i * 150);
+            });
+        }, 200);
+    }
+
+    // ===================================
+    // Desktop Animations (GSAP + ScrollTrigger)
+    // ===================================
+
+    function initDesktopAnimations() {
         // Wait for GSAP to load
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
             console.warn('GSAP not loaded, retrying...');
-            setTimeout(init, 100);
+            setTimeout(initDesktopAnimations, 100);
             return;
         }
 
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
-        
-        // Configure for mobile
-        ScrollTrigger.config({
-            ignoreMobileResize: true
-        });
 
         // Set initial states
         setInitialStates();
@@ -78,24 +147,13 @@
         animateNavbar();
         animateFadeUp();
         animateWordReveal();
-        
-        // Only run parallax on desktop
-        if (!isMobile) {
-            animateParallax();
-        }
+        animateParallax();
 
         // Initialize hover effects
         initHoverEffects();
         
-        // Refresh ScrollTrigger after all animations are set up
+        // Refresh ScrollTrigger
         ScrollTrigger.refresh();
-        
-        // Mobile safety net: if animations don't trigger, show everything after 2 seconds
-        if (isMobile) {
-            setTimeout(() => {
-                showAllElements();
-            }, 2000);
-        }
     }
 
     // ===================================
@@ -200,7 +258,7 @@
             gsap.to(el, {
                 scrollTrigger: {
                     trigger: el,
-                    start: isMobile ? 'top 98%' : 'top 85%',
+                    start: 'top 85%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
@@ -238,14 +296,14 @@
                 display: 'inline-block',
                 opacity: 0,
                 y: 20,
-                filter: isMobile ? 'none' : 'blur(2px)'
+                filter: 'blur(2px)'
             });
 
             // Animate on scroll
             gsap.to(wordSpans, {
                 scrollTrigger: {
                     trigger: title,
-                    start: isMobile ? 'top 98%' : 'top 80%',
+                    start: 'top 80%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
