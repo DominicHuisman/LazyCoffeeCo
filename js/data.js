@@ -1,11 +1,10 @@
 /* ===================================
    Lazy Coffee Co. - Site Data
-   Cloud-synced via JSONBlob
+   Cloud-synced via Vercel API
    =================================== */
 
-// Cloud storage endpoint
-const JSONBLOB_ID = '019c691d-ea42-75ab-add3-ac3702e7243b';
-const CLOUD_API_URL = `https://jsonblob.com/api/jsonBlob/${JSONBLOB_ID}`;
+// Cloud storage endpoint (Vercel serverless function proxies to JSONBlob)
+const CLOUD_API_URL = '/api/data';
 
 // Default data (fallback if cloud unavailable)
 const siteData = {
