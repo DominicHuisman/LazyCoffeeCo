@@ -113,8 +113,10 @@
         });
 
         // Set up scroll observer
-        const threshold = isMobile ? 0.15 : 0.1;
-        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -5% 0px';
+        // Desktop: trigger later (when element is more visible)
+        // Mobile: trigger earlier (as soon as element enters)
+        const threshold = isMobile ? 0.15 : 0.3;
+        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -20% 0px';
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
