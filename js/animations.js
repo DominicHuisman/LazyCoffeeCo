@@ -14,10 +14,10 @@
     const CONFIG = {
         // Timing
         duration: {
-            fast: 0.4,
-            normal: 0.6,
-            slow: 0.8,
-            hero: 1.0
+            fast: 0.6,
+            normal: 0.9,
+            slow: 1.2,
+            hero: 1.4
         },
         // Easing - smooth, elegant curves
         ease: {
@@ -28,14 +28,14 @@
         },
         // Movement distances (reduced for mobile)
         distance: {
-            desktop: 40,
-            mobile: 20
+            desktop: 50,
+            mobile: 30
         },
         // Stagger timing
         stagger: {
-            fast: 0.08,
-            normal: 0.12,
-            slow: 0.15
+            fast: 0.12,
+            normal: 0.18,
+            slow: 0.25
         }
     };
 
@@ -64,6 +64,11 @@
 
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
+        
+        // Configure for mobile
+        ScrollTrigger.config({
+            ignoreMobileResize: true
+        });
 
         // Set initial states
         setInitialStates();
@@ -177,12 +182,12 @@
             gsap.to(el, {
                 scrollTrigger: {
                     trigger: el,
-                    start: 'top 85%',
+                    start: isMobile ? 'top 98%' : 'top 85%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
                 y: 0,
-                duration: isMobile ? CONFIG.duration.fast : CONFIG.duration.normal,
+                duration: CONFIG.duration.normal,
                 delay: staggerDelay,
                 ease: CONFIG.ease.smooth
             });
@@ -222,13 +227,13 @@
             gsap.to(wordSpans, {
                 scrollTrigger: {
                     trigger: title,
-                    start: 'top 80%',
+                    start: isMobile ? 'top 98%' : 'top 80%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
                 y: 0,
                 filter: 'blur(0px)',
-                duration: isMobile ? CONFIG.duration.fast : CONFIG.duration.normal,
+                duration: CONFIG.duration.normal,
                 stagger: CONFIG.stagger.fast,
                 ease: CONFIG.ease.smooth
             });
@@ -313,7 +318,8 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
-        init();
+        // Small delay to ensure page is fully painted
+        setTimeout(init, 50);
     }
 
 })();
