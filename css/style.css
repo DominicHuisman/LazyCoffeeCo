@@ -711,9 +711,30 @@ ul {
     cursor: grabbing;
 }
 
+/* Scale down items slightly while dragging for tactile feedback */
+.gallery-track.is-dragging .gallery-item {
+    transform: scale(0.92);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    opacity: 0.85;
+    border-radius: calc(var(--radius-lg) + 4px);
+}
+
+/* Add transition for smooth scale effect */
+.gallery-item {
+    transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.25s ease,
+                opacity 0.25s ease,
+                border-radius 0.25s ease;
+}
+
 .gallery-track img {
     pointer-events: none; /* Prevent image drag */
     -webkit-user-drag: none;
+}
+
+/* Paused state - subtle visual indicator */
+.gallery-marquee.gallery-paused {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--sage-light) 30%, var(--cream-dark) 70%, var(--cream) 100%);
 }
 
 .gallery-item {
@@ -724,7 +745,8 @@ ul {
     overflow: hidden;
     position: relative;
     box-shadow: var(--shadow-md);
-    transition: all var(--transition-normal) var(--ease-smooth);
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                box-shadow 0.3s ease;
 }
 
 .gallery-item:hover {
@@ -736,7 +758,7 @@ ul {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform var(--transition-slow) var(--ease-smooth);
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .gallery-item:hover img {
@@ -749,7 +771,7 @@ ul {
     inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.3) 0%, transparent 50%);
     opacity: 0;
-    transition: opacity var(--transition-normal) var(--ease-smooth);
+    transition: opacity 0.3s ease;
 }
 
 .gallery-item:hover::after {
