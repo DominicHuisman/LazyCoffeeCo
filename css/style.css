@@ -697,16 +697,23 @@ ul {
     display: flex;
     gap: var(--spacing-md);
     width: max-content;
-    animation: marquee 40s linear infinite;
-    -webkit-animation: marquee 40s linear infinite;
     will-change: transform;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y; /* Allow vertical scroll, capture horizontal */
 }
 
-.gallery-track:hover {
-    animation-play-state: paused;
-    -webkit-animation-play-state: paused;
+.gallery-track:active,
+.gallery-track.is-dragging {
+    cursor: grabbing;
+}
+
+.gallery-track img {
+    pointer-events: none; /* Prevent image drag */
+    -webkit-user-drag: none;
 }
 
 .gallery-item {
@@ -1524,10 +1531,9 @@ ul {
         transition-duration: 0.01ms !important;
     }
     
-    /* Keep gallery marquee animation running */
+    /* Gallery animation controlled via JS */
     .gallery-track {
-        animation: marquee 40s linear infinite !important;
-        -webkit-animation: marquee 40s linear infinite !important;
+        /* JS handles animation for interactive scrolling */
     }
     
     html {

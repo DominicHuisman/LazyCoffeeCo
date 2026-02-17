@@ -376,39 +376,237 @@ function initMobileAnimations() {
 }
 
 /* ===================================
-   Gallery Animation Fix for Mobile
+   Interactive Gallery with Auto-Scroll
    =================================== */
 
 function initGalleryAnimation() {
     const galleryTrack = document.getElementById('gallery-track');
     if (!galleryTrack) return;
     
-    // Force animation restart on mobile
-    const restartAnimation = () => {
-        galleryTrack.style.animation = 'none';
-        // Trigger reflow
-        galleryTrack.offsetHeight;
-        galleryTrack.style.animation = '';
+    // Configuration
+    const CONFIG = {
+        autoScrollSpeed: 0.8,        // Pixels per frame
+        tapThreshold: 8,             // Max movement for tap vs swipe (px)
+        momentumFriction: 0.95,      // Velocity decay after drag
+        resumeDelay: 2000,           // Ms before auto-scroll resumes
+        minVelocityThreshold: 0.1    // Min velocity to continue momentum
     };
     
-    // Restart when page becomes visible (tab switching)
-    document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-            restartAnimation();
-        }
-    });
+    // State
+    let position = 0;
+    let velocity = 0;
+    let isDragging = false;
+    let isTap = true;
+    let startX = 0;
+    let startY = 0;
+    let lastX = 0;
+    let dragStartPosition = 0;
+    let animationId = null;
+    let resumeTimeout = null;
+    let isPaused = false;
+    let trackWidth = 0;
+    let isVerticalScroll = false;
     
-    // Restart animation when gallery scrolls into view
-    const observer = new IntersectionObserver((entries) => {
+    // Calculate track width (half since content is duplicated)
+    const updateTrackWidth = () => {
+        trackWidth = galleryTrack.scrollWidth / 2;
+    };
+    
+    // Apply transform
+    const setPosition = (x) => {
+        galleryTrack.style.transform = `translate3d(${x}px, 0, 0)`;
+    };
+    
+    // Handle infinite loop
+    const wrapPosition = () => {
+        if (trackWidth <= 0) return;
+        
+        // Wrap around when reaching ends
+        if (position <= -trackWidth) {
+            position += trackWidth;
+        } else if (position > 0) {
+            position -= trackWidth;
+        }
+    };
+    
+    // Main animation loop
+    const animate = () => {
+        if (!isDragging) {
+            if (Math.abs(velocity) > CONFIG.minVelocityThreshold) {
+                // Apply momentum after drag
+                position += velocity;
+                velocity *= CONFIG.momentumFriction;
+            } else if (!isPaused) {
+                // Auto-scroll
+                position -= CONFIG.autoScrollSpeed;
+                velocity = 0;
+            }
+        }
+        
+        wrapPosition();
+        setPosition(position);
+        animationId = requestAnimationFrame(animate);
+    };
+    
+    // Pause auto-scroll temporarily
+    const pauseAutoScroll = () => {
+        isPaused = true;
+        if (resumeTimeout) clearTimeout(resumeTimeout);
+        resumeTimeout = setTimeout(() => {
+            isPaused = false;
+        }, CONFIG.resumeDelay);
+    };
+    
+    // Pointer down handler
+    const onPointerDown = (e) => {
+        // Ignore right-click
+        if (e.button !== 0 && e.pointerType === 'mouse') return;
+        
+        isDragging = true;
+        isTap = true;
+        isVerticalScroll = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        lastX = e.clientX;
+        dragStartPosition = position;
+        velocity = 0;
+        
+        galleryTrack.classList.add('is-dragging');
+        galleryTrack.setPointerCapture(e.pointerId);
+        
+        // Stop any momentum
+        if (resumeTimeout) clearTimeout(resumeTimeout);
+        isPaused = true;
+    };
+    
+    // Pointer move handler
+    const onPointerMove = (e) => {
+        if (!isDragging) return;
+        
+        const deltaX = e.clientX - startX;
+        const deltaY = e.clientY - startY;
+        
+        // First movement: determine if horizontal or vertical scroll
+        if (isTap && (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3)) {
+            // If vertical movement is dominant, let the page scroll
+            if (Math.abs(deltaY) > Math.abs(deltaX) * 1.5) {
+                isVerticalScroll = true;
+                isDragging = false;
+                galleryTrack.classList.remove('is-dragging');
+                galleryTrack.releasePointerCapture(e.pointerId);
+                isPaused = false;
+                return;
+            }
+        }
+        
+        // Check if movement exceeds tap threshold
+        if (Math.abs(deltaX) > CONFIG.tapThreshold) {
+            isTap = false;
+        }
+        
+        // Calculate velocity for momentum
+        velocity = e.clientX - lastX;
+        lastX = e.clientX;
+        
+        // Update position
+        position = dragStartPosition + deltaX;
+        setPosition(position);
+    };
+    
+    // Pointer up handler
+    const onPointerUp = (e) => {
+        if (!isDragging && !isVerticalScroll) return;
+        
+        isDragging = false;
+        galleryTrack.classList.remove('is-dragging');
+        
+        try {
+            galleryTrack.releasePointerCapture(e.pointerId);
+        } catch (err) {
+            // Pointer capture may already be released
+        }
+        
+        // If it was a tap (not a swipe), allow the link to work
+        // The click event will handle navigation
+        
+        // Start momentum and schedule auto-scroll resume
+        if (!isTap) {
+            pauseAutoScroll();
+        } else {
+            // Reset pause state for taps
+            isPaused = false;
+        }
+    };
+    
+    // Click handler - prevent navigation on swipe
+    const onClick = (e) => {
+        if (!isTap) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        // If it was a tap, let the default link behavior happen
+    };
+    
+    // Handle visibility change
+    const onVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+            // Page visible - ensure animation is running
+            if (!animationId) {
+                animationId = requestAnimationFrame(animate);
+            }
+        } else {
+            // Page hidden - pause animation
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+                animationId = null;
+            }
+        }
+    };
+    
+    // Initialize
+    updateTrackWidth();
+    
+    // Use ResizeObserver to update track width when images load
+    if (window.ResizeObserver) {
+        const resizeObserver = new ResizeObserver(() => {
+            updateTrackWidth();
+        });
+        resizeObserver.observe(galleryTrack);
+    }
+    
+    // Also update on window resize
+    window.addEventListener('resize', updateTrackWidth);
+    
+    // Attach pointer event listeners
+    galleryTrack.addEventListener('pointerdown', onPointerDown);
+    galleryTrack.addEventListener('pointermove', onPointerMove);
+    galleryTrack.addEventListener('pointerup', onPointerUp);
+    galleryTrack.addEventListener('pointercancel', onPointerUp);
+    galleryTrack.addEventListener('click', onClick, true); // Capture phase
+    
+    // Handle visibility
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    
+    // Use Intersection Observer to pause when not visible
+    const intersectionObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                restartAnimation();
+                if (!animationId) {
+                    animationId = requestAnimationFrame(animate);
+                }
+            } else {
+                // Optionally pause when not in view (saves CPU)
+                // Uncomment if desired:
+                // if (animationId) {
+                //     cancelAnimationFrame(animationId);
+                //     animationId = null;
+                // }
             }
         });
     }, { threshold: 0.1 });
     
-    observer.observe(galleryTrack);
+    intersectionObserver.observe(galleryTrack);
     
-    // Initial kickstart after a short delay (helps on mobile)
-    setTimeout(restartAnimation, 100);
+    // Start animation
+    animationId = requestAnimationFrame(animate);
 }
