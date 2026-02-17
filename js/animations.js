@@ -95,14 +95,6 @@
                 transform: translateY(0) !important; 
                 filter: blur(0); 
             }
-            .feature-card[data-animate="fade-up"] {
-                opacity: 0 !important;
-                transform: translateY(40px) !important;
-            }
-            .feature-card[data-animate="fade-up"].visible {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
             [data-animate="words"] { opacity: 1; }
             [data-animate="words"] .word {
                 display: inline-block;
@@ -145,12 +137,7 @@
             observer.observe(el);
         });
 
-        // Add staggered delays to feature cards
-        document.querySelectorAll('.feature-card[data-animate="fade-up"]').forEach((card, i) => {
-            card.style.transitionDelay = `${i * 0.15}s`;
-        });
-
-        // Animate hero immediately with stagger
+        // Animate hero immediately with stagger (includes feature cards)
         const heroDelay = isMobile ? 0.2 : 0.3;
         const heroStagger = isMobile ? 0.2 : 0.25;
         document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {

@@ -1641,6 +1641,25 @@ ul {
         filter: blur(4px);
     }
     
+    /* Feature cards animate after hero text */
+    .feature-card[data-animate="hero"]:nth-child(1) {
+        animation-delay: 1.2s;
+        opacity: 0;
+        filter: blur(4px);
+    }
+    
+    .feature-card[data-animate="hero"]:nth-child(2) {
+        animation-delay: 1.4s;
+        opacity: 0;
+        filter: blur(4px);
+    }
+    
+    .feature-card[data-animate="hero"]:nth-child(3) {
+        animation-delay: 1.6s;
+        opacity: 0;
+        filter: blur(4px);
+    }
+    
     /* Scroll-triggered animations via data-animate */
     [data-animate="fade-up"],
     [data-animate="words"] {
