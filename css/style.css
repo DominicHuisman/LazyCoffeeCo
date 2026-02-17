@@ -428,7 +428,8 @@ ul {
     border: 1px solid var(--gray-light);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: all var(--transition-normal) var(--ease-smooth);
+    transition: border-color var(--transition-normal) var(--ease-smooth),
+                box-shadow var(--transition-normal) var(--ease-smooth);
     will-change: transform, box-shadow;
 }
 
