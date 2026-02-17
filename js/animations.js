@@ -88,8 +88,8 @@
                 }
             });
         }, {
-            threshold: 0.05,
-            rootMargin: '0px 0px 0px 0px'
+            threshold: 0.25,
+            rootMargin: '0px 0px -15% 0px'
         });
 
         // Observe scroll-triggered elements (NOT hero - hero uses CSS keyframes)
