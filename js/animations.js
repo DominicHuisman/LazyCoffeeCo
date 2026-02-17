@@ -55,31 +55,66 @@
             return;
         }
 
-        // Use different animation systems for mobile vs desktop
-        if (isMobile) {
-            initMobileAnimations();
-        } else {
-            initDesktopAnimations();
-        }
+        // Use unified CSS + IntersectionObserver for all devices
+        // This is more reliable than GSAP on some browsers
+        initUnifiedAnimations();
     }
 
     // ===================================
-    // Mobile Animations (CSS + IntersectionObserver)
-    // Hero uses pure CSS @keyframes, scroll elements use observer
+    // Unified Animations (CSS + IntersectionObserver)
+    // Works reliably on both mobile and desktop
     // ===================================
 
-    function initMobileAnimations() {
+    function initUnifiedAnimations() {
+        console.log('Animations initializing...', isMobile ? 'mobile' : 'desktop');
+        
+        // Inject animation CSS
+        const style = document.createElement('style');
+        style.id = 'lazy-animations';
+        const dur = isMobile ? '0.8s' : '1s';
+        style.textContent = `
+            @keyframes heroSlideUp {
+                from { opacity: 0; transform: translateY(35px); filter: blur(4px); }
+                to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            }
+            [data-animate="hero"] { opacity: 0; filter: blur(4px); }
+            [data-animate="hero"].animate {
+                animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            [data-animate="fade-up"] {
+                opacity: 0;
+                transform: translateY(40px);
+                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); }
+            [data-animate="words"] { opacity: 1; }
+            [data-animate="words"] .word {
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(25px);
+                filter: blur(2px);
+                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            filter ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+            [data-animate="words"].visible .word { opacity: 1; transform: translateY(0); filter: blur(0); }
+        `;
+        document.head.appendChild(style);
+
         // Split words for word animations
-        const titles = document.querySelectorAll('[data-animate="words"]');
-        titles.forEach(title => {
+        const wordStagger = isMobile ? 0.08 : 0.1;
+        document.querySelectorAll('[data-animate="words"]').forEach(title => {
             const text = title.textContent.trim();
             const words = text.split(/\s+/);
             title.innerHTML = words.map((word, i) => 
-                `<span class="word" style="transition-delay:${i * 0.08}s">${word}</span>`
+                `<span class="word" style="transition-delay: ${i * wordStagger}s">${word}</span>`
             ).join(' ');
         });
 
-        // Create observer for scroll-triggered elements
+        // Set up scroll observer
+        const threshold = isMobile ? 0.15 : 0.1;
+        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -5% 0px';
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -87,64 +122,20 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, {
-            threshold: 0.25,
-            rootMargin: '0px 0px -15% 0px'
-        });
+        }, { threshold, rootMargin });
 
-        // Observe scroll-triggered elements (NOT hero - hero uses CSS keyframes)
         document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(el => {
             observer.observe(el);
         });
-        
-        // Debug log
-        console.log('Mobile animations initialized');
-    }
 
-    // ===================================
-    // Desktop Animations (GSAP + ScrollTrigger)
-    // ===================================
+        // Animate hero immediately with stagger
+        const heroDelay = isMobile ? 0.2 : 0.3;
+        const heroStagger = isMobile ? 0.2 : 0.25;
+        document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
+            setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
+        });
 
-    let desktopRetries = 0;
-    const maxRetries = 30;
-
-    function initDesktopAnimations() {
-        // Wait for GSAP to load
-        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            desktopRetries++;
-            if (desktopRetries < maxRetries) {
-                console.warn('GSAP not loaded, retrying... (' + desktopRetries + ')');
-                setTimeout(initDesktopAnimations, 100);
-            } else {
-                console.error('GSAP failed to load after ' + maxRetries + ' attempts');
-                showAllElements();
-            }
-            return;
-        }
-
-        console.log('Desktop animations initializing with GSAP');
-
-        // Register ScrollTrigger
-        gsap.registerPlugin(ScrollTrigger);
-
-        // Set initial states
-        setInitialStates();
-
-        // Run animations
-        animateHero();
-        animateNavbar();
-        animateFadeUp();
-        animateWordReveal();
-        animateParallax();
-
-        // Initialize hover effects
-        initHoverEffects();
-        
-        // Refresh ScrollTrigger after a short delay
-        setTimeout(() => {
-            ScrollTrigger.refresh();
-            console.log('Desktop animations ready');
-        }, 100);
+        console.log('Animations ready');
     }
 
     // ===================================
