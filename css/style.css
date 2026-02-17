@@ -1588,15 +1588,15 @@ ul {
    =================================== */
 
 @keyframes mobileSlideUpBlur {
-    from {
+    0% {
         opacity: 0;
-        transform: translateY(30px);
-        filter: blur(4px);
+        transform: translateY(20px);
+        filter: blur(2px);
     }
-    to {
+    100% {
         opacity: 1;
         transform: translateY(0);
-        filter: blur(0px);
+        filter: blur(0);
     }
 }
 
@@ -1614,58 +1614,58 @@ ul {
 @media (max-width: 768px) {
     /* Hero animations - staggered on page load with blur */
     [data-animate="hero"] {
-        animation: mobileSlideUpBlur 1.2s ease-out forwards;
+        animation: mobileSlideUpBlur 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     
     .hero-title[data-animate="hero"] {
-        animation-delay: 0.2s;
+        animation-delay: 0.1s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     .hero-subtitle[data-animate="hero"] {
-        animation-delay: 0.45s;
+        animation-delay: 0.25s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     .hero-buttons[data-animate="hero"] {
-        animation-delay: 0.7s;
+        animation-delay: 0.4s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     .hero-instagram[data-animate="hero"] {
-        animation-delay: 0.95s;
+        animation-delay: 0.55s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     /* Feature cards animate after hero text */
     .feature-card[data-animate="hero"]:nth-child(1) {
-        animation-delay: 1.2s;
+        animation-delay: 0.75s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     .feature-card[data-animate="hero"]:nth-child(2) {
-        animation-delay: 1.4s;
+        animation-delay: 0.9s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     .feature-card[data-animate="hero"]:nth-child(3) {
-        animation-delay: 1.6s;
+        animation-delay: 1.05s;
         opacity: 0;
-        filter: blur(4px);
+        filter: blur(2px);
     }
     
     /* Scroll-triggered animations via data-animate */
     [data-animate="fade-up"],
     [data-animate="words"] {
         opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+        transform: translateY(20px);
+        transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     [data-animate="fade-up"].visible,
