@@ -133,10 +133,12 @@
         const heroStagger = isMobile ? 0.2 : 0.25;
         document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
             if (isMobile && el.classList.contains('feature-card')) {
-                // On mobile, treat feature cards as scroll-triggered instead
+                // On mobile, treat feature cards as scroll-triggered fade-up
+                el.removeAttribute('data-animate');
+                // Clear any conflicting styles
+                el.style.cssText = '';
+                // Re-assign as fade-up so CSS picks it up
                 el.setAttribute('data-animate', 'fade-up');
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(40px)';
                 observer.observe(el);
             } else {
                 setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
