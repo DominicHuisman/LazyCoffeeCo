@@ -249,7 +249,8 @@
             gsap.to(el, {
                 scrollTrigger: {
                     trigger: el,
-                    start: 'top 85%',
+                    start: 'top 95%',
+                    end: 'bottom 20%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
@@ -294,7 +295,8 @@
             gsap.to(wordSpans, {
                 scrollTrigger: {
                     trigger: title,
-                    start: 'top 80%',
+                    start: 'top 95%',
+                    end: 'bottom 20%',
                     toggleActions: 'play none none none'
                 },
                 opacity: 1,
