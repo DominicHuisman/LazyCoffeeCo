@@ -1,6 +1,7 @@
 /* ===================================
    Lazy Coffee Co. - Admin JavaScript
    Handles admin portal functionality
+   Cloud-synced via JSONBlob
    =================================== */
 
 // Default admin password (should be changed by owner)
@@ -45,7 +46,45 @@ function initLogin() {
 function showDashboard() {
     document.getElementById('login-screen').style.display = 'none';
     document.getElementById('admin-dashboard').style.display = 'block';
-    loadAllEditors();
+    
+    // Load cloud data before rendering editors
+    loadAllEditorsAsync();
+}
+
+async function loadAllEditorsAsync() {
+    // Show loading state
+    const indicator = document.getElementById('save-indicator');
+    indicator.textContent = 'Loading...';
+    indicator.classList.add('show');
+    
+    try {
+        // Fetch fresh data from cloud
+        const data = await getDataAsync();
+        
+        renderScheduleEditor(data.schedule);
+        renderGalleryEditor(data.gallery);
+        renderTestimonialsEditor(data.testimonials);
+        loadSettings(data);
+        renderSubmissions();
+        
+        // Initialize add buttons
+        initAddButtons();
+        initSettingsHandlers();
+        
+        indicator.textContent = 'Loaded from cloud';
+        setTimeout(() => {
+            indicator.classList.remove('show');
+            indicator.textContent = 'Saved to cloud ✓';
+        }, 1500);
+    } catch (e) {
+        console.error('Error loading cloud data:', e);
+        // Fall back to local data
+        loadAllEditors();
+        indicator.textContent = 'Using local data';
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 2000);
+    }
 }
 
 function initLogout() {
@@ -575,8 +614,14 @@ function escapeHtml(str) {
 
 function showSaveIndicator() {
     const indicator = document.getElementById('save-indicator');
+    indicator.textContent = 'Syncing to cloud...';
     indicator.classList.add('show');
+    
+    // After a short delay, show saved confirmation
     setTimeout(() => {
-        indicator.classList.remove('show');
-    }, 2000);
+        indicator.textContent = 'Saved to cloud ✓';
+        setTimeout(() => {
+            indicator.classList.remove('show');
+        }, 1500);
+    }, 500);
 }

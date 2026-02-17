@@ -4,15 +4,20 @@
    and form submissions
    =================================== */
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     // Scroll to top on page load (fixes mobile refresh issue)
     if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
     
-    // Load and render all dynamic content
-    const data = getData();
+    // Load data from cloud first, then render
+    let data;
+    try {
+        data = await getDataAsync();
+    } catch (e) {
+        data = getData(); // Fallback to cached/local
+    }
     
     renderMenu(data.menu);
     renderSchedule(data.schedule);

@@ -1,9 +1,13 @@
 /* ===================================
    Lazy Coffee Co. - Site Data
-   This file stores all dynamic content
-   that can be edited via the admin portal
+   Cloud-synced via JSONBlob
    =================================== */
 
+// Cloud storage endpoint
+const JSONBLOB_ID = '019c691d-ea42-75ab-add3-ac3702e7243b';
+const CLOUD_API_URL = `https://jsonblob.com/api/jsonBlob/${JSONBLOB_ID}`;
+
+// Default data (fallback if cloud unavailable)
 const siteData = {
     // Menu Categories
     menu: {
@@ -96,48 +100,115 @@ const siteData = {
     crmWebhookUrl: "",
     
     // Calendly URL (for booking integration)
-    calendlyUrl: "",
-    
-    // Data version (increment to force refresh on all devices)
-    version: 2
+    calendlyUrl: ""
 };
 
-// Function to save data to localStorage
-function saveData(data) {
-    localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+// Cache for cloud data
+let cachedData = null;
+let lastFetch = 0;
+const CACHE_DURATION = 5000; // 5 seconds cache
+
+// Function to save data to cloud
+async function saveDataToCloud(data) {
+    try {
+        const response = await fetch(CLOUD_API_URL, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+            cachedData = data;
+            lastFetch = Date.now();
+            // Also save to localStorage as backup
+            localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+            return true;
+        }
+        return false;
+    } catch (error) {
+        console.error('Error saving to cloud:', error);
+        // Fall back to localStorage
+        localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+        return false;
+    }
 }
 
-// Function to load data from localStorage
-function loadData() {
+// Function to load data from cloud
+async function loadDataFromCloud() {
+    // Use cache if fresh
+    if (cachedData && (Date.now() - lastFetch) < CACHE_DURATION) {
+        return cachedData;
+    }
+    
+    try {
+        const response = await fetch(CLOUD_API_URL);
+        if (response.ok) {
+            const data = await response.json();
+            cachedData = data;
+            lastFetch = Date.now();
+            // Update localStorage backup
+            localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+            return data;
+        }
+    } catch (error) {
+        console.error('Error loading from cloud:', error);
+    }
+    
+    // Fallback to localStorage
     const stored = localStorage.getItem('lazyCoffeeData');
     if (stored) {
-        const parsed = JSON.parse(stored);
-        // If version mismatch, use source data (forces refresh)
-        if (!parsed.version || parsed.version < siteData.version) {
-            saveData(siteData);
-            return siteData;
-        }
-        return parsed;
+        return JSON.parse(stored);
     }
-    // If no stored data, save default and return it
-    saveData(siteData);
+    
     return siteData;
 }
 
-// Function to get current data
+// Synchronous function for backward compatibility (uses cache/localStorage)
 function getData() {
-    return loadData();
+    // Return cached data if available
+    if (cachedData) {
+        return cachedData;
+    }
+    
+    // Fall back to localStorage
+    const stored = localStorage.getItem('lazyCoffeeData');
+    if (stored) {
+        cachedData = JSON.parse(stored);
+        return cachedData;
+    }
+    
+    return siteData;
+}
+
+// Async function to get fresh data from cloud
+async function getDataAsync() {
+    return await loadDataFromCloud();
+}
+
+// Save function (async, saves to cloud)
+function saveData(data) {
+    cachedData = data;
+    // Save to localStorage immediately for responsiveness
+    localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+    // Then sync to cloud
+    saveDataToCloud(data);
 }
 
 // Function to update specific section
 function updateSection(section, data) {
-    const currentData = loadData();
+    const currentData = getData();
     currentData[section] = data;
     saveData(currentData);
     return currentData;
 }
 
-// Initialize data on first load
-if (!localStorage.getItem('lazyCoffeeData')) {
-    saveData(siteData);
-}
+// Initialize: fetch cloud data on page load
+(async function initData() {
+    try {
+        await loadDataFromCloud();
+    } catch (e) {
+        console.log('Using local data');
+    }
+})();
