@@ -65,40 +65,21 @@
 
     // ===================================
     // Mobile Animations (CSS + IntersectionObserver)
-    // More reliable than GSAP on mobile browsers
+    // Hero uses pure CSS @keyframes, scroll elements use observer
     // ===================================
 
     function initMobileAnimations() {
-        // Add CSS for mobile animations
-        const style = document.createElement('style');
-        style.textContent = `
-            [data-animate="hero"],
-            [data-animate="fade-up"],
-            [data-animate="words"] .word {
-                opacity: 0;
-                transform: translateY(20px);
-                transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-            }
-            [data-animate="hero"].visible,
-            [data-animate="fade-up"].visible,
-            [data-animate="words"].visible .word {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        `;
-        document.head.appendChild(style);
-
         // Split words for word animations
         const titles = document.querySelectorAll('[data-animate="words"]');
         titles.forEach(title => {
             const text = title.textContent.trim();
             const words = text.split(/\s+/);
             title.innerHTML = words.map((word, i) => 
-                `<span class="word" style="display:inline-block;transition-delay:${i * 0.08}s">${word}</span>`
+                `<span class="word" style="transition-delay:${i * 0.08}s">${word}</span>`
             ).join(' ');
         });
 
-        // Create observer
+        // Create observer for scroll-triggered elements
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -107,20 +88,17 @@
                 }
             });
         }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -10% 0px'
+            threshold: 0.05,
+            rootMargin: '0px 0px 0px 0px'
         });
 
-        // Observe all animated elements EXCEPT hero (hero animates immediately)
+        // Observe scroll-triggered elements (NOT hero - hero uses CSS keyframes)
         document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(el => {
             observer.observe(el);
         });
-
-        // Animate hero immediately on page load (don't use observer)
-        const heroElements = document.querySelectorAll('[data-animate="hero"]');
-        heroElements.forEach((el, i) => {
-            setTimeout(() => el.classList.add('visible'), 300 + (i * 150));
-        });
+        
+        // Debug log
+        console.log('Mobile animations initialized');
     }
 
     // ===================================

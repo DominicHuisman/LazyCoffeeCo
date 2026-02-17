@@ -1581,3 +1581,80 @@ ul {
 .word {
     display: inline-block;
 }
+
+/* ===================================
+   Mobile Animations (Pure CSS - No JS Required)
+   =================================== */
+
+@keyframes mobileSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mobileFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hero animations - staggered on page load */
+    [data-animate="hero"] {
+        animation: mobileSlideUp 0.7s ease-out forwards;
+    }
+    
+    .hero-title[data-animate="hero"] {
+        animation-delay: 0.1s;
+        opacity: 0;
+    }
+    
+    .hero-subtitle[data-animate="hero"] {
+        animation-delay: 0.25s;
+        opacity: 0;
+    }
+    
+    .hero-buttons[data-animate="hero"] {
+        animation-delay: 0.4s;
+        opacity: 0;
+    }
+    
+    .hero-instagram[data-animate="hero"] {
+        animation-delay: 0.55s;
+        opacity: 0;
+    }
+    
+    /* Scroll-triggered animations via data-animate */
+    [data-animate="fade-up"],
+    [data-animate="words"] {
+        opacity: 0;
+        transform: translateY(25px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    
+    [data-animate="fade-up"].visible,
+    [data-animate="words"].visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    
+    /* Word spans inside word animations */
+    [data-animate="words"] .word {
+        opacity: 0;
+        transform: translateY(15px);
+        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    
+    [data-animate="words"].visible .word {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
