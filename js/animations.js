@@ -48,6 +48,9 @@
     // Initialize
     // ===================================
 
+    let initAttempts = 0;
+    const maxInitAttempts = 20;
+
     function init() {
         // Respect user preferences
         if (prefersReducedMotion) {
@@ -57,13 +60,25 @@
 
         // Wait for GSAP to load
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            console.warn('GSAP not loaded, retrying...');
-            setTimeout(init, 100);
+            initAttempts++;
+            if (initAttempts < maxInitAttempts) {
+                console.warn('GSAP not loaded, retrying...');
+                setTimeout(init, 100);
+            } else {
+                // Fallback: show everything if GSAP fails to load
+                console.warn('GSAP failed to load, showing elements');
+                showAllElements();
+            }
             return;
         }
 
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
+
+        // Configure ScrollTrigger for mobile
+        ScrollTrigger.config({
+            ignoreMobileResize: true
+        });
 
         // Small delay to ensure DOM is ready
         requestAnimationFrame(() => {
@@ -84,6 +99,11 @@
             
             // Refresh ScrollTrigger after setup
             ScrollTrigger.refresh();
+            
+            // Safety timeout: ensure elements visible even if scroll triggers fail
+            setTimeout(() => {
+                showAllElements();
+            }, 3000);
         });
     }
 
@@ -121,6 +141,14 @@
             el.style.opacity = '1';
             el.style.transform = 'none';
             el.style.filter = 'none';
+            el.style.visibility = 'visible';
+        });
+        
+        // Also reveal any word spans
+        const wordSpans = document.querySelectorAll('.word');
+        wordSpans.forEach(span => {
+            span.style.opacity = '1';
+            span.style.transform = 'none';
         });
     }
 
@@ -182,7 +210,7 @@
             gsap.to(el, {
                 scrollTrigger: {
                     trigger: el,
-                    start: isMobile ? 'top 90%' : 'top 85%',
+                    start: isMobile ? 'top 95%' : 'top 85%',
                     toggleActions: 'play none none none',
                     once: true
                 },
@@ -229,7 +257,7 @@
             gsap.to(wordSpans, {
                 scrollTrigger: {
                     trigger: title,
-                    start: isMobile ? 'top 90%' : 'top 80%',
+                    start: isMobile ? 'top 95%' : 'top 80%',
                     toggleActions: 'play none none none',
                     once: true
                 },
