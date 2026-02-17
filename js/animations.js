@@ -75,7 +75,9 @@
         const scrollDur = isMobile ? '0.8s' : '1s';
         // Professional ease-out curve (ease-out-expo feel)
         const easeOut = 'cubic-bezier(0.16, 1, 0.3, 1)';
-        style.textContent = `
+        
+        // Hero styles only for desktop - mobile uses CSS media query
+        const heroStyles = isMobile ? '' : `
             @keyframes heroSlideUp {
                 0% { opacity: 0; transform: translateY(25px); filter: blur(2px); }
                 100% { opacity: 1; transform: translateY(0); filter: blur(0); }
@@ -84,6 +86,10 @@
             [data-animate="hero"].animate {
                 animation: heroSlideUp ${dur} ${easeOut} forwards;
             }
+        `;
+        
+        style.textContent = `
+            ${heroStyles}
             [data-animate="fade-up"] {
                 opacity: 0 !important;
                 transform: translateY(30px) !important;
@@ -139,12 +145,14 @@
             observer.observe(el);
         });
 
-        // Animate hero immediately with elegant stagger
-        const heroDelay = isMobile ? 0.15 : 0.2;
-        const heroStagger = isMobile ? 0.15 : 0.18;
-        document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
-            setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
-        });
+        // Hero animations - only use JS on desktop, CSS handles mobile
+        if (!isMobile) {
+            const heroDelay = 0.2;
+            const heroStagger = 0.18;
+            document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
+                setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
+            });
+        }
 
         console.log('Animations ready');
     }
