@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     renderSchedule(data.schedule);
     renderTestimonials(data.testimonials);
     renderGallery(data.gallery);
+    renderFooterContact(data);
     
     // Initialize form handling
     initBookingForm();
@@ -176,6 +177,36 @@ function renderGallery(galleryData) {
     // Duplicate images for seamless infinite scroll
     const imagesHtml = createGalleryItems();
     galleryTrack.innerHTML = imagesHtml + imagesHtml;
+}
+
+/* ===================================
+   Footer Contact Rendering
+   =================================== */
+
+function renderFooterContact(data) {
+    const container = document.getElementById('footer-contact-info');
+    if (!container) return;
+    
+    const biz = data.business || {};
+    const instaUrl = biz.instagram || data.instagramUrl || '#';
+    
+    let html = '';
+    
+    if (instaUrl && instaUrl !== '#') {
+        html += `<a href="${instaUrl}" class="contact-link" target="_blank" rel="noopener noreferrer">Instagram</a>`;
+    }
+    
+    if (biz.email) {
+        html += `<a href="mailto:${biz.email}" class="contact-link">${biz.email}</a>`;
+    }
+    
+    if (biz.phone) {
+        html += `<a href="tel:${biz.phone.replace(/[^+\d]/g, '')}" class="contact-link">${biz.phone}</a>`;
+    }
+    
+    if (html) {
+        container.innerHTML = html;
+    }
 }
 
 /* ===================================

@@ -1,88 +1,81 @@
-# Email to Client — Ready to Send
+# Email to Client — Update #2
 
 ---
 
-**Subject:** Lazy Coffee Co. Website — First Draft Ready for Review
+**Subject:** Lazy Coffee Co. Website — Latest Updates
 
 ---
 
 Hi there,
 
-Hope you're doing well!
-
-I just finished the first revision of the website and wanted to share it with you.
+Hope you're doing well! I've made a bunch of updates to the site since last time. Here's what's new:
 
 **Live Preview:** https://lazycoffeeco.vercel.app
 
 ---
 
-## What We Built
+## What's New Since Last Time
 
-### Customer Website
-- **Hero Section** — Brand intro with call-to-action buttons and Instagram link
-- **Feature Cards** — Specialty Coffee, Pop-Ups, Catering highlights
-- **Weekly Schedule** — Pop-up locations with smart map links (opens Apple Maps on iPhone, Google Maps on other devices)
-- **Catering Section** — Services overview and quote request button
-- **Photo Gallery** — Infinite scrolling marquee that links to Instagram
-- **Booking Form** — Complete inquiry form with validation
-- **Mobile Responsive** — Works beautifully on all devices
+### Animations & Polish
+- **Professional hero animations** — Smooth fade-in with blur effects when the page loads
+- **Feature card animations** — Staggered entrance after the hero text, feels premium
+- **Scroll animations** — Sections animate in as you scroll down the page
+- **Mobile-optimized** — All animations tuned specifically for mobile so nothing glitches
 
-### Owner Admin Portal
-- Manage your weekly schedule
-- Update gallery images
-- Edit customer testimonials
-- View and export form submissions
-- Change business settings
+### New Features
+- **"Leave a Review" section** — Customers can submit reviews directly on the site
+- **Review moderation system** — Reviews go to your admin portal for approval before appearing on the site. You can accept or decline each one
+- **Interactive photo gallery** — Swipe/drag to browse photos, auto-scrolls on its own
+- **Cloud sync** — All your admin changes sync in real time across all devices
 
----
+### Fixes
+- **Mobile responsiveness** — Fixed form fields, buttons, and schedule layout on smaller screens
+- **Gallery** — Fixed animation glitches, added Instagram photo integration
+- **Overall performance** — Smoother experience across the board
 
-## Design Highlights
-
-| Element | Choice |
-|---------|--------|
-| Colors | Sage green, cream, forest green |
-| Fonts | Playfair Display (headings), Inter (body) |
-| Style | Clean, minimal, premium feel |
-| Animations | Smooth scroll effects, hover states |
+### CRM Integration (Ready to Connect)
+- The site is fully wired up to send booking inquiries to your HoneyBook automatically
+- We just need one thing from you to turn it on (see below)
 
 ---
 
 ## What We Need From You
 
 **Required:**
-- Gallery photos (coffee, events, setup shots)
-- Real testimonials from past customers
+- Your **HoneyBook inquiry email address** — so we can connect booking form submissions directly to your HoneyBook pipeline (found in HoneyBook → Settings → Lead Capture → Contact Form)
+- Gallery photos (coffee, events, setup shots) — if you have updated ones
+- Real testimonials from past customers (or use the new review system to collect them!)
 - This week's pop-up schedule
-- Confirm your Instagram handle
 
 **Optional:**
 - Custom hero background image
-- Updated logo (if you have one)
-- CRM webhook URL (if using a CRM for leads)
+- Updated logo
 
 ---
 
-## Your Feedback
+## Your Admin Portal
 
-Please take some time to review the site and let me know:
+Reminder — you can manage everything yourself at:
 
-1. Any changes to colors or styling?
-2. Are all booking form fields correct?
-3. Any sections to add or remove?
-4. Content or text adjustments?
+**https://lazycoffeeco.vercel.app/admin.html**
+
+- **Schedule** — Update weekly pop-up locations
+- **Gallery** — Add/remove photos
+- **Testimonials** — Edit what customers see
+- **Reviews** *(NEW)* — Accept or decline customer-submitted reviews
+- **Submissions** — View and export booking inquiries
+- **Settings** — Update business info
 
 ---
 
-## Next Steps
+## Feedback
 
-As a next step, I'd like to start implementing the booking and scheduling functionality. When you have a moment, could you let me know:
+Please review the site and let me know:
+1. How do the new animations feel?
+2. Any content or text changes?
+3. Anything else you'd like added or tweaked?
 
-- **What booking/scheduling platform do you currently use?** (e.g., Calendly, Google Calendar, Square, Acuity, etc.)
-- **Do you use a CRM to collect customer information?** (e.g., HubSpot, Mailchimp, etc.) — or are you planning to use one?
-
-Once I have that information, I can integrate everything directly into the site so the experience is seamless for your customers.
-
-Take your time reviewing the site and feel free to send over any feedback or thoughts. I'm looking forward to refining this with you!
+Looking forward to hearing your thoughts!
 
 Best,  
 [Your Name]

@@ -92,7 +92,7 @@ const siteData = {
         tagline: "Premium coffee + ceremonial matcha pop-ups across South Florida.",
         instagram: "https://instagram.com/lazycoffeeco",
         email: "hello@lazycoffeeco.com",
-        phone: ""
+        phone: "(954)-401-2523"
     },
     
     // Pending Reviews (awaiting admin approval)

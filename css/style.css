@@ -1038,7 +1038,7 @@ ul {
 }
 
 .footer-links h4,
-.footer-social h4 {
+.footer-contact h4 {
     color: var(--cream);
     margin-bottom: var(--spacing-sm);
     font-size: 1rem;
@@ -1060,13 +1060,19 @@ ul {
     color: var(--white);
 }
 
-.social-link {
+#footer-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.contact-link {
     color: var(--sage-light);
     font-size: 0.9rem;
     transition: color var(--transition-normal) var(--ease-smooth);
 }
 
-.social-link:hover {
+.contact-link:hover {
     color: var(--white);
 }
 
