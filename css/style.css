@@ -1586,6 +1586,19 @@ ul {
    Mobile Animations (Pure CSS - No JS Required)
    =================================== */
 
+@keyframes mobileSlideUpBlur {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0px);
+    }
+}
+
 @keyframes mobileSlideUp {
     from {
         opacity: 0;
@@ -1597,47 +1610,42 @@ ul {
     }
 }
 
-@keyframes mobileFadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
 @media (max-width: 768px) {
-    /* Hero animations - staggered on page load */
+    /* Hero animations - staggered on page load with blur */
     [data-animate="hero"] {
-        animation: mobileSlideUp 0.7s ease-out forwards;
+        animation: mobileSlideUpBlur 1.2s ease-out forwards;
     }
     
     .hero-title[data-animate="hero"] {
-        animation-delay: 0.1s;
+        animation-delay: 0.2s;
         opacity: 0;
+        filter: blur(4px);
     }
     
     .hero-subtitle[data-animate="hero"] {
-        animation-delay: 0.25s;
+        animation-delay: 0.45s;
         opacity: 0;
+        filter: blur(4px);
     }
     
     .hero-buttons[data-animate="hero"] {
-        animation-delay: 0.4s;
+        animation-delay: 0.7s;
         opacity: 0;
+        filter: blur(4px);
     }
     
     .hero-instagram[data-animate="hero"] {
-        animation-delay: 0.55s;
+        animation-delay: 0.95s;
         opacity: 0;
+        filter: blur(4px);
     }
     
     /* Scroll-triggered animations via data-animate */
     [data-animate="fade-up"],
     [data-animate="words"] {
         opacity: 0;
-        transform: translateY(25px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        transform: translateY(30px);
+        transition: opacity 0.9s ease-out, transform 0.9s ease-out;
     }
     
     [data-animate="fade-up"].visible,
@@ -1649,8 +1657,8 @@ ul {
     /* Word spans inside word animations */
     [data-animate="words"] .word {
         opacity: 0;
-        transform: translateY(15px);
-        transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        transform: translateY(20px);
+        transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     }
     
     [data-animate="words"].visible .word {
