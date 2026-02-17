@@ -71,47 +71,32 @@
         // Inject animation CSS
         const style = document.createElement('style');
         style.id = 'lazy-animations';
-        const dur = isMobile ? '1s' : '1.2s';
-        const scrollDur = isMobile ? '0.8s' : '1s';
-        // Professional ease-out curve (ease-out-expo feel)
-        const easeOut = 'cubic-bezier(0.16, 1, 0.3, 1)';
-        
-        // Hero styles only for desktop - mobile uses CSS media query
-        const heroStyles = isMobile ? '' : `
-            @keyframes heroSlideUp {
-                0% { opacity: 0; transform: translateY(25px); filter: blur(2px); }
-                100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-            }
-            [data-animate="hero"] { opacity: 0; filter: blur(2px); }
-            [data-animate="hero"].animate {
-                animation: heroSlideUp ${dur} ${easeOut} forwards;
-            }
-        `;
-        
+        const dur = isMobile ? '0.8s' : '1s';
         style.textContent = `
-            ${heroStyles}
+            @keyframes heroSlideUp {
+                from { opacity: 0; transform: translateY(35px); filter: blur(4px); }
+                to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            }
+            [data-animate="hero"] { opacity: 0; filter: blur(4px); }
+            [data-animate="hero"].animate {
+                animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
             [data-animate="fade-up"] {
-                opacity: 0 !important;
-                transform: translateY(30px) !important;
-                filter: blur(2px);
-                transition: opacity ${scrollDur} ${easeOut},
-                            transform ${scrollDur} ${easeOut},
-                            filter ${scrollDur} ${easeOut} !important;
+                opacity: 0;
+                transform: translateY(40px);
+                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
-            [data-animate="fade-up"].visible { 
-                opacity: 1 !important; 
-                transform: translateY(0) !important; 
-                filter: blur(0); 
-            }
+            [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); }
             [data-animate="words"] { opacity: 1; }
             [data-animate="words"] .word {
                 display: inline-block;
                 opacity: 0;
-                transform: translateY(20px);
-                filter: blur(1px);
-                transition: opacity ${scrollDur} ${easeOut},
-                            transform ${scrollDur} ${easeOut},
-                            filter ${scrollDur} ${easeOut};
+                transform: translateY(25px);
+                filter: blur(2px);
+                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            filter ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
             [data-animate="words"].visible .word { opacity: 1; transform: translateY(0); filter: blur(0); }
         `;
@@ -128,10 +113,8 @@
         });
 
         // Set up scroll observer
-        // Desktop: trigger later (when element is more visible)
-        // Mobile: trigger earlier (as soon as element enters)
-        const threshold = isMobile ? 0.15 : 0.3;
-        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -20% 0px';
+        const threshold = isMobile ? 0.15 : 0.1;
+        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -5% 0px';
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -145,14 +128,12 @@
             observer.observe(el);
         });
 
-        // Hero animations - only use JS on desktop, CSS handles mobile
-        if (!isMobile) {
-            const heroDelay = 0.2;
-            const heroStagger = 0.18;
-            document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
-                setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
-            });
-        }
+        // Animate hero immediately with stagger
+        const heroDelay = isMobile ? 0.2 : 0.3;
+        const heroStagger = isMobile ? 0.2 : 0.25;
+        document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
+            setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
+        });
 
         console.log('Animations ready');
     }

@@ -428,8 +428,7 @@ ul {
     border: 1px solid var(--gray-light);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    transition: border-color var(--transition-normal) var(--ease-smooth),
-                box-shadow var(--transition-normal) var(--ease-smooth);
+    transition: all var(--transition-normal) var(--ease-smooth);
     will-change: transform, box-shadow;
 }
 
@@ -1588,15 +1587,15 @@ ul {
    =================================== */
 
 @keyframes mobileSlideUpBlur {
-    0% {
+    from {
         opacity: 0;
-        transform: translateY(20px);
-        filter: blur(2px);
+        transform: translateY(30px);
+        filter: blur(4px);
     }
-    100% {
+    to {
         opacity: 1;
         transform: translateY(0);
-        filter: blur(0);
+        filter: blur(0px);
     }
 }
 
@@ -1614,58 +1613,39 @@ ul {
 @media (max-width: 768px) {
     /* Hero animations - staggered on page load with blur */
     [data-animate="hero"] {
-        animation: mobileSlideUpBlur 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation: mobileSlideUpBlur 1.2s ease-out forwards;
     }
     
     .hero-title[data-animate="hero"] {
-        animation-delay: 0.1s;
+        animation-delay: 0.2s;
         opacity: 0;
-        filter: blur(2px);
+        filter: blur(4px);
     }
     
     .hero-subtitle[data-animate="hero"] {
-        animation-delay: 0.25s;
+        animation-delay: 0.45s;
         opacity: 0;
-        filter: blur(2px);
+        filter: blur(4px);
     }
     
     .hero-buttons[data-animate="hero"] {
-        animation-delay: 0.4s;
+        animation-delay: 0.7s;
         opacity: 0;
-        filter: blur(2px);
+        filter: blur(4px);
     }
     
     .hero-instagram[data-animate="hero"] {
-        animation-delay: 0.55s;
+        animation-delay: 0.95s;
         opacity: 0;
-        filter: blur(2px);
-    }
-    
-    /* Feature cards animate after hero text */
-    .feature-card[data-animate="hero"]:nth-child(1) {
-        animation-delay: 0.75s;
-        opacity: 0;
-        filter: blur(2px);
-    }
-    
-    .feature-card[data-animate="hero"]:nth-child(2) {
-        animation-delay: 0.9s;
-        opacity: 0;
-        filter: blur(2px);
-    }
-    
-    .feature-card[data-animate="hero"]:nth-child(3) {
-        animation-delay: 1.05s;
-        opacity: 0;
-        filter: blur(2px);
+        filter: blur(4px);
     }
     
     /* Scroll-triggered animations via data-animate */
     [data-animate="fade-up"],
     [data-animate="words"] {
         opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        transform: translateY(30px);
+        transition: opacity 0.9s ease-out, transform 0.9s ease-out;
     }
     
     [data-animate="fade-up"].visible,
