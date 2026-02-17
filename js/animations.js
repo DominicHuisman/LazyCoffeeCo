@@ -84,10 +84,12 @@
             [data-animate="fade-up"] {
                 opacity: 0;
                 transform: translateY(40px);
+                filter: blur(3px);
                 transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                            filter ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
-            [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); }
+            [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); filter: blur(0); }
             [data-animate="words"] { opacity: 1; }
             [data-animate="words"] .word {
                 display: inline-block;
@@ -128,6 +130,11 @@
 
         document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(el => {
             observer.observe(el);
+        });
+
+        // Add staggered delays to feature cards
+        document.querySelectorAll('.feature-card[data-animate="fade-up"]').forEach((card, i) => {
+            card.style.transitionDelay = `${i * 0.15}s`;
         });
 
         // Animate hero immediately with stagger
