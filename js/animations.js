@@ -14,9 +14,9 @@
     const CONFIG = {
         // Timing
         duration: {
-            fast: 0.4,
-            normal: 0.6,
-            slow: 0.8,
+            fast: 0.5,
+            normal: 0.7,
+            slow: 0.9,
             hero: 1.0
         },
         // Easing - smooth, elegant curves
@@ -26,16 +26,16 @@
             gentle: 'power1.out',
             luxury: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
         },
-        // Movement distances (reduced for mobile)
+        // Movement distances
         distance: {
-            desktop: 40,
-            mobile: 20
+            desktop: 50,
+            mobile: 30
         },
         // Stagger timing
         stagger: {
-            fast: 0.08,
-            normal: 0.12,
-            slow: 0.15
+            fast: 0.1,
+            normal: 0.15,
+            slow: 0.2
         }
     };
 
@@ -65,22 +65,26 @@
         // Register ScrollTrigger
         gsap.registerPlugin(ScrollTrigger);
 
-        // Set initial states
-        setInitialStates();
+        // Small delay to ensure DOM is ready
+        requestAnimationFrame(() => {
+            // Set initial states
+            setInitialStates();
 
-        // Run animations
-        animateHero();
-        animateNavbar();
-        animateFadeUp();
-        animateWordReveal();
-        
-        // Only run parallax on desktop
-        if (!isMobile) {
-            animateParallax();
-        }
-
-        // Initialize hover effects
-        initHoverEffects();
+            // Run animations
+            animateHero();
+            animateNavbar();
+            animateFadeUp();
+            animateWordReveal();
+            
+            // Only run parallax on desktop
+            if (!isMobile) {
+                animateParallax();
+                initHoverEffects();
+            }
+            
+            // Refresh ScrollTrigger after setup
+            ScrollTrigger.refresh();
+        });
     }
 
     // ===================================
@@ -92,7 +96,7 @@
         gsap.set('[data-animate="hero"]', {
             opacity: 0,
             y: 30,
-            filter: 'blur(4px)'
+            filter: isMobile ? 'none' : 'blur(4px)'
         });
 
         // Fade up elements
@@ -101,9 +105,9 @@
             y: distance
         });
 
-        // Word reveal titles (we'll split them later)
+        // Word reveal titles
         gsap.set('[data-animate="words"]', {
-            opacity: 1 // Keep visible, we animate the words
+            opacity: 1
         });
     }
 
@@ -128,7 +132,7 @@
         const heroElements = document.querySelectorAll('[data-animate="hero"]');
         if (!heroElements.length) return;
 
-        // Staggered entrance with blur-to-sharp
+        // Staggered entrance
         gsap.to(heroElements, {
             opacity: 1,
             y: 0,
@@ -136,7 +140,7 @@
             duration: CONFIG.duration.hero,
             stagger: 0.2,
             ease: CONFIG.ease.smooth,
-            delay: 0.3 // Small delay for page load
+            delay: 0.2
         });
     }
 
@@ -148,7 +152,6 @@
         const navbar = document.querySelector('.navbar');
         if (!navbar) return;
 
-        // Add scrolled class for CSS transitions
         ScrollTrigger.create({
             start: 'top -80',
             onUpdate: (self) => {
@@ -167,24 +170,28 @@
 
     function animateFadeUp() {
         const elements = document.querySelectorAll('[data-animate="fade-up"]');
+        if (!elements.length) return;
         
-        elements.forEach((el, index) => {
-            // Calculate stagger delay based on siblings
-            const siblings = el.parentElement.querySelectorAll('[data-animate="fade-up"]');
+        elements.forEach((el) => {
+            // Find sibling index for stagger
+            const parent = el.parentElement;
+            const siblings = parent.querySelectorAll('[data-animate="fade-up"]');
             const siblingIndex = Array.from(siblings).indexOf(el);
             const staggerDelay = siblingIndex * CONFIG.stagger.normal;
 
             gsap.to(el, {
                 scrollTrigger: {
                     trigger: el,
-                    start: 'top 85%',
-                    toggleActions: 'play none none none'
+                    start: isMobile ? 'top 90%' : 'top 85%',
+                    toggleActions: 'play none none none',
+                    once: true
                 },
                 opacity: 1,
                 y: 0,
-                duration: isMobile ? CONFIG.duration.fast : CONFIG.duration.normal,
+                duration: CONFIG.duration.normal,
                 delay: staggerDelay,
-                ease: CONFIG.ease.smooth
+                ease: CONFIG.ease.smooth,
+                clearProps: 'transform' // Clean up after animation
             });
         });
     }
@@ -195,11 +202,12 @@
 
     function animateWordReveal() {
         const titles = document.querySelectorAll('[data-animate="words"]');
+        if (!titles.length) return;
         
         titles.forEach(title => {
             // Split text into words
-            const text = title.textContent;
-            const words = text.split(' ');
+            const text = title.textContent.trim();
+            const words = text.split(/\s+/);
             
             // Clear and rebuild with spans
             title.innerHTML = words.map(word => 
@@ -214,21 +222,20 @@
             gsap.set(wordSpans, { 
                 display: 'inline-block',
                 opacity: 0,
-                y: 20,
-                filter: isMobile ? 'none' : 'blur(2px)'
+                y: 25
             });
 
             // Animate on scroll
             gsap.to(wordSpans, {
                 scrollTrigger: {
                     trigger: title,
-                    start: 'top 80%',
-                    toggleActions: 'play none none none'
+                    start: isMobile ? 'top 90%' : 'top 80%',
+                    toggleActions: 'play none none none',
+                    once: true
                 },
                 opacity: 1,
                 y: 0,
-                filter: 'blur(0px)',
-                duration: isMobile ? CONFIG.duration.fast : CONFIG.duration.normal,
+                duration: CONFIG.duration.fast,
                 stagger: CONFIG.stagger.fast,
                 ease: CONFIG.ease.smooth
             });
@@ -248,16 +255,16 @@
                     trigger: el.parentElement,
                     start: 'top top',
                     end: 'bottom top',
-                    scrub: 1 // Smooth scrubbing
+                    scrub: 1
                 },
-                y: '20%', // Move slower than scroll
+                y: '20%',
                 ease: 'none'
             });
         });
     }
 
     // ===================================
-    // Hover Effects (CSS Enhanced by JS)
+    // Hover Effects (Desktop Only)
     // ===================================
 
     function initHoverEffects() {
@@ -265,7 +272,6 @@
         const cards = document.querySelectorAll('.feature-card, .schedule-card');
         cards.forEach(card => {
             card.addEventListener('mouseenter', () => {
-                if (isMobile) return;
                 gsap.to(card, {
                     y: -4,
                     boxShadow: '0 12px 32px rgba(0, 0, 0, 0.12)',
@@ -274,7 +280,6 @@
                 });
             });
             card.addEventListener('mouseleave', () => {
-                if (isMobile) return;
                 gsap.to(card, {
                     y: 0,
                     boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
@@ -288,7 +293,6 @@
         const buttons = document.querySelectorAll('.btn');
         buttons.forEach(btn => {
             btn.addEventListener('mouseenter', () => {
-                if (isMobile) return;
                 gsap.to(btn, {
                     y: -2,
                     duration: 0.2,
@@ -296,7 +300,6 @@
                 });
             });
             btn.addEventListener('mouseleave', () => {
-                if (isMobile) return;
                 gsap.to(btn, {
                     y: 0,
                     duration: 0.2,
@@ -313,7 +316,8 @@
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
-        init();
+        // Small delay to ensure everything is painted
+        setTimeout(init, 50);
     }
 
 })();
