@@ -111,17 +111,16 @@
             rootMargin: '0px 0px -10% 0px'
         });
 
-        // Observe all animated elements
-        document.querySelectorAll('[data-animate]').forEach(el => {
+        // Observe all animated elements EXCEPT hero (hero animates immediately)
+        document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(el => {
             observer.observe(el);
         });
 
-        // Animate hero immediately
-        setTimeout(() => {
-            document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
-                setTimeout(() => el.classList.add('visible'), i * 150);
-            });
-        }, 200);
+        // Animate hero immediately on page load (don't use observer)
+        const heroElements = document.querySelectorAll('[data-animate="hero"]');
+        heroElements.forEach((el, i) => {
+            setTimeout(() => el.classList.add('visible'), 300 + (i * 150));
+        });
     }
 
     // ===================================
