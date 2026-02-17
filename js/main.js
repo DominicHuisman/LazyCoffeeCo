@@ -263,8 +263,24 @@ function initReviewForm() {
         data.submitted_at = new Date().toISOString();
         data.type = 'review';
         
-        // Save to localStorage
-        saveReview(data);
+        // Save to cloud as pending review
+        try {
+            const siteData = await getDataAsync();
+            if (!siteData.pendingReviews) {
+                siteData.pendingReviews = [];
+            }
+            siteData.pendingReviews.push({
+                id: Date.now(),
+                name: data.reviewer_name,
+                text: data.review_text,
+                submitted_at: data.submitted_at
+            });
+            await saveDataToCloud(siteData);
+        } catch (err) {
+            console.error('Error saving review to cloud:', err);
+            // Fallback to localStorage
+            saveReview(data);
+        }
         
         // Show success message
         form.style.display = 'none';

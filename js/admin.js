@@ -63,6 +63,7 @@ async function loadAllEditorsAsync() {
         
         renderScheduleEditor(data.schedule);
         renderGalleryEditor(data.gallery);
+        renderPendingReviews(data.pendingReviews);
         renderTestimonialsEditor(data.testimonials);
         loadSettings(data);
         renderSubmissions();
@@ -126,6 +127,7 @@ function loadAllEditors() {
     
     renderScheduleEditor(data.schedule);
     renderGalleryEditor(data.gallery);
+    renderPendingReviews(data.pendingReviews);
     renderTestimonialsEditor(data.testimonials);
     loadSettings(data);
     renderSubmissions();
@@ -357,6 +359,76 @@ function deleteTestimonial(index) {
     data.testimonials.splice(index, 1);
     saveData(data);
     renderTestimonialsEditor(data.testimonials);
+    showSaveIndicator();
+}
+
+/* ===================================
+   Pending Reviews (Moderation)
+   =================================== */
+
+function renderPendingReviews(pendingReviews) {
+    const container = document.getElementById('reviews-editor');
+    container.innerHTML = '';
+    
+    if (!pendingReviews || pendingReviews.length === 0) {
+        container.innerHTML = '<p class="no-submissions">No pending reviews. Reviews submitted by customers will appear here.</p>';
+        return;
+    }
+    
+    pendingReviews.forEach((review, index) => {
+        const card = document.createElement('div');
+        card.className = 'review-mod-card';
+        
+        const date = review.submitted_at ? new Date(review.submitted_at).toLocaleDateString() : 'Unknown date';
+        
+        card.innerHTML = `
+            <div class="review-mod-header">
+                <span class="review-mod-name">${escapeHtml(review.name)}</span>
+                <span class="review-mod-date">${date}</span>
+            </div>
+            <p class="review-mod-text">"${escapeHtml(review.text)}"</p>
+            <div class="review-mod-actions">
+                <button class="btn btn-accept" onclick="acceptReview(${index})">Accept</button>
+                <button class="btn btn-decline" onclick="declineReview(${index})">Decline</button>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+}
+
+function acceptReview(index) {
+    const data = getData();
+    if (!data.pendingReviews || !data.pendingReviews[index]) return;
+    
+    const review = data.pendingReviews[index];
+    
+    // Add to testimonials
+    if (!data.testimonials) {
+        data.testimonials = [];
+    }
+    data.testimonials.push(review.text);
+    
+    // Remove from pending
+    data.pendingReviews.splice(index, 1);
+    
+    saveData(data);
+    renderPendingReviews(data.pendingReviews);
+    renderTestimonialsEditor(data.testimonials);
+    showSaveIndicator();
+}
+
+function declineReview(index) {
+    if (!confirm('Decline this review? It will be permanently removed.')) return;
+    
+    const data = getData();
+    if (!data.pendingReviews || !data.pendingReviews[index]) return;
+    
+    // Remove from pending
+    data.pendingReviews.splice(index, 1);
+    
+    saveData(data);
+    renderPendingReviews(data.pendingReviews);
     showSaveIndicator();
 }
 

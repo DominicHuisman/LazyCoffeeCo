@@ -526,6 +526,80 @@
 }
 
 /* ===================================
+   Review Moderation Cards
+   =================================== */
+
+.review-mod-card {
+    background-color: var(--white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    border-left: 4px solid var(--sage-green);
+}
+
+.review-mod-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.review-mod-name {
+    font-weight: 600;
+    color: var(--forest-dark);
+}
+
+.review-mod-date {
+    font-size: 0.85rem;
+    color: var(--gray);
+}
+
+.review-mod-text {
+    font-style: italic;
+    color: var(--gray-dark);
+    margin-bottom: var(--spacing-md);
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.review-mod-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.btn-accept {
+    background-color: var(--sage-green);
+    color: var(--white);
+    border: none;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-accept:hover {
+    background-color: var(--sage-dark);
+}
+
+.btn-decline {
+    background-color: transparent;
+    color: #d32f2f;
+    border: 1px solid #d32f2f;
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-decline:hover {
+    background-color: #ffebee;
+}
+
+/* ===================================
    Buttons
    =================================== */
 

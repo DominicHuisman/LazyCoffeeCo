@@ -95,6 +95,9 @@ const siteData = {
         phone: ""
     },
     
+    // Pending Reviews (awaiting admin approval)
+    pendingReviews: [],
+
     // CRM Webhook URL (for form submissions)
     crmWebhookUrl: "",
     

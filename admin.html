@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Portal | Lazy Coffee Co.</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/admin.css?v=20260217v">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -47,6 +47,7 @@
         <nav class="admin-nav">
             <button class="admin-nav-item active" data-section="schedule">Schedule</button>
             <button class="admin-nav-item" data-section="gallery">Gallery</button>
+            <button class="admin-nav-item" data-section="reviews">Reviews</button>
             <button class="admin-nav-item" data-section="testimonials">Testimonials</button>
             <button class="admin-nav-item" data-section="settings">Settings</button>
             <button class="admin-nav-item" data-section="submissions">Submissions</button>
@@ -74,6 +75,17 @@
                 <p class="section-description">Add image URLs to display in the scrolling gallery. Images link to your Instagram.</p>
                 <div id="gallery-editor" class="editor-container gallery-grid-editor">
                     <!-- Gallery items will be rendered here -->
+                </div>
+            </section>
+
+            <!-- Reviews Moderation Section -->
+            <section id="section-reviews" class="admin-section">
+                <div class="section-header">
+                    <h2>Pending Reviews</h2>
+                </div>
+                <p class="section-description">Customer reviews submitted from the website. Accept to add to testimonials, or decline to remove.</p>
+                <div id="reviews-editor" class="editor-container">
+                    <!-- Pending reviews will be rendered here -->
                 </div>
             </section>
 
@@ -166,7 +178,7 @@
         </div>
     </div>
 
-    <script src="js/data.js?v=20260216b"></script>
-    <script src="js/admin.js?v=20260216"></script>
+    <script src="js/data.js?v=20260217v"></script>
+    <script src="js/admin.js?v=20260217v"></script>
 </body>
 </html>
