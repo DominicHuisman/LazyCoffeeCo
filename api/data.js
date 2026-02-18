@@ -1,7 +1,7 @@
 // Vercel Serverless Function - Proxies data sync to JSONBlob
 // This bypasses browser CORS restrictions
 
-const JSONBLOB_ID = '019c691d-ea42-75ab-add3-ac3702e7243b';
+const JSONBLOB_ID = '019c720a-79d3-7cfe-a616-de250eb93949';
 const JSONBLOB_URL = `https://jsonblob.com/api/jsonBlob/${JSONBLOB_ID}`;
 
 export default async function handler(req, res) {
