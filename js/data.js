@@ -1,12 +1,35 @@
 /* ===================================
    Lazy Coffee Co. - Site Data
-   Cloud-synced via Vercel API
+   Cloud-synced via Firebase Realtime DB
    =================================== */
 
-// Cloud storage endpoint (Vercel serverless function proxies to JSONBlob)
-const CLOUD_API_URL = '/api/data';
+// ——— Firebase Configuration ———
+// TODO: Replace with your own Firebase project config
+// 1. Go to https://console.firebase.google.com
+// 2. Create a new project (or use existing)
+// 3. Add a Web App
+// 4. Copy the config object below
+// 5. In Realtime Database → Rules, set:
+//    { "rules": { ".read": true, ".write": true } }
+//    (You can restrict write later once it's working)
 
-// Default data (fallback if cloud unavailable)
+const firebaseConfig = {
+    apiKey: "AIzaSyAwSmkDScm8umCzsIRQE__Akzv_xEU1D_o",
+    authDomain: "lazy-coffee-co.firebaseapp.com",
+    databaseURL: "https://lazy-coffee-co-default-rtdb.firebaseio.com",
+    projectId: "lazy-coffee-co",
+    storageBucket: "lazy-coffee-co.firebasestorage.app",
+    messagingSenderId: "338850573182",
+    appId: "1:338850573182:web:b5e51f3c1b3b2e74e0e12f",
+    measurementId: "G-FZHRTJMTR8"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const dataRef = db.ref('siteData');
+
+// Default data (used on first run / fallback)
 const siteData = {
     // Menu Categories
     menu: {
@@ -105,100 +128,82 @@ const siteData = {
     calendlyUrl: ""
 };
 
-// Cache for cloud data
+// In-memory cache
 let cachedData = null;
-let lastFetch = 0;
-const CACHE_DURATION = 5000; // 5 seconds cache
 
-// Function to save data to cloud
+// ——— Save data to Firebase ———
 async function saveDataToCloud(data) {
     try {
-        const response = await fetch(CLOUD_API_URL, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        });
-        
-        if (response.ok) {
-            cachedData = data;
-            lastFetch = Date.now();
-            // Also save to localStorage as backup
-            localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
-            return true;
-        }
-        return false;
+        await dataRef.set(data);
+        cachedData = JSON.parse(JSON.stringify(data));
+        // Also save to localStorage as backup
+        localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
+        return true;
     } catch (error) {
-        console.error('Error saving to cloud:', error);
+        console.error('Error saving to Firebase:', error);
         // Fall back to localStorage
         localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
         return false;
     }
 }
 
-// Function to load data from cloud
+// ——— Load data from Firebase (one-time read) ———
 async function loadDataFromCloud() {
-    // Use cache if fresh
-    if (cachedData && (Date.now() - lastFetch) < CACHE_DURATION) {
-        return cachedData;
-    }
-    
     try {
-        const response = await fetch(CLOUD_API_URL);
-        if (response.ok) {
-            const data = await response.json();
+        const snapshot = await dataRef.once('value');
+        const data = snapshot.val();
+        if (data) {
             cachedData = data;
-            lastFetch = Date.now();
-            // Update localStorage backup
             localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
             return data;
         }
     } catch (error) {
-        console.error('Error loading from cloud:', error);
+        console.error('Error loading from Firebase:', error);
     }
     
     // Fallback to localStorage
     const stored = localStorage.getItem('lazyCoffeeData');
     if (stored) {
-        return JSON.parse(stored);
+        try {
+            return JSON.parse(stored);
+        } catch (e) { /* ignore parse errors */ }
     }
     
     return siteData;
 }
 
-// Synchronous function for backward compatibility (uses cache/localStorage)
+// Synchronous getter (uses cache / localStorage / defaults)
 function getData() {
-    // Return cached data if available
     if (cachedData) {
         return cachedData;
     }
     
-    // Fall back to localStorage
     const stored = localStorage.getItem('lazyCoffeeData');
     if (stored) {
-        cachedData = JSON.parse(stored);
-        return cachedData;
+        try {
+            cachedData = JSON.parse(stored);
+            return cachedData;
+        } catch (e) { /* ignore */ }
     }
     
     return siteData;
 }
 
-// Async function to get fresh data from cloud
+// Async getter — fetches fresh from Firebase
 async function getDataAsync() {
     return await loadDataFromCloud();
 }
 
-// Save function (async, saves to cloud)
+// Save function (writes to Firebase + localStorage)
 function saveData(data) {
-    cachedData = data;
+    cachedData = JSON.parse(JSON.stringify(data));
     // Save to localStorage immediately for responsiveness
     localStorage.setItem('lazyCoffeeData', JSON.stringify(data));
-    // Then sync to cloud
+    // Then sync to Firebase
     saveDataToCloud(data);
 }
 
-// Function to update specific section
+// Update a specific section
 function updateSection(section, data) {
     const currentData = getData();
     currentData[section] = data;
@@ -206,11 +211,22 @@ function updateSection(section, data) {
     return currentData;
 }
 
-// Initialize: fetch cloud data on page load
+// ——— Initialize: load data on page load ———
+// If Firebase has no data yet, seed it with defaults
 (async function initData() {
     try {
-        await loadDataFromCloud();
+        const snapshot = await dataRef.once('value');
+        if (snapshot.val()) {
+            cachedData = snapshot.val();
+            localStorage.setItem('lazyCoffeeData', JSON.stringify(cachedData));
+        } else {
+            // First time — push defaults to Firebase
+            console.log('No Firebase data found, seeding defaults...');
+            await dataRef.set(siteData);
+            cachedData = siteData;
+            localStorage.setItem('lazyCoffeeData', JSON.stringify(siteData));
+        }
     } catch (e) {
-        console.log('Using local data');
+        console.log('Firebase unavailable, using local data');
     }
 })();

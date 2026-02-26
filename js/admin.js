@@ -1,7 +1,7 @@
 /* ===================================
    Lazy Coffee Co. - Admin JavaScript
    Handles admin portal functionality
-   Cloud-synced via JSONBlob
+   Cloud-synced via Firebase
    =================================== */
 
 // Default admin password (should be changed by owner)
@@ -72,10 +72,10 @@ async function loadAllEditorsAsync() {
         initAddButtons();
         initSettingsHandlers();
         
-        indicator.textContent = 'Loaded from cloud';
+        indicator.textContent = 'Loaded from Firebase';
         setTimeout(() => {
             indicator.classList.remove('show');
-            indicator.textContent = 'Saved to cloud ✓';
+            indicator.textContent = 'Saved to Firebase ✓';
         }, 1500);
     } catch (e) {
         console.error('Error loading cloud data:', e);
@@ -686,12 +686,12 @@ function escapeHtml(str) {
 
 function showSaveIndicator() {
     const indicator = document.getElementById('save-indicator');
-    indicator.textContent = 'Syncing to cloud...';
+    indicator.textContent = 'Syncing to Firebase...';
     indicator.classList.add('show');
     
     // After a short delay, show saved confirmation
     setTimeout(() => {
-        indicator.textContent = 'Saved to cloud ✓';
+        indicator.textContent = 'Saved to Firebase ✓';
         setTimeout(() => {
             indicator.classList.remove('show');
         }, 1500);
