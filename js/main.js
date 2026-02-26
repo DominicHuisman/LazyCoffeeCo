@@ -169,7 +169,7 @@ function renderGallery(galleryData) {
     const createGalleryItems = () => {
         return galleryData.map(image => `
             <div class="gallery-item">
-                <img src="${image.src}" alt="${image.alt || 'Lazy Coffee Co.'}" loading="lazy">
+                <img src="${image.src}" alt="${image.alt || 'Lazy Coffee Co.'}" loading="eager">
             </div>
         `).join('');
     };

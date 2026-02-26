@@ -408,6 +408,44 @@
 }
 
 /* ===================================
+   Gallery Upload
+   =================================== */
+
+.upload-input-hidden {
+    display: none;
+}
+
+.upload-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background-color: var(--sage-green);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.upload-btn:hover {
+    background-color: var(--sage-dark);
+    box-shadow: 0 2px 8px rgba(155, 176, 151, 0.4);
+}
+
+.upload-btn:active {
+    transform: scale(0.97);
+}
+
+.gallery-upload-row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+/* ===================================
    Settings Form
    =================================== */
 

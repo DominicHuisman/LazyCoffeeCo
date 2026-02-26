@@ -441,7 +441,7 @@ function renderGalleryEditor(galleryData) {
     container.innerHTML = '';
     
     if (!galleryData || galleryData.length === 0) {
-        container.innerHTML = '<p class="no-submissions">No gallery images yet. Click "Add Image" to add one.</p>';
+        container.innerHTML = '<p class="no-submissions">No gallery images yet. Click "Add Photo" to upload one.</p>';
         return;
     }
     
@@ -454,8 +454,14 @@ function renderGalleryEditor(galleryData) {
                 <img src="${escapeHtml(image.src)}" alt="${escapeHtml(image.alt || 'Gallery image')}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%23ddd%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2250%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22>No Image</text></svg>'">
             </div>
             <div class="gallery-inputs">
-                <input type="url" value="${escapeHtml(image.src)}" placeholder="Image URL (https://...)" onchange="updateGalleryImage(${index}, 'src', this.value)">
-                <input type="text" value="${escapeHtml(image.alt || '')}" placeholder="Alt text (optional)" onchange="updateGalleryImage(${index}, 'alt', this.value)">
+                <div class="gallery-upload-row">
+                    <label class="upload-btn" for="gallery-upload-${index}">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        Replace Photo
+                    </label>
+                    <input type="file" id="gallery-upload-${index}" class="upload-input-hidden" accept="image/*" onchange="uploadGalleryPhoto(${index}, this)">
+                </div>
+                <input type="text" value="${escapeHtml(image.alt || '')}" placeholder="Caption (optional)" onchange="updateGalleryImage(${index}, 'alt', this.value)">
             </div>
             <button class="icon-btn delete" onclick="deleteGalleryImage(${index})">×</button>
         `;
@@ -474,17 +480,110 @@ function updateGalleryImage(index, field, value) {
 }
 
 function addGalleryImage() {
-    const data = getData();
-    if (!data.gallery) {
-        data.gallery = [];
+    // Trigger a file picker instead of adding an empty URL card
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = (e) => uploadNewGalleryPhoto(e.target);
+    input.click();
+}
+
+// Upload a brand new photo to the gallery
+async function uploadNewGalleryPhoto(input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const indicator = document.getElementById('save-indicator');
+    indicator.textContent = 'Compressing photo...';
+    indicator.classList.add('show');
+    
+    try {
+        const dataURL = await compressImage(file, 800, 0.75);
+        
+        const data = getData();
+        if (!data.gallery) data.gallery = [];
+        data.gallery.push({
+            src: dataURL,
+            alt: 'Lazy Coffee Co.'
+        });
+        saveData(data);
+        renderGalleryEditor(data.gallery);
+        
+        indicator.textContent = 'Photo added ✓';
+        setTimeout(() => indicator.classList.remove('show'), 1500);
+    } catch (error) {
+        console.error('Upload error:', error);
+        indicator.textContent = 'Error processing photo';
+        setTimeout(() => indicator.classList.remove('show'), 3000);
     }
-    data.gallery.push({
-        src: '',
-        alt: 'Coffee photo'
+}
+
+// Replace an existing gallery photo
+async function uploadGalleryPhoto(index, input) {
+    const file = input.files[0];
+    if (!file) return;
+    
+    const indicator = document.getElementById('save-indicator');
+    indicator.textContent = 'Compressing photo...';
+    indicator.classList.add('show');
+    
+    try {
+        const dataURL = await compressImage(file, 800, 0.75);
+        
+        const data = getData();
+        data.gallery[index].src = dataURL;
+        saveData(data);
+        renderGalleryEditor(data.gallery);
+        
+        indicator.textContent = 'Photo updated ✓';
+        setTimeout(() => indicator.classList.remove('show'), 1500);
+    } catch (error) {
+        console.error('Upload error:', error);
+        indicator.textContent = 'Error processing photo';
+        setTimeout(() => indicator.classList.remove('show'), 3000);
+    }
+}
+
+// Compress and resize image to a Base64 data URL
+function compressImage(file, maxSize, quality) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                
+                // Resize if larger than maxSize
+                if (width > height) {
+                    if (width > maxSize) {
+                        height = Math.round((height * maxSize) / width);
+                        width = maxSize;
+                    }
+                } else {
+                    if (height > maxSize) {
+                        width = Math.round((width * maxSize) / height);
+                        height = maxSize;
+                    }
+                }
+                
+                canvas.width = width;
+                canvas.height = height;
+                
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                
+                // Export as compressed JPEG
+                const dataURL = canvas.toDataURL('image/jpeg', quality);
+                resolve(dataURL);
+            };
+            img.onerror = reject;
+            img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
     });
-    saveData(data);
-    renderGalleryEditor(data.gallery);
-    showSaveIndicator();
 }
 
 function deleteGalleryImage(index) {
