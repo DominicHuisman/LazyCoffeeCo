@@ -96,6 +96,10 @@
                             transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
             [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); }
+            /* Failsafe: force fade-up visible after 4s */
+            [data-animate="fade-up"]:not(.visible) {
+                animation: forceShow 0.5s ease 4s forwards;
+            }
             [data-animate="words"] { opacity: 1; }
             [data-animate="words"] .word {
                 display: inline-block;
@@ -107,6 +111,10 @@
                             filter ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
             [data-animate="words"].visible .word { opacity: 1; transform: translateY(0); filter: blur(0); }
+            /* Failsafe: force word elements visible after 4s */
+            [data-animate="words"]:not(.visible) .word {
+                animation: forceShow 0.5s ease 4s forwards;
+            }
         `;
         document.head.appendChild(style);
 
