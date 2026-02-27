@@ -1584,7 +1584,65 @@ ul {
 }
 
 /* ===================================
-   Animation Utility Classes
+   Scroll & Hero Animations (Pure CSS)
+   All elements are visible by default.
+   Animations enhance — they never hide.
    =================================== */
 
+/* Hero entrance — staggered fade-slide on page load */
+@keyframes heroEntrance {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
+.hero-title {
+    animation: heroEntrance 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+}
+
+.hero-subtitle {
+    animation: heroEntrance 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.4s both;
+}
+
+.hero-buttons {
+    animation: heroEntrance 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.6s both;
+}
+
+.hero-instagram {
+    animation: heroEntrance 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.8s both;
+}
+
+.feature-card:nth-child(1) {
+    animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.0s both;
+}
+.feature-card:nth-child(2) {
+    animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.15s both;
+}
+.feature-card:nth-child(3) {
+    animation: heroEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) 1.3s both;
+}
+
+/* Section content — fade up on scroll (controlled by JS adding .in-view) */
+@keyframes fadeUpIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title.in-view,
+.schedule-card.in-view,
+.catering-subtitle.in-view,
+.catering-features.in-view,
+.review-card.in-view,
+.booking-form.in-view,
+.review-subtitle.in-view {
+    animation: fadeUpIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+/* Feature card hover */
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+}
