@@ -401,21 +401,28 @@ function initGalleryAnimation() {
     const images = galleryTrack.querySelectorAll('img');
     if (images.length === 0) return;
     
-    // Wait for images to load so we can measure the track width
     let loaded = 0;
     const total = images.length;
     
     const start = () => {
-        // Measure one set of images (track has 2 copies)
-        const fullWidth = galleryTrack.scrollWidth;
-        const halfWidth = fullWidth / 2;
+        // Get the exact width of one set of items
+        // Track has 2 copies, so we measure the first half
+        const items = galleryTrack.querySelectorAll('.gallery-item');
+        const halfCount = items.length / 2;
+        const firstItem = items[0];
+        const lastItemOfFirstSet = items[halfCount - 1];
         
-        // Calculate duration based on width (slower = smoother)
-        // ~50px per second
-        const duration = halfWidth / 50;
+        // Distance from start of first item to end of last item in first set + one gap
+        const trackStyle = getComputedStyle(galleryTrack);
+        const gap = parseFloat(trackStyle.gap) || parseFloat(trackStyle.columnGap) || 32;
+        const oneSetWidth = lastItemOfFirstSet.offsetLeft + lastItemOfFirstSet.offsetWidth - firstItem.offsetLeft + gap;
         
-        // Apply CSS animation
-        galleryTrack.style.animation = `marquee ${duration}s linear infinite`;
+        // Duration: ~50px per second
+        const duration = oneSetWidth / 50;
+        
+        // Set the exact pixel distance as a CSS variable and use pixel-based keyframes
+        galleryTrack.style.setProperty('--scroll-distance', `-${oneSetWidth}px`);
+        galleryTrack.style.animation = `galleryScroll ${duration}s linear infinite`;
     };
     
     images.forEach(img => {
@@ -428,6 +435,5 @@ function initGalleryAnimation() {
         }
     });
     
-    // Fallback start after 3s
     setTimeout(() => { if (loaded < total) start(); }, 3000);
 }

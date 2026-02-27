@@ -781,6 +781,16 @@ ul {
     }
 }
 
+/* Pixel-perfect gallery scroll (set via JS) */
+@keyframes galleryScroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(var(--scroll-distance));
+    }
+}
+
 /* Gallery CTA */
 .gallery-cta {
     text-align: center;
