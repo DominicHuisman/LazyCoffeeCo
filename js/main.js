@@ -353,7 +353,6 @@ function saveReview(data) {
 function initMobileMenu() {
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.nav-menu');
-    const mobileCta = document.querySelector('.nav-cta-mobile');
     
     if (!toggle || !menu) return;
     
@@ -362,21 +361,13 @@ function initMobileMenu() {
         toggle.classList.toggle('active');
     });
     
-    // Close menu when clicking a link
+    // Close menu when clicking a link (including the CTA button)
     menu.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             menu.classList.remove('active');
             toggle.classList.remove('active');
         });
     });
-    
-    // Close menu when clicking mobile CTA
-    if (mobileCta) {
-        mobileCta.addEventListener('click', () => {
-            menu.classList.remove('active');
-            toggle.classList.remove('active');
-        });
-    }
 }
 
 /* ===================================

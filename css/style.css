@@ -323,8 +323,8 @@ ul {
     transform: rotate(-45deg) translate(5px, -5px);
 }
 
-/* Mobile-only Book Catering CTA */
-.nav-cta-mobile {
+/* Mobile-only Book Catering CTA inside nav menu */
+.nav-menu-cta {
     display: none;
 }
 
@@ -1158,27 +1158,23 @@ ul {
         display: flex;
     }
     
-    /* Mobile Book Catering CTA */
-    .nav-cta-mobile {
+    /* Mobile Book Catering CTA inside dropdown */
+    .nav-menu-cta {
         display: none;
-        text-align: center;
-        background-color: var(--sage-green);
-        color: var(--white);
-        padding: 14px 20px;
-        font-weight: 600;
-        font-size: 1rem;
-        border-radius: var(--radius-sm);
-        margin: 0 var(--spacing-md) var(--spacing-md);
     }
     
-    .nav-cta-mobile:hover {
-        background-color: var(--sage-dark);
-    }
-    
-    .nav-menu.active + .nav-cta-mobile,
-    .nav-menu.active ~ .nav-cta-mobile {
+    .nav-menu.active .nav-menu-cta {
         display: block;
-        animation: dropdownSlide 0.3s ease forwards;
+        padding-top: 8px;
+        border-bottom: none;
+    }
+    
+    .nav-menu-cta .btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 14px 20px;
+        font-size: 1rem;
     }
     
     .hero {
