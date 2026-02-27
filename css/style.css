@@ -186,7 +186,7 @@ ul {
    =================================== */
 
 .navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -220,7 +220,7 @@ ul {
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: 1.25rem 2rem;
     transition: padding var(--transition-normal) var(--ease-smooth);
 }
 
@@ -340,7 +340,7 @@ ul {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-xl);
+    padding: calc(var(--spacing-xl) + 80px) var(--spacing-md) var(--spacing-xl);
     background: linear-gradient(180deg, var(--sage-light) 0%, var(--cream) 100%);
     overflow: hidden;
 }
