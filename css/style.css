@@ -1685,76 +1685,34 @@ ul {
 
 @media (max-width: 768px) {
     /* Hero animations - staggered on page load with blur */
-    [data-animate="hero"] {
-        animation: mobileSlideUpBlur 1.2s ease-out forwards;
-    }
-    
     .hero-title[data-animate="hero"] {
-        animation-delay: 0.2s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 0.2s both;
     }
     
     .hero-subtitle[data-animate="hero"] {
-        animation-delay: 0.45s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 0.45s both;
     }
     
     .hero-buttons[data-animate="hero"] {
-        animation-delay: 0.7s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 0.7s both;
     }
     
     .hero-instagram[data-animate="hero"] {
-        animation-delay: 0.95s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 0.95s both;
     }
     
     /* Feature cards animate after hero text */
     .feature-card[data-animate="hero"]:nth-child(1) {
-        animation-delay: 1.2s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 1.2s both;
     }
     
     .feature-card[data-animate="hero"]:nth-child(2) {
-        animation-delay: 1.35s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 1.35s both;
     }
     
     .feature-card[data-animate="hero"]:nth-child(3) {
-        animation-delay: 1.5s;
-        opacity: 0;
-        filter: blur(4px);
+        animation: mobileSlideUpBlur 1.2s ease-out 1.5s both;
     }
     
-    /* Scroll-triggered animations via data-animate */
-    [data-animate="fade-up"],
-    [data-animate="words"] {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: opacity 0.9s ease-out, transform 0.9s ease-out;
-    }
-    
-    [data-animate="fade-up"].visible,
-    [data-animate="words"].visible {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    
-    /* Word spans inside word animations */
-    [data-animate="words"] .word {
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-    }
-    
-    [data-animate="words"].visible .word {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    /* Scroll-triggered animations handled by JS (no base opacity:0 needed) */
 }

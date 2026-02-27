@@ -77,28 +77,26 @@
                 from { opacity: 0; transform: translateY(35px); filter: blur(4px); }
                 to { opacity: 1; transform: translateY(0); filter: blur(0); }
             }
-            [data-animate="hero"] { opacity: 0; filter: blur(4px); }
             [data-animate="hero"].animate {
-                animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+                animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
             }
-            [data-animate="fade-up"] {
-                opacity: 0;
-                transform: translateY(40px);
-                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(40px); }
+                to { opacity: 1; transform: translateY(0); }
             }
-            [data-animate="fade-up"].visible { opacity: 1; transform: translateY(0); }
-            [data-animate="words"] { opacity: 1; }
+            [data-animate="fade-up"].visible {
+                animation: fadeUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            }
             [data-animate="words"] .word {
                 display: inline-block;
-                opacity: 0;
-                transform: translateY(25px);
-                filter: blur(2px);
-                transition: opacity ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                            transform ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94),
-                            filter ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94);
             }
-            [data-animate="words"].visible .word { opacity: 1; transform: translateY(0); filter: blur(0); }
+            @keyframes wordReveal {
+                from { opacity: 0; transform: translateY(25px); filter: blur(2px); }
+                to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            }
+            [data-animate="words"].visible .word {
+                animation: wordReveal ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            }
         `;
         document.head.appendChild(style);
 
@@ -108,7 +106,7 @@
             const text = title.textContent.trim();
             const words = text.split(/\s+/);
             title.innerHTML = words.map((word, i) => 
-                `<span class="word" style="transition-delay: ${i * wordStagger}s">${word}</span>`
+                `<span class="word" style="animation-delay: ${i * wordStagger}s">${word}</span>`
             ).join(' ');
         });
 
