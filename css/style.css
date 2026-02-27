@@ -187,7 +187,7 @@ ul {
 
 .navbar {
     position: fixed;
-    top: 65px;
+    top: 80px;
     left: 0;
     right: 0;
     background-color: var(--cream);
@@ -340,7 +340,7 @@ ul {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: calc(var(--spacing-xl) + 155px) var(--spacing-md) var(--spacing-xl);
+    padding: calc(var(--spacing-xl) + 170px) var(--spacing-md) var(--spacing-xl);
     background: linear-gradient(180deg, var(--sage-light) 0%, var(--cream) 100%);
     overflow: hidden;
 }
