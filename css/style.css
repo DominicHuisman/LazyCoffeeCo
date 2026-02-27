@@ -187,13 +187,13 @@ ul {
 
 .navbar {
     position: fixed;
-    top: env(safe-area-inset-top, 0px);
+    top: 50px;
     left: 0;
     right: 0;
     background-color: var(--cream);
     z-index: 1000;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    border-bottom: 1px solid var(--sage-green);
+    border-bottom: 2px solid var(--sage-green);
     transition: all var(--transition-normal) var(--ease-smooth);
 }
 
@@ -340,7 +340,7 @@ ul {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: calc(var(--spacing-xl) + 100px) var(--spacing-md) var(--spacing-xl);
+    padding: calc(var(--spacing-xl) + 140px) var(--spacing-md) var(--spacing-xl);
     background: linear-gradient(180deg, var(--sage-light) 0%, var(--cream) 100%);
     overflow: hidden;
 }
