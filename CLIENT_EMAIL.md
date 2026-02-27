@@ -1,50 +1,47 @@
-# Email to Client — Update #2
+# Email to Client — Update #3
 
 ---
 
-**Subject:** Lazy Coffee Co. Website — Latest Updates
+**Subject:** Lazy Coffee Co. Website — CRM & Notifications Live
 
 ---
 
-Hi there,
+Hi Bilal,
 
-Hope you're doing well! I've made a bunch of updates to the site since last time. Here's what's new:
+Good news — the booking form is now fully connected. Here's what's live:
 
 **Live Preview:** https://lazycoffeeco.vercel.app
 
 ---
 
-## What's New Since Last Time
+## What's New
 
-### Animations & Polish
-- **Professional hero animations** — Smooth fade-in with blur effects when the page loads
-- **Feature card animations** — Staggered entrance after the hero text, feels premium
-- **Scroll animations** — Sections animate in as you scroll down the page
-- **Mobile-optimized** — All animations tuned specifically for mobile so nothing glitches
+### Booking Form → Email + Text + Admin Portal
+When someone fills out the booking form on your site, three things happen:
+1. **Email** — Full inquiry details sent to `info@lazycoffeeco.com`
+2. **Text message** — Notification sent directly to your phone (954-401-2523)
+3. **Admin portal** — Submission saved and viewable at lazycoffeeco.vercel.app/admin.html → Submissions tab
 
-### New Features
-- **"Leave a Review" section** — Customers can submit reviews directly on the site
-- **Review moderation system** — Reviews go to your admin portal for approval before appearing on the site. You can accept or decline each one
-- **Interactive photo gallery** — Swipe/drag to browse photos, auto-scrolls on its own
-- **Cloud sync** — All your admin changes sync in real time across all devices
+You can also **export all submissions as a CSV** spreadsheet and **delete** old ones from the admin portal.
 
-### Fixes
-- **Mobile responsiveness** — Fixed form fields, buttons, and schedule layout on smaller screens
-- **Gallery** — Fixed animation glitches, added Instagram photo integration
-- **Overall performance** — Smoother experience across the board
+### HoneyBook Auto-Capture
+Since the form emails go to your inbox, HoneyBook can auto-detect them and create leads in your pipeline if you have Lead Capture turned on (Settings → Lead Capture in HoneyBook).
 
-### CRM Integration (Ready to Connect)
-- The site is fully wired up to send booking inquiries to your HoneyBook automatically
-- We just need one thing from you to turn it on (see below)
+### Social Media Sharing
+The site now shows a branded preview when shared on Facebook, Twitter, iMessage, etc. — sage green card with "LAZY COFFEE CO." branding.
+
+### Other Fixes
+- Mobile "Book Catering" button now works correctly in the nav menu
+- Gallery scroll/drag fixed on desktop
+- Favicon added (coffee cup icon in browser tab)
 
 ---
 
-## What We Need From You
+## What We Still Need From You
 
 **Required:**
-- Your **HoneyBook inquiry email address** — so we can connect booking form submissions directly to your HoneyBook pipeline (found in HoneyBook → Settings → Lead Capture → Contact Form)
-- Gallery photos (coffee, events, setup shots) — if you have updated ones
-- Real testimonials from past customers (or use the new review system to collect them!)
+- Gallery photos (coffee, events, setup shots) — current ones are expired Instagram links
+- Real testimonials from past customers
 - This week's pop-up schedule
 
 **Optional:**
@@ -55,27 +52,18 @@ Hope you're doing well! I've made a bunch of updates to the site since last time
 
 ## Your Admin Portal
 
-Reminder — you can manage everything yourself at:
-
 **https://lazycoffeeco.vercel.app/admin.html**
 
 - **Schedule** — Update weekly pop-up locations
-- **Gallery** — Add/remove photos
-- **Testimonials** — Edit what customers see
-- **Reviews** *(NEW)* — Accept or decline customer-submitted reviews
-- **Submissions** — View and export booking inquiries
+- **Gallery** — Upload photos directly (drag & drop)
+- **Testimonials** — Edit customer quotes
+- **Reviews** — Accept or decline customer-submitted reviews
+- **Submissions** *(UPDATED)* — View all booking inquiries, delete, export CSV
 - **Settings** — Update business info
 
 ---
 
-## Feedback
+Let me know if you have any questions!
 
-Please review the site and let me know:
-1. How do the new animations feel?
-2. Any content or text changes?
-3. Anything else you'd like added or tweaked?
-
-Looking forward to hearing your thoughts!
-
-Best,  
-[Your Name]
+Best,
+Dominic

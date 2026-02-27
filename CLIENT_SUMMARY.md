@@ -60,48 +60,51 @@ Please review and let us know:
 
 ---
 
-## CRM Integration — HoneyBook via Make.com (HTTP Method)
+## CRM Integration — EmailJS (Email + SMS)
 
-HoneyBook has no native Make.com module, so we use the email-to-lead method.
+Form submissions now go through **EmailJS** — no Make.com or Zapier needed.
 
-### What You Need From the Client
-- Their **HoneyBook inquiry email address** (found in HoneyBook → Settings → Lead Capture → Contact Form)
+### How It Works
+1. Customer fills out booking form on the site
+2. **Email** sent to `info@lazycoffeeco.com` with full inquiry details
+3. **Text message** sent to client's phone (954-401-2523) via AT&T gateway
+4. **Saved to Firebase** — viewable in admin portal under Submissions tab
 
-### Setup Steps
+### EmailJS Configuration
+- **Service ID:** `service_4ttgfi8`
+- **Template ID:** `template_2cssasc`
+- **Public Key:** `xu9T_32dzQRF9iX42`
+- **Free tier:** 200 emails/month
+- **Sends from:** lazycoffeeco@gmail.com
 
-**Step 1 — Get the HoneyBook inquiry email**
-- Client goes to HoneyBook: Settings → Lead Capture → Contact Form
-- Copies their unique inquiry email (e.g. `inquiries+abc123@honeybook.com`)
-- Emails sent to this address auto-create leads in their HoneyBook pipeline
+### Admin Portal — Submissions
+- All form submissions now stored in Firebase (not localStorage)
+- View all submissions in admin portal → Submissions tab
+- Each submission shows: name, email, phone, inquiry type, event date, guest count, location, message, timestamp
+- **Delete** individual submissions
+- **Export CSV** of all submissions
 
-**Step 2 — Create the Make.com Scenario**
-1. Module 1: **Webhooks → Custom Webhook** (trigger)
-   - Click "Add" to create a new webhook
-   - Copy the generated URL
-2. Module 2: **Email → Send an Email** (or Gmail/SMTP module)
-   - **To:** Client's HoneyBook inquiry email from Step 1
-   - **Subject:** `New Inquiry from {{name}}`
-   - **Body:** Map the form fields:
-     ```
-     Name: {{name}}
-     Email: {{email}}
-     Phone: {{phone}}
-     Event Date: {{date}}
-     Event Type: {{eventType}}
-     Guests: {{guests}}
-     Message: {{message}}
-     Submitted: {{submitted_at}}
-     ```
+---
 
-**Step 3 — Paste webhook URL in admin portal**
-- Go to https://lazycoffeeco.vercel.app/admin.html
-- Settings → CRM Webhook URL field
-- Paste the Make.com webhook URL → Save
+## Other Updates (Feb 27, 2026)
 
-**Step 4 — Test**
-- Submit a test booking on the website
-- Check Make.com to confirm the scenario ran
-- Check HoneyBook to see the new lead appear
+### Social Sharing (OG Tags)
+- Added Open Graph image (1200x630) for social media previews
+- Site now shows branded preview when shared on Facebook, Twitter, iMessage, etc.
+- Custom image with sage green branding, "LAZY COFFEE CO." title, and CTA
+
+### Mobile CTA Fix
+- "Book Catering" button now properly visible in mobile hamburger menu
+- Moved inside nav menu structure so it renders correctly on all devices
+
+### Gallery Scroll Fix
+- Fixed issue where gallery couldn't be dragged/scrolled on desktop
+- Changed gallery track from `<a>` tag to `<div>` (link was intercepting drag events)
+- Instagram link still accessible via "Follow @lazycoffeeco" button below gallery
+
+### Favicon
+- Added PNG and SVG favicons (coffee cup icon with sage green theme)
+- Shows in browser tabs and bookmarks
 
 ---
 

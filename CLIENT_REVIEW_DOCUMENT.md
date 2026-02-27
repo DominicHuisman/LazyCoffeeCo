@@ -150,8 +150,9 @@ We have developed a complete, mobile-responsive website for **Lazy Coffee Co.**,
   - Message (textarea)
 - Form validation built-in
 - Success message after submission
-- Submissions saved to localStorage
-- Optional CRM webhook integration
+- **EmailJS integration** — sends email to `info@lazycoffeeco.com` + SMS to client's phone
+- **Firebase storage** — all submissions saved to cloud database, viewable in admin portal
+- HoneyBook auto-capture compatible (emails trigger HoneyBook lead creation)
 
 ### 4.8 Footer
 - Brand name and tagline
@@ -210,10 +211,12 @@ We have developed a complete, mobile-responsive website for **Lazy Coffee Co.**,
 - Change admin password
 
 #### 5.5 Form Submissions
-- View all booking inquiries
-- Details: Name, contact info, event details, message
+- View all booking inquiries (stored in Firebase cloud database)
+- Details: Name, contact info, event details, message, timestamp
+- Delete individual submissions
 - Export to CSV functionality
-- Date-sorted display
+- Sorted by date (newest first)
+- Synced across all devices in real time
 
 ### Admin Features
 - Auto-save with visual confirmation
@@ -235,7 +238,9 @@ We have developed a complete, mobile-responsive website for **Lazy Coffee Co.**,
 | Icons | Custom SVG |
 | Hosting | Vercel (auto-deploys from GitHub) |
 | Version Control | Git/GitHub |
-| Data Storage | localStorage |
+| Data Storage | Firebase Realtime Database (cloud-synced) |
+| Form Notifications | EmailJS (email + SMS) |
+| Social Sharing | Open Graph meta tags with branded image |
 
 ### Performance Features
 - Lazy loading for gallery images
@@ -341,5 +346,21 @@ Please don't hesitate to reach out with any questions, feedback, or change reque
 
 ---
 
-**Document Version:** 1.0  
-**Last Updated:** January 30, 2026
+**Document Version:** 2.0  
+**Last Updated:** February 27, 2026
+
+---
+
+## Changelog
+
+### v2.0 — February 27, 2026
+- **EmailJS Integration** — Form submissions now email `info@lazycoffeeco.com` and text client's phone (954-401-2523) via AT&T SMS gateway. Free tier: 200 emails/month.
+- **Firebase Form Submissions** — All bookings saved to Firebase cloud database. Viewable, deletable, and exportable in admin portal → Submissions tab.
+- **Open Graph Tags** — Added branded 1200x630 social preview image. Site shows professional preview when shared on social media or iMessage.
+- **Mobile CTA Fix** — "Book Catering" button now appears correctly in mobile hamburger menu.
+- **Gallery Scroll Fix** — Gallery track changed from `<a>` to `<div>` to prevent link interference with drag/scroll behavior.
+- **Favicon** — Added PNG and SVG favicons (sage green coffee cup).
+- **HoneyBook Compatibility** — EmailJS sends to client's email, which HoneyBook's Lead Capture can auto-detect and create leads from.
+
+### v1.0 — January 30, 2026
+- Initial website build and delivery
