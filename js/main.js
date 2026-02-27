@@ -227,8 +227,14 @@ function initBookingForm() {
     
     if (!form) return;
     
-    // Initialize EmailJS
-    emailjs.init('xu9T_32dzQRF9iX42');
+    // Initialize EmailJS (wrapped in try/catch in case SDK hasn't loaded)
+    try {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init('xu9T_32dzQRF9iX42');
+        }
+    } catch (e) {
+        console.warn('EmailJS SDK not available:', e);
+    }
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -241,16 +247,18 @@ function initBookingForm() {
         
         try {
             // Send via EmailJS (emails to client + SMS via carrier gateway)
-            await emailjs.send('service_4ttgfi8', 'template_2cssasc', {
-                name: data.name,
-                email: data.email,
-                phone: data.phone,
-                inquiry_type: data.inquiry_type || 'General',
-                event_date: data.event_date,
-                guest_count: data.guest_count,
-                location: data.location,
-                message: data.message || 'No additional details'
-            });
+            if (typeof emailjs !== 'undefined') {
+                await emailjs.send('service_4ttgfi8', 'template_2cssasc', {
+                    name: data.name,
+                    email: data.email,
+                    phone: data.phone,
+                    inquiry_type: data.inquiry_type || 'General',
+                    event_date: data.event_date,
+                    guest_count: data.guest_count,
+                    location: data.location,
+                    message: data.message || 'No additional details'
+                });
+            }
             
             // Save to Firebase for admin portal
             saveFormSubmission(data);
