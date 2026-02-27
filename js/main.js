@@ -184,7 +184,7 @@ function renderGallery(galleryData) {
     
     // Triple images for seamless infinite scroll (no gaps when wrapping)
     const imagesHtml = createGalleryItems();
-    galleryTrack.innerHTML = imagesHtml + imagesHtml + imagesHtml;
+    galleryTrack.innerHTML = imagesHtml + imagesHtml;
 }
 
 /* ===================================
@@ -396,203 +396,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 function initGalleryAnimation() {
     const galleryTrack = document.getElementById('gallery-track');
-    const galleryMarquee = document.getElementById('gallery-marquee');
     if (!galleryTrack) return;
     
-    // Wait for all gallery images to load before starting animation
     const images = galleryTrack.querySelectorAll('img');
     if (images.length === 0) return;
     
-    let loadedCount = 0;
-    const totalImages = images.length;
+    // Wait for images to load so we can measure the track width
+    let loaded = 0;
+    const total = images.length;
     
-    const onAllImagesReady = () => {
-        startGalleryScroll(galleryTrack, galleryMarquee);
+    const start = () => {
+        // Measure one set of images (track has 2 copies)
+        const fullWidth = galleryTrack.scrollWidth;
+        const halfWidth = fullWidth / 2;
+        
+        // Calculate duration based on width (slower = smoother)
+        // ~50px per second
+        const duration = halfWidth / 50;
+        
+        // Apply CSS animation
+        galleryTrack.style.animation = `marquee ${duration}s linear infinite`;
     };
     
     images.forEach(img => {
-        if (img.complete && img.naturalWidth > 0) {
-            loadedCount++;
-            if (loadedCount >= totalImages) onAllImagesReady();
+        if (img.complete) {
+            loaded++;
+            if (loaded >= total) start();
         } else {
-            img.addEventListener('load', () => {
-                loadedCount++;
-                if (loadedCount >= totalImages) onAllImagesReady();
-            });
-            img.addEventListener('error', () => {
-                loadedCount++;
-                if (loadedCount >= totalImages) onAllImagesReady();
-            });
+            img.addEventListener('load', () => { loaded++; if (loaded >= total) start(); });
+            img.addEventListener('error', () => { loaded++; if (loaded >= total) start(); });
         }
     });
     
-    // Fallback: start after 3 seconds even if images haven't loaded
-    setTimeout(() => {
-        if (loadedCount < totalImages) onAllImagesReady();
-    }, 3000);
-}
-
-function startGalleryScroll(galleryTrack, galleryMarquee) {
-    // Configuration
-    const SPEED = 0.5; // px per frame
-    const MOMENTUM_FRICTION = 0.95;
-    const RESUME_DELAY = 1000;
-    const TAP_THRESHOLD = 8;
-    
-    // Track is tripled: [set1][set2][set3]
-    // We scroll within set2's range and wrap seamlessly
-    let oneSetWidth = galleryTrack.scrollWidth / 3;
-    
-    // Start at the beginning of the second set
-    let pos = -oneSetWidth;
-    let velocity = 0;
-    let isDragging = false;
-    let isTap = true;
-    let isPaused = false;
-    let startX = 0;
-    let startY = 0;
-    let lastX = 0;
-    let lastTime = 0;
-    let dragStartPos = 0;
-    let animId = null;
-    let resumeTimer = null;
-    let pointerId = null;
-    
-    const setPos = (x) => {
-        galleryTrack.style.transform = `translate3d(${x}px, 0, 0)`;
-    };
-    
-    // Keep position within the middle set's range
-    // When we scroll past set2 into set3, jump back to set1→set2 boundary
-    // When we scroll back past set1, jump forward to set2→set3 boundary
-    const wrap = () => {
-        if (oneSetWidth <= 0) return;
-        // Scrolled too far left (past set2 into set3)
-        if (pos <= -oneSetWidth * 2) {
-            pos += oneSetWidth;
-        }
-        // Scrolled too far right (past set2 into set1)
-        if (pos > 0) {
-            pos -= oneSetWidth;
-        }
-    };
-    
-    // Animation loop
-    const tick = () => {
-        if (!isDragging) {
-            if (Math.abs(velocity) > 0.3) {
-                pos += velocity;
-                velocity *= MOMENTUM_FRICTION;
-            } else if (!isPaused) {
-                pos -= SPEED;
-                velocity = 0;
-            }
-        }
-        
-        wrap();
-        setPos(pos);
-        animId = requestAnimationFrame(tick);
-    };
-    
-    const pause = () => {
-        isPaused = true;
-        clearTimeout(resumeTimer);
-        resumeTimer = setTimeout(() => {
-            isPaused = false;
-            galleryMarquee?.classList.remove('gallery-paused');
-        }, RESUME_DELAY);
-    };
-    
-    // --- Pointer Events ---
-    galleryTrack.addEventListener('pointerdown', (e) => {
-        if (e.button !== 0) return;
-        isDragging = true;
-        isTap = true;
-        pointerId = e.pointerId;
-        startX = lastX = e.clientX;
-        startY = e.clientY;
-        lastTime = Date.now();
-        dragStartPos = pos;
-        velocity = 0;
-        isPaused = true;
-        clearTimeout(resumeTimer);
-        galleryTrack.classList.add('is-dragging');
-        galleryMarquee?.classList.add('gallery-paused');
-        e.preventDefault();
-    });
-    
-    document.addEventListener('pointermove', (e) => {
-        if (!isDragging || e.pointerId !== pointerId) return;
-        
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
-        const now = Date.now();
-        const dt = Math.max(now - lastTime, 1);
-        
-        // Let go if user is scrolling vertically
-        if (isTap && Math.abs(dy) > Math.abs(dx) * 2 && Math.abs(dy) > 10) {
-            isDragging = false;
-            galleryTrack.classList.remove('is-dragging');
-            isPaused = false;
-            return;
-        }
-        
-        if (Math.abs(dx) > TAP_THRESHOLD) isTap = false;
-        
-        velocity = (e.clientX - lastX) / dt * 16;
-        lastX = e.clientX;
-        lastTime = now;
-        
-        pos = dragStartPos + dx;
-        wrap();
-        setPos(pos);
-    });
-    
-    document.addEventListener('pointerup', (e) => {
-        if (!isDragging || e.pointerId !== pointerId) return;
-        isDragging = false;
-        pointerId = null;
-        galleryTrack.classList.remove('is-dragging');
-        if (!isTap) {
-            velocity *= 1.2;
-            pause();
-        } else {
-            isPaused = false;
-            galleryMarquee?.classList.remove('gallery-paused');
-        }
-    });
-    
-    document.addEventListener('pointercancel', (e) => {
-        if (isDragging && e.pointerId === pointerId) {
-            isDragging = false;
-            pointerId = null;
-            galleryTrack.classList.remove('is-dragging');
-            pause();
-        }
-    });
-    
-    galleryTrack.addEventListener('click', (e) => {
-        if (!isTap) { e.preventDefault(); e.stopPropagation(); }
-    }, true);
-    
-    galleryTrack.addEventListener('dragstart', (e) => e.preventDefault());
-    
-    // Recalculate on resize
-    const recalc = () => { oneSetWidth = galleryTrack.scrollWidth / 3; };
-    if (window.ResizeObserver) {
-        new ResizeObserver(recalc).observe(galleryTrack);
-    }
-    window.addEventListener('resize', recalc);
-    
-    // Pause when tab hidden
-    document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'visible') {
-            if (!animId) animId = requestAnimationFrame(tick);
-        } else {
-            if (animId) { cancelAnimationFrame(animId); animId = null; }
-        }
-    });
-    
-    // Start
-    animId = requestAnimationFrame(tick);
+    // Fallback start after 3s
+    setTimeout(() => { if (loaded < total) start(); }, 3000);
 }
