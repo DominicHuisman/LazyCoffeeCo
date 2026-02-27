@@ -25,15 +25,13 @@
     <meta name="twitter:description" content="Premium coffee + ceremonial matcha pop-ups across South Florida.">
     <meta name="twitter:image" content="https://lazycoffeeco.vercel.app/images/og-image.png">
     <meta name="theme-color" content="#9BB097">
-    <link rel="stylesheet" href="css/style.css?v=20260227h">
+    <link rel="stylesheet" href="css/style.css?v=20260227i">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Force scroll to top immediately -->
     <script>history.scrollRestoration='manual';window.scrollTo(0,0);</script>
-    <!-- GSAP for animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
 </head>
 <body>
     <!-- Navigation -->
@@ -61,13 +59,13 @@
     <header class="hero">
         <div class="hero-bg" data-parallax></div>
         <div class="hero-content">
-            <h1 class="hero-title" data-animate="hero">LAZY COFFEE CO.</h1>
-            <p class="hero-subtitle" data-animate="hero">Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
-            <div class="hero-buttons" data-animate="hero">
+            <h1 class="hero-title">LAZY COFFEE CO.</h1>
+            <p class="hero-subtitle">Premium coffee + ceremonial matcha pop-ups across South Florida.</p>
+            <div class="hero-buttons">
                 <a href="#schedule" class="btn btn-primary">View Schedule</a>
                 <a href="#booking" class="btn btn-secondary">Book Catering</a>
             </div>
-            <p class="hero-instagram" data-animate="hero">Follow us on <a href="https://instagram.com/lazycoffeeco" target="_blank" rel="noopener" class="instagram-link">Instagram</a> for daily locations & specials.</p>
+            <p class="hero-instagram">Follow us on <a href="https://instagram.com/lazycoffeeco" target="_blank" rel="noopener" class="instagram-link">Instagram</a> for daily locations & specials.</p>
         </div>
     </header>
 
@@ -75,15 +73,15 @@
     <section class="features">
         <div class="container">
             <div class="features-grid">
-                <div class="feature-card" data-animate="hero">
+                <div class="feature-card">
                     <h3>Specialty Coffee + Matcha</h3>
                     <p>Small-batch, quality ingredients</p>
                 </div>
-                <div class="feature-card" data-animate="hero">
+                <div class="feature-card">
                     <h3>Weekly Pop-Ups</h3>
                     <p>Markets, gyms & events</p>
                 </div>
-                <div class="feature-card" data-animate="hero">
+                <div class="feature-card">
                     <h3>Event & Catering Services</h3>
                     <p>Weddings · Corporate · Parties</p>
                 </div>
@@ -94,7 +92,7 @@
     <!-- Schedule Section -->
     <section id="schedule" class="schedule-section">
         <div class="container">
-            <div class="schedule-card" data-animate="fade-up">
+            <div class="schedule-card">
                 <h2 class="schedule-title">This Week's Schedule</h2>
                 <div class="schedule-list" id="schedule-list">
                     <!-- Skeleton loading state -->
@@ -111,9 +109,9 @@
     <!-- Catering Section -->
     <section id="catering" class="catering-section">
         <div class="container">
-            <h2 class="section-title" data-animate="words">Catering + Events</h2>
-            <p class="catering-subtitle" data-animate="fade-up">Craft Coffee & Matcha for Your Next Event</p>
-            <div class="catering-features" data-animate="fade-up">
+            <h2 class="section-title">Catering + Events</h2>
+            <p class="catering-subtitle">Craft Coffee & Matcha for Your Next Event</p>
+            <div class="catering-features">
                 <ul class="catering-list">
                     <li>Full Service Espresso Bar</li>
                     <li>Custom Drink Menu</li>
@@ -124,14 +122,14 @@
                     <li>Perfect for <strong>Weddings · Parties · Offices</strong></li>
                 </ul>
             </div>
-            <a href="#booking" class="btn btn-primary" data-animate="fade-up">Request a Quote</a>
+            <a href="#booking" class="btn btn-primary">Request a Quote</a>
         </div>
     </section>
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials-section">
         <div class="container">
-            <h2 class="section-title" data-animate="words">As Seen Around South Florida</h2>
+            <h2 class="section-title">As Seen Around South Florida</h2>
             <div class="testimonials-quotes">
                 <!-- Skeleton loading state -->
                 <div class="skeleton-placeholder" style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
@@ -162,9 +160,9 @@
     <!-- Leave a Review Section -->
     <section id="review" class="review-section">
         <div class="container">
-            <h2 class="section-title" data-animate="words">Leave a Review</h2>
-            <p class="review-subtitle" data-animate="fade-up">Had a great experience? We'd love to hear from you!</p>
-            <div class="review-card" data-animate="fade-up">
+            <h2 class="section-title">Leave a Review</h2>
+            <p class="review-subtitle">Had a great experience? We'd love to hear from you!</p>
+            <div class="review-card">
                 <form class="review-form" id="review-form">
                     <div class="form-group">
                         <input type="text" name="reviewer_name" placeholder="Your Name" required>
@@ -182,8 +180,8 @@
     <!-- Booking Form Section -->
     <section id="booking" class="booking-section">
         <div class="container">
-            <h2 class="section-title" data-animate="words">Book Lazy Coffee Co.</h2>
-            <form class="booking-form" id="booking-form" data-animate="fade-up">
+            <h2 class="section-title">Book Lazy Coffee Co.</h2>
+            <form class="booking-form" id="booking-form">
                 <div class="form-group">
                     <input type="text" name="name" placeholder="Name" required>
                 </div>
@@ -259,7 +257,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
     <script src="js/data.js?v=20260227b"></script>
-    <script src="js/main.js?v=20260227i"></script>
-    <script src="js/animations.js?v=20260227d" defer></script>
+    <script src="js/main.js?v=20260227j"></script>
+    <script src="js/animations.js?v=20260227e" defer></script>
 </body>
 </html>
