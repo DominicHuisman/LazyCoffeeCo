@@ -1,392 +1,83 @@
 /* ===================================
    Lazy Coffee Co. - Scroll Animations
-   GSAP + ScrollTrigger Implementation
-   "Quiet Confidence" - Subtle, purposeful motion
+   Hero entrance is handled by pure CSS.
+   This JS handles: word splitting, scroll
+   observer for sections, navbar scroll effect.
    =================================== */
 
 (function() {
     'use strict';
 
-    // ===================================
-    // Configuration & Detection
-    // ===================================
-    
-    const CONFIG = {
-        // Timing
-        duration: {
-            fast: 0.6,
-            normal: 0.9,
-            slow: 1.2,
-            hero: 1.4
-        },
-        // Easing - smooth, elegant curves
-        ease: {
-            smooth: 'power2.out',
-            smoothInOut: 'power2.inOut',
-            gentle: 'power1.out',
-            luxury: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-        },
-        // Movement distances (reduced for mobile)
-        distance: {
-            desktop: 50,
-            mobile: 30
-        },
-        // Stagger timing
-        stagger: {
-            fast: 0.12,
-            normal: 0.18,
-            slow: 0.25
-        }
-    };
-
-    // Device & preference detection
-    const isMobile = window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const distance = isMobile ? CONFIG.distance.mobile : CONFIG.distance.desktop;
-
-    // ===================================
-    // Initialize
-    // ===================================
+    var isMobile = window.matchMedia('(max-width: 768px)').matches || 'ontouchstart' in window;
+    var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function init() {
-        // Respect user preferences
         if (prefersReducedMotion) {
             showAllElements();
             return;
         }
 
-        // Use unified CSS + IntersectionObserver for all devices
-        // This is more reliable than GSAP on some browsers
-        initUnifiedAnimations();
-    }
-
-    // ===================================
-    // Unified Animations (CSS + IntersectionObserver)
-    // Works reliably on both mobile and desktop
-    // ===================================
-
-    function initUnifiedAnimations() {
-        console.log('Animations initializing...', isMobile ? 'mobile' : 'desktop');
-        
-        // Inject animation CSS
-        const style = document.createElement('style');
-        style.id = 'lazy-animations';
-        const dur = isMobile ? '0.8s' : '1s';
-        style.textContent = `
-            @keyframes heroSlideUp {
-                from { opacity: 0; transform: translateY(35px); filter: blur(4px); }
-                to { opacity: 1; transform: translateY(0); filter: blur(0); }
-            }
-            [data-animate="hero"].animate {
-                animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-            }
-            @keyframes fadeUp {
-                from { opacity: 0; transform: translateY(40px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            [data-animate="fade-up"].visible {
-                animation: fadeUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-            }
-            [data-animate="words"] .word {
-                display: inline-block;
-            }
-            @keyframes wordReveal {
-                from { opacity: 0; transform: translateY(25px); filter: blur(2px); }
-                to { opacity: 1; transform: translateY(0); filter: blur(0); }
-            }
-            [data-animate="words"].visible .word {
-                animation: wordReveal ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Split words for word animations
-        const wordStagger = isMobile ? 0.08 : 0.1;
-        document.querySelectorAll('[data-animate="words"]').forEach(title => {
-            const text = title.textContent.trim();
-            const words = text.split(/\s+/);
-            title.innerHTML = words.map((word, i) => 
-                `<span class="word" style="animation-delay: ${i * wordStagger}s">${word}</span>`
-            ).join(' ');
+        // Split section titles into individual word spans for stagger effect
+        var wordStagger = isMobile ? 0.08 : 0.1;
+        document.querySelectorAll('[data-animate="words"]').forEach(function(title) {
+            var text = title.textContent.trim();
+            var words = text.split(/\s+/);
+            title.innerHTML = words.map(function(word, i) {
+                return '<span class="word" style="transition-delay: ' + (i * wordStagger) + 's">' + word + '</span>';
+            }).join(' ');
         });
 
-        // Set up scroll observer
-        const threshold = isMobile ? 0.15 : 0.1;
-        const rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -5% 0px';
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold, rootMargin });
+        // Scroll observer — adds .visible class when elements enter viewport
+        if ('IntersectionObserver' in window) {
+            var threshold = isMobile ? 0.15 : 0.1;
+            var rootMargin = isMobile ? '0px 0px -10% 0px' : '0px 0px -5% 0px';
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: threshold, rootMargin: rootMargin });
 
-        document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Animate hero immediately with stagger (skip feature cards on mobile)
-        const heroDelay = isMobile ? 0.2 : 0.3;
-        const heroStagger = isMobile ? 0.2 : 0.25;
-        document.querySelectorAll('[data-animate="hero"]').forEach((el, i) => {
-            if (isMobile && el.classList.contains('feature-card')) {
-                // On mobile, treat feature cards as scroll-triggered fade-up
-                el.removeAttribute('data-animate');
-                // Clear any conflicting styles
-                el.style.cssText = '';
-                // Re-assign as fade-up so CSS picks it up
-                el.setAttribute('data-animate', 'fade-up');
+            document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(function(el) {
                 observer.observe(el);
-            } else {
-                setTimeout(() => el.classList.add('animate'), (heroDelay + i * heroStagger) * 1000);
-            }
-        });
+            });
+        } else {
+            // Fallback: show everything
+            showAllElements();
+        }
 
-        console.log('Animations ready');
+        // Navbar scroll effect
+        var navbar = document.querySelector('.navbar');
+        if (navbar) {
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 80) {
+                    navbar.classList.add('navbar-scrolled');
+                } else {
+                    navbar.classList.remove('navbar-scrolled');
+                }
+            }, { passive: true });
+        }
     }
-
-    // ===================================
-    // Initial States (Hidden)
-    // ===================================
-
-    function setInitialStates() {
-        // Hero elements
-        gsap.set('[data-animate="hero"]', {
-            opacity: 0,
-            y: 30,
-            filter: 'blur(4px)'
-        });
-
-        // Fade up elements
-        gsap.set('[data-animate="fade-up"]', {
-            opacity: 0,
-            y: distance
-        });
-
-        // Word reveal titles (we'll split them later)
-        gsap.set('[data-animate="words"]', {
-            opacity: 1 // Keep visible, we animate the words
-        });
-    }
-
-    // ===================================
-    // Show All (Reduced Motion Fallback)
-    // ===================================
 
     function showAllElements() {
-        const allAnimated = document.querySelectorAll('[data-animate]');
-        allAnimated.forEach(el => {
+        document.querySelectorAll('[data-animate]').forEach(function(el) {
             el.style.opacity = '1';
             el.style.transform = 'none';
             el.style.filter = 'none';
+            el.classList.add('visible');
         });
-        
-        // Also show word spans
-        const wordSpans = document.querySelectorAll('.word');
-        wordSpans.forEach(span => {
+        document.querySelectorAll('.word').forEach(function(span) {
             span.style.opacity = '1';
             span.style.transform = 'none';
             span.style.filter = 'none';
         });
     }
 
-    // ===================================
-    // Hero Section Animation
-    // ===================================
-
-    function animateHero() {
-        const heroElements = document.querySelectorAll('[data-animate="hero"]');
-        if (!heroElements.length) return;
-
-        // Staggered entrance with blur-to-sharp
-        gsap.to(heroElements, {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: CONFIG.duration.hero,
-            stagger: 0.2,
-            ease: CONFIG.ease.smooth,
-            delay: 0.3 // Small delay for page load
-        });
-    }
-
-    // ===================================
-    // Navbar Scroll Behavior
-    // ===================================
-
-    function animateNavbar() {
-        const navbar = document.querySelector('.navbar');
-        if (!navbar) return;
-
-        // Add scrolled class for CSS transitions
-        ScrollTrigger.create({
-            start: 'top -80',
-            onUpdate: (self) => {
-                if (self.direction === 1 && self.scroll() > 80) {
-                    navbar.classList.add('navbar-scrolled');
-                } else if (self.scroll() <= 80) {
-                    navbar.classList.remove('navbar-scrolled');
-                }
-            }
-        });
-    }
-
-    // ===================================
-    // Fade Up Animation (Scroll Triggered)
-    // ===================================
-
-    function animateFadeUp() {
-        const elements = document.querySelectorAll('[data-animate="fade-up"]');
-        
-        elements.forEach((el, index) => {
-            // Calculate stagger delay based on siblings
-            const siblings = el.parentElement.querySelectorAll('[data-animate="fade-up"]');
-            const siblingIndex = Array.from(siblings).indexOf(el);
-            const staggerDelay = siblingIndex * CONFIG.stagger.normal;
-
-            gsap.to(el, {
-                scrollTrigger: {
-                    trigger: el,
-                    start: 'top 95%',
-                    end: 'bottom 20%',
-                    toggleActions: 'play none none none'
-                },
-                opacity: 1,
-                y: 0,
-                duration: CONFIG.duration.normal,
-                delay: staggerDelay,
-                ease: CONFIG.ease.smooth
-            });
-        });
-    }
-
-    // ===================================
-    // Word-Level Reveal Animation
-    // ===================================
-
-    function animateWordReveal() {
-        const titles = document.querySelectorAll('[data-animate="words"]');
-        
-        titles.forEach(title => {
-            // Split text into words
-            const text = title.textContent;
-            const words = text.split(' ');
-            
-            // Clear and rebuild with spans
-            title.innerHTML = words.map(word => 
-                `<span class="word-wrap"><span class="word">${word}</span></span>`
-            ).join(' ');
-
-            // Style the word wrappers
-            const wordWraps = title.querySelectorAll('.word-wrap');
-            const wordSpans = title.querySelectorAll('.word');
-
-            gsap.set(wordWraps, { overflow: 'hidden', display: 'inline-block' });
-            gsap.set(wordSpans, { 
-                display: 'inline-block',
-                opacity: 0,
-                y: 20,
-                filter: 'blur(2px)'
-            });
-
-            // Animate on scroll
-            gsap.to(wordSpans, {
-                scrollTrigger: {
-                    trigger: title,
-                    start: 'top 95%',
-                    end: 'bottom 20%',
-                    toggleActions: 'play none none none'
-                },
-                opacity: 1,
-                y: 0,
-                filter: 'blur(0px)',
-                duration: CONFIG.duration.normal,
-                stagger: CONFIG.stagger.fast,
-                ease: CONFIG.ease.smooth
-            });
-        });
-    }
-
-    // ===================================
-    // Parallax Effect (Desktop Only)
-    // ===================================
-
-    function animateParallax() {
-        const parallaxElements = document.querySelectorAll('[data-parallax]');
-        
-        parallaxElements.forEach(el => {
-            gsap.to(el, {
-                scrollTrigger: {
-                    trigger: el.parentElement,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 1 // Smooth scrubbing
-                },
-                y: '20%', // Move slower than scroll
-                ease: 'none'
-            });
-        });
-    }
-
-    // ===================================
-    // Hover Effects (CSS Enhanced by JS)
-    // ===================================
-
-    function initHoverEffects() {
-        // Feature cards - lift and shadow
-        const cards = document.querySelectorAll('.feature-card, .schedule-card');
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                if (isMobile) return;
-                gsap.to(card, {
-                    y: -4,
-                    boxShadow: '0 12px 32px rgba(0, 0, 0, 0.12)',
-                    duration: 0.3,
-                    ease: CONFIG.ease.smooth
-                });
-            });
-            card.addEventListener('mouseleave', () => {
-                if (isMobile) return;
-                gsap.to(card, {
-                    y: 0,
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                    duration: 0.3,
-                    ease: CONFIG.ease.smooth
-                });
-            });
-        });
-
-        // Buttons - subtle lift
-        const buttons = document.querySelectorAll('.btn');
-        buttons.forEach(btn => {
-            btn.addEventListener('mouseenter', () => {
-                if (isMobile) return;
-                gsap.to(btn, {
-                    y: -2,
-                    duration: 0.2,
-                    ease: CONFIG.ease.gentle
-                });
-            });
-            btn.addEventListener('mouseleave', () => {
-                if (isMobile) return;
-                gsap.to(btn, {
-                    y: 0,
-                    duration: 0.2,
-                    ease: CONFIG.ease.gentle
-                });
-            });
-        });
-    }
-
-    // ===================================
-    // Run on DOM Ready
-    // ===================================
-
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
-        // Small delay to ensure page is fully painted
         setTimeout(init, 50);
     }
 
