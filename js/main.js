@@ -227,6 +227,9 @@ function initBookingForm() {
     
     if (!form) return;
     
+    // Initialize EmailJS
+    emailjs.init('xu9T_32dzQRF9iX42');
+    
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -237,23 +240,16 @@ function initBookingForm() {
         data.submitted_at = new Date().toISOString();
         
         try {
-            // Send via Web3Forms (emails directly to client)
-            const web3Response = await fetch('https://api.web3forms.com/submit', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    access_key: 'YOUR_WEB3FORMS_KEY',
-                    subject: `New Booking Inquiry — ${data.inquiry_type || 'General'}`,
-                    from_name: 'Lazy Coffee Co. Website',
-                    name: data.name,
-                    email: data.email,
-                    phone: data.phone,
-                    inquiry_type: data.inquiry_type,
-                    event_date: data.event_date,
-                    guest_count: data.guest_count,
-                    location: data.location,
-                    message: data.message || 'No additional details'
-                })
+            // Send via EmailJS (emails to client + SMS via carrier gateway)
+            await emailjs.send('service_4ttgfi8', 'template_2cssasc', {
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                inquiry_type: data.inquiry_type || 'General',
+                event_date: data.event_date,
+                guest_count: data.guest_count,
+                location: data.location,
+                message: data.message || 'No additional details'
             });
             
             // Also save to localStorage as backup
