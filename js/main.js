@@ -182,9 +182,9 @@ function renderGallery(galleryData) {
         `).join('');
     };
     
-    // Duplicate images for seamless infinite scroll
+    // Triple images for seamless infinite scroll (no gaps when wrapping)
     const imagesHtml = createGalleryItems();
-    galleryTrack.innerHTML = imagesHtml + imagesHtml;
+    galleryTrack.innerHTML = imagesHtml + imagesHtml + imagesHtml;
 }
 
 /* ===================================
@@ -439,11 +439,12 @@ function startGalleryScroll(galleryTrack, galleryMarquee) {
     const RESUME_DELAY = 1000;
     const TAP_THRESHOLD = 8;
     
-    // Calculate the width of exactly one set of images (half the track)
-    let halfWidth = galleryTrack.scrollWidth / 2;
+    // Track is tripled: [set1][set2][set3]
+    // We scroll within set2's range and wrap seamlessly
+    let oneSetWidth = galleryTrack.scrollWidth / 3;
     
-    // State — use direct position (no easing lag) for seamless wrapping
-    let pos = 0;
+    // Start at the beginning of the second set
+    let pos = -oneSetWidth;
     let velocity = 0;
     let isDragging = false;
     let isTap = true;
@@ -456,17 +457,24 @@ function startGalleryScroll(galleryTrack, galleryMarquee) {
     let animId = null;
     let resumeTimer = null;
     let pointerId = null;
-    let started = false;
     
     const setPos = (x) => {
         galleryTrack.style.transform = `translate3d(${x}px, 0, 0)`;
     };
     
-    // Seamless wrap — always keep position in range [0, -halfWidth)
+    // Keep position within the middle set's range
+    // When we scroll past set2 into set3, jump back to set1→set2 boundary
+    // When we scroll back past set1, jump forward to set2→set3 boundary
     const wrap = () => {
-        if (halfWidth <= 0) return;
-        while (pos <= -halfWidth) pos += halfWidth;
-        while (pos > 0) pos -= halfWidth;
+        if (oneSetWidth <= 0) return;
+        // Scrolled too far left (past set2 into set3)
+        if (pos <= -oneSetWidth * 2) {
+            pos += oneSetWidth;
+        }
+        // Scrolled too far right (past set2 into set1)
+        if (pos > 0) {
+            pos -= oneSetWidth;
+        }
     };
     
     // Animation loop
@@ -570,7 +578,7 @@ function startGalleryScroll(galleryTrack, galleryMarquee) {
     galleryTrack.addEventListener('dragstart', (e) => e.preventDefault());
     
     // Recalculate on resize
-    const recalc = () => { halfWidth = galleryTrack.scrollWidth / 2; };
+    const recalc = () => { oneSetWidth = galleryTrack.scrollWidth / 3; };
     if (window.ResizeObserver) {
         new ResizeObserver(recalc).observe(galleryTrack);
     }
