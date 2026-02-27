@@ -66,6 +66,7 @@
     // ===================================
 
     function initUnifiedAnimations() {
+        try {
         console.log('Animations initializing...', isMobile ? 'mobile' : 'desktop');
         
         // Inject animation CSS
@@ -77,9 +78,16 @@
                 from { opacity: 0; transform: translateY(35px); filter: blur(4px); }
                 to { opacity: 1; transform: translateY(0); filter: blur(0); }
             }
+            @keyframes forceShow {
+                to { opacity: 1; transform: none; filter: none; }
+            }
             [data-animate="hero"] { opacity: 0; filter: blur(4px); }
             [data-animate="hero"].animate {
                 animation: heroSlideUp ${dur} cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            }
+            /* Failsafe: if .animate never gets added, force visible after 3s */
+            [data-animate="hero"]:not(.animate) {
+                animation: forceShow 0.5s ease 3s forwards;
             }
             [data-animate="fade-up"] {
                 opacity: 0;
@@ -146,6 +154,11 @@
         });
 
         console.log('Animations ready');
+        } catch (error) {
+            console.error('Animation error:', error);
+            // Force show all elements if animation setup fails
+            showAllElements();
+        }
     }
 
     // ===================================
