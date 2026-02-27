@@ -85,6 +85,10 @@ function renderSchedule(scheduleData) {
     const scheduleList = document.getElementById('schedule-list');
     if (!scheduleList || !scheduleData) return;
     
+    // Remove skeleton placeholders
+    const skeletons = scheduleList.querySelectorAll('.skeleton-placeholder');
+    skeletons.forEach(s => s.remove());
+    
     scheduleList.innerHTML = '';
     
     if (scheduleData.length === 0) {
@@ -132,6 +136,10 @@ function renderSchedule(scheduleData) {
 function renderTestimonials(testimonials) {
     const quotesContainer = document.querySelector('.testimonials-quotes');
     if (!quotesContainer || !testimonials) return;
+    
+    // Remove skeleton placeholders
+    const skeletons = quotesContainer.querySelectorAll('.skeleton-placeholder');
+    skeletons.forEach(s => s.remove());
     
     quotesContainer.innerHTML = '';
     
@@ -228,20 +236,25 @@ function initBookingForm() {
         // Add timestamp
         data.submitted_at = new Date().toISOString();
         
-        // Get CRM webhook URL from site data
-        const siteConfig = getData();
-        
         try {
-            // If webhook URL is configured, send data
-            if (siteConfig.crmWebhookUrl) {
-                await fetch(siteConfig.crmWebhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-            }
+            // Send via Web3Forms (emails directly to client)
+            const web3Response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    access_key: 'YOUR_WEB3FORMS_KEY',
+                    subject: `New Booking Inquiry — ${data.inquiry_type || 'General'}`,
+                    from_name: 'Lazy Coffee Co. Website',
+                    name: data.name,
+                    email: data.email,
+                    phone: data.phone,
+                    inquiry_type: data.inquiry_type,
+                    event_date: data.event_date,
+                    guest_count: data.guest_count,
+                    location: data.location,
+                    message: data.message || 'No additional details'
+                })
+            });
             
             // Also save to localStorage as backup
             saveFormSubmission(data);
@@ -340,6 +353,7 @@ function saveReview(data) {
 function initMobileMenu() {
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('.nav-menu');
+    const mobileCta = document.querySelector('.nav-cta-mobile');
     
     if (!toggle || !menu) return;
     
@@ -355,6 +369,14 @@ function initMobileMenu() {
             toggle.classList.remove('active');
         });
     });
+    
+    // Close menu when clicking mobile CTA
+    if (mobileCta) {
+        mobileCta.addEventListener('click', () => {
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+        });
+    }
 }
 
 /* ===================================

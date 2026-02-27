@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lazy Coffee Co. | Premium Coffee & Matcha Pop-Ups</title>
     <meta name="description" content="Premium coffee + ceremonial matcha pop-ups across South Florida. Book catering for weddings, parties, and corporate events.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Lazy Coffee Co. | Premium Coffee & Matcha Pop-Ups">
+    <meta property="og:description" content="Premium coffee + ceremonial matcha pop-ups across South Florida. Book catering for weddings, parties, and corporate events.">
+    <meta property="og:url" content="https://lazycoffeeco.vercel.app">
+    <meta property="og:site_name" content="Lazy Coffee Co.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Lazy Coffee Co.">
+    <meta name="twitter:description" content="Premium coffee + ceremonial matcha pop-ups across South Florida.">
+    <meta name="theme-color" content="#9BB097">
     <link rel="stylesheet" href="css/style.css?v=20260217w">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +46,8 @@
                 <span></span>
             </button>
         </div>
+        <!-- Mobile-only CTA (shown inside mobile menu) -->
+        <a href="#booking" class="nav-cta-mobile">Book Catering</a>
     </nav>
 
     <!-- Hero Section -->
@@ -74,7 +90,12 @@
             <div class="schedule-card" data-animate="fade-up">
                 <h2 class="schedule-title">This Week's Schedule</h2>
                 <div class="schedule-list" id="schedule-list">
-                    <!-- Schedule items will be loaded dynamically -->
+                    <!-- Skeleton loading state -->
+                    <div class="skeleton-placeholder">
+                        <div class="skeleton skeleton-block"></div>
+                        <div class="skeleton skeleton-block"></div>
+                        <div class="skeleton skeleton-block"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -105,9 +126,12 @@
         <div class="container">
             <h2 class="section-title" data-animate="words">As Seen Around South Florida</h2>
             <div class="testimonials-quotes">
-                <p class="quote" data-animate="fade-up">"Best matcha in town!"</p>
-                <p class="quote" data-animate="fade-up">"Amazing service, our guests loved it!"</p>
-                <p class="quote" data-animate="fade-up">"Perfect for any special event!"</p>
+                <!-- Skeleton loading state -->
+                <div class="skeleton-placeholder" style="display:flex; gap:2rem; justify-content:center; flex-wrap:wrap;">
+                    <div class="skeleton skeleton-line" style="width:180px;"></div>
+                    <div class="skeleton skeleton-line" style="width:220px;"></div>
+                    <div class="skeleton skeleton-line" style="width:160px;"></div>
+                </div>
             </div>
         </div>
         <!-- Gallery Marquee - Full Width -->
