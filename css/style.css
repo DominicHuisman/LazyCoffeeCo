@@ -63,6 +63,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* Force scroll to top on page load */
@@ -185,15 +186,13 @@ ul {
    =================================== */
 
 .navbar {
-    position: -webkit-sticky;
-    position: sticky;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     background-color: var(--cream);
     z-index: 1000;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
-    border-bottom: 2px solid var(--sage-green);
+    box-shadow: var(--shadow-sm);
     transition: all var(--transition-normal) var(--ease-smooth);
 }
 
@@ -220,7 +219,7 @@ ul {
     justify-content: space-between;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1.25rem 2rem;
+    padding: 1rem 2rem;
     transition: padding var(--transition-normal) var(--ease-smooth);
 }
 
@@ -340,7 +339,7 @@ ul {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: var(--spacing-xl) var(--spacing-md) var(--spacing-xl);
+    padding: calc(var(--spacing-xl) + 60px) var(--spacing-md) var(--spacing-xl);
     background: linear-gradient(180deg, var(--sage-light) 0%, var(--cream) 100%);
     overflow: hidden;
 }
