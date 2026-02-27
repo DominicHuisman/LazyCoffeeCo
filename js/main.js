@@ -252,7 +252,7 @@ function initBookingForm() {
                 message: data.message || 'No additional details'
             });
             
-            // Also save to localStorage as backup
+            // Save to Firebase for admin portal
             saveFormSubmission(data);
             
             // Show success message
@@ -268,7 +268,7 @@ function initBookingForm() {
             
         } catch (error) {
             console.error('Form submission error:', error);
-            // Still save locally even if webhook fails
+            // Still save to Firebase even if email fails
             saveFormSubmission(data);
             alert('Thank you! Your request has been received.');
             form.reset();
@@ -278,9 +278,11 @@ function initBookingForm() {
 
 // Save form submissions to localStorage
 function saveFormSubmission(data) {
-    const submissions = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
-    submissions.push(data);
-    localStorage.setItem('formSubmissions', JSON.stringify(submissions));
+    // Save to Firebase so it appears in admin portal
+    const submissionsRef = firebase.database().ref('formSubmissions');
+    submissionsRef.push(data).catch(err => {
+        console.error('Error saving submission to Firebase:', err);
+    });
 }
 
 /* ===================================

@@ -557,6 +557,23 @@
     color: var(--gray-dark);
 }
 
+.btn-delete-sub {
+    margin-top: var(--spacing-sm);
+    padding: 0.4rem 1rem;
+    background: transparent;
+    color: #c0392b;
+    border: 1px solid #c0392b;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.2s;
+}
+
+.btn-delete-sub:hover {
+    background: #c0392b;
+    color: white;
+}
+
 .no-submissions {
     text-align: center;
     padding: var(--spacing-lg);

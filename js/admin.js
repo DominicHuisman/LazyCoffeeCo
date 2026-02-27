@@ -664,100 +664,136 @@ function initSettingsHandlers() {
    Submissions
    =================================== */
 
-function renderSubmissions() {
+async function renderSubmissions() {
     const container = document.getElementById('submissions-list');
-    const submissions = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
+    container.innerHTML = '<p class="no-submissions">Loading submissions...</p>';
     
-    if (submissions.length === 0) {
-        container.innerHTML = '<p class="no-submissions">No form submissions yet.</p>';
-        return;
+    try {
+        const snapshot = await firebase.database().ref('formSubmissions').once('value');
+        const data = snapshot.val();
+        
+        if (!data) {
+            container.innerHTML = '<p class="no-submissions">No form submissions yet.</p>';
+            return;
+        }
+        
+        // Convert Firebase object to array and sort newest first
+        const submissions = Object.entries(data).map(([key, val]) => ({ ...val, _key: key }));
+        submissions.sort((a, b) => new Date(b.submitted_at || 0) - new Date(a.submitted_at || 0));
+        
+        container.innerHTML = '';
+        
+        submissions.forEach(sub => {
+            const card = document.createElement('div');
+            card.className = 'submission-card';
+            
+            const date = sub.submitted_at ? new Date(sub.submitted_at).toLocaleDateString() : 'Unknown date';
+            const time = sub.submitted_at ? new Date(sub.submitted_at).toLocaleTimeString() : '';
+            
+            card.innerHTML = `
+                <div class="submission-header">
+                    <span class="submission-name">${escapeHtml(sub.name || 'Unknown')}</span>
+                    <span class="submission-date">${date} ${time}</span>
+                </div>
+                <div class="submission-details">
+                    <div class="submission-field">
+                        <label>Email</label>
+                        <span>${escapeHtml(sub.email || '-')}</span>
+                    </div>
+                    <div class="submission-field">
+                        <label>Phone</label>
+                        <span>${escapeHtml(sub.phone || '-')}</span>
+                    </div>
+                    <div class="submission-field">
+                        <label>Inquiry Type</label>
+                        <span>${escapeHtml(sub.inquiry_type || '-')}</span>
+                    </div>
+                    <div class="submission-field">
+                        <label>Event Date</label>
+                        <span>${escapeHtml(sub.event_date || '-')}</span>
+                    </div>
+                    <div class="submission-field">
+                        <label>Guest Count</label>
+                        <span>${escapeHtml(sub.guest_count || '-')}</span>
+                    </div>
+                    <div class="submission-field">
+                        <label>Location</label>
+                        <span>${escapeHtml(sub.location || '-')}</span>
+                    </div>
+                </div>
+                ${sub.message ? `<div class="submission-field" style="margin-top: 1rem;"><label>Message</label><span>${escapeHtml(sub.message)}</span></div>` : ''}
+                <button class="btn btn-delete-sub" onclick="deleteSubmission('${sub._key}')">Delete</button>
+            `;
+            
+            container.appendChild(card);
+        });
+        
+    } catch (error) {
+        console.error('Error loading submissions:', error);
+        container.innerHTML = '<p class="no-submissions">Error loading submissions.</p>';
     }
-    
-    container.innerHTML = '';
-    
-    // Show newest first
-    submissions.reverse().forEach(sub => {
-        const card = document.createElement('div');
-        card.className = 'submission-card';
-        
-        const date = sub.submitted_at ? new Date(sub.submitted_at).toLocaleDateString() : 'Unknown date';
-        
-        card.innerHTML = `
-            <div class="submission-header">
-                <span class="submission-name">${escapeHtml(sub.name || 'Unknown')}</span>
-                <span class="submission-date">${date}</span>
-            </div>
-            <div class="submission-details">
-                <div class="submission-field">
-                    <label>Email</label>
-                    <span>${escapeHtml(sub.email || '-')}</span>
-                </div>
-                <div class="submission-field">
-                    <label>Phone</label>
-                    <span>${escapeHtml(sub.phone || '-')}</span>
-                </div>
-                <div class="submission-field">
-                    <label>Inquiry Type</label>
-                    <span>${escapeHtml(sub.inquiry_type || '-')}</span>
-                </div>
-                <div class="submission-field">
-                    <label>Event Date</label>
-                    <span>${escapeHtml(sub.event_date || '-')}</span>
-                </div>
-                <div class="submission-field">
-                    <label>Guest Count</label>
-                    <span>${escapeHtml(sub.guest_count || '-')}</span>
-                </div>
-                <div class="submission-field">
-                    <label>Location</label>
-                    <span>${escapeHtml(sub.location || '-')}</span>
-                </div>
-            </div>
-            ${sub.message ? `<div class="submission-field" style="margin-top: 1rem;"><label>Message</label><span>${escapeHtml(sub.message)}</span></div>` : ''}
-        `;
-        
-        container.appendChild(card);
-    });
     
     // Export button
     document.getElementById('export-submissions').addEventListener('click', exportSubmissions);
 }
 
-function exportSubmissions() {
-    const submissions = JSON.parse(localStorage.getItem('formSubmissions') || '[]');
-    
-    if (submissions.length === 0) {
-        alert('No submissions to export');
-        return;
+async function exportSubmissions() {
+    try {
+        const snapshot = await firebase.database().ref('formSubmissions').once('value');
+        const data = snapshot.val();
+        
+        if (!data) {
+            alert('No submissions to export');
+            return;
+        }
+        
+        const submissions = Object.values(data);
+        
+        // Create CSV
+        const headers = ['Name', 'Email', 'Phone', 'Inquiry Type', 'Event Date', 'Guest Count', 'Location', 'Message', 'Submitted At'];
+        const rows = submissions.map(sub => [
+            sub.name || '',
+            sub.email || '',
+            sub.phone || '',
+            sub.inquiry_type || '',
+            sub.event_date || '',
+            sub.guest_count || '',
+            sub.location || '',
+            sub.message || '',
+            sub.submitted_at || ''
+        ]);
+        
+        let csv = headers.join(',') + '\n';
+        rows.forEach(row => {
+            csv += row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',') + '\n';
+        });
+        
+        // Download
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `lazy-coffee-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Error exporting submissions:', error);
+        alert('Error exporting submissions');
     }
+}
+
+// Delete a single submission
+async function deleteSubmission(key) {
+    if (!confirm('Delete this submission?')) return;
     
-    // Create CSV
-    const headers = ['Name', 'Email', 'Phone', 'Inquiry Type', 'Event Date', 'Guest Count', 'Location', 'Message', 'Submitted At'];
-    const rows = submissions.map(sub => [
-        sub.name || '',
-        sub.email || '',
-        sub.phone || '',
-        sub.inquiry_type || '',
-        sub.event_date || '',
-        sub.guest_count || '',
-        sub.location || '',
-        sub.message || '',
-        sub.submitted_at || ''
-    ]);
-    
-    let csv = headers.join(',') + '\n';
-    rows.forEach(row => {
-        csv += row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',') + '\n';
-    });
-    
-    // Download
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `lazy-coffee-submissions-${new Date().toISOString().split('T')[0]}.csv`;
-    a.click();
-    window.URL.revokeObjectURL(url);
+    try {
+        await firebase.database().ref('formSubmissions/' + key).remove();
+        renderSubmissions();
+        showSaveIndicator();
+    } catch (error) {
+        console.error('Error deleting submission:', error);
+        alert('Error deleting submission');
+    }
 }
 
 /* ===================================
