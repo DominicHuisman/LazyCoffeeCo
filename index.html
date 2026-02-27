@@ -25,7 +25,7 @@
     <meta name="twitter:description" content="Premium coffee + ceremonial matcha pop-ups across South Florida.">
     <meta name="twitter:image" content="https://lazycoffeeco.vercel.app/images/og-image.png">
     <meta name="theme-color" content="#9BB097">
-    <link rel="stylesheet" href="css/style.css?v=20260227r">
+    <link rel="stylesheet" href="css/style.css?v=20260227s">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -33,25 +33,28 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav class="navbar" id="top">
-        <div class="nav-container">
-            <a href="#top" class="nav-logo">
-                <span class="logo-lazy">LAZY</span> <span class="logo-coffee">COFFEE CO.</span>
+    <!-- Top Navigation Bar -->
+    <div id="top" style="position:fixed;top:0;left:0;right:0;z-index:9999;background-color:#F0E8D8;box-shadow:0 2px 8px rgba(0,0,0,0.1);border-bottom:2px solid #9BB097;">
+        <div style="display:flex;align-items:center;justify-content:space-between;max-width:1200px;margin:0 auto;padding:1rem 2rem;">
+            <a href="#top" style="font-family:Montserrat,sans-serif;font-size:1.25rem;font-weight:700;letter-spacing:0.15em;text-decoration:none;">
+                <span style="color:#9BB097;font-weight:700;">LAZY</span> <span style="color:#5A7A58;font-weight:400;">COFFEE CO.</span>
             </a>
-            <ul class="nav-menu">
-                <li><a href="#schedule">Schedule</a></li>
-                <li><a href="#catering">Catering</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li class="nav-menu-cta"><a href="#booking" class="btn btn-primary">Book Catering</a></li>
-            </ul>
-            <a href="#booking" class="nav-cta">Book Catering</a>
+            <nav class="nav-menu" style="display:flex;gap:2rem;list-style:none;">
+                <a href="#schedule" style="color:#333;font-size:0.95rem;font-weight:500;text-decoration:none;font-family:Montserrat,sans-serif;">Schedule</a>
+                <a href="#catering" style="color:#333;font-size:0.95rem;font-weight:500;text-decoration:none;font-family:Montserrat,sans-serif;">Catering</a>
+                <a href="#testimonials" style="color:#333;font-size:0.95rem;font-weight:500;text-decoration:none;font-family:Montserrat,sans-serif;">Testimonials</a>
+                <a href="#booking" style="background-color:#9BB097;color:white;padding:0.5rem 1.25rem;border-radius:50px;font-size:0.9rem;font-weight:600;text-decoration:none;font-family:Montserrat,sans-serif;">Book Catering</a>
+            </nav>
+            <a href="#booking" class="nav-cta" style="display:none;">Book Catering</a>
             <button class="nav-toggle" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-    </nav>
+    </div>
+
+    <!-- Old navbar removed - replaced with inline-styled version above -->
 
     <!-- Hero Section -->
     <header class="hero">
