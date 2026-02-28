@@ -43,6 +43,13 @@
             document.querySelectorAll('[data-animate="fade-up"], [data-animate="words"]').forEach(function(el) {
                 observer.observe(el);
             });
+
+            // On mobile, feature cards become scroll-triggered instead of page-load
+            if (isMobile) {
+                document.querySelectorAll('.feature-card[data-animate="hero"]').forEach(function(el) {
+                    observer.observe(el);
+                });
+            }
         } else {
             // Fallback: show everything
             showAllElements();

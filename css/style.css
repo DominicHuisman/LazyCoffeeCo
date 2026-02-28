@@ -1742,3 +1742,21 @@ ul {
     transform: translateY(0);
     filter: blur(0);
 }
+
+/* Mobile: feature cards are scroll-triggered, not page-load animated */
+@media (max-width: 768px) {
+    .feature-card[data-animate="hero"]:nth-child(1),
+    .feature-card[data-animate="hero"]:nth-child(2),
+    .feature-card[data-animate="hero"]:nth-child(3) {
+        animation: none;
+        opacity: 0;
+        transform: translateY(30px);
+        filter: blur(4px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.8s ease-out;
+    }
+    .feature-card[data-animate="hero"].visible {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
