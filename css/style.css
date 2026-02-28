@@ -64,6 +64,7 @@
 html {
     scroll-behavior: smooth;
     overflow-x: hidden;
+    scroll-padding-top: 70px;
 }
 
 /* Force scroll to top on page load */
@@ -192,7 +193,8 @@ ul {
     right: 0;
     background-color: var(--cream);
     z-index: 1000;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid var(--cream-dark);
     transition: all var(--transition-normal) var(--ease-smooth);
 }
 
@@ -277,9 +279,10 @@ ul {
     background-color: var(--sage-green);
     color: var(--white);
     padding: 10px 20px;
-    border-radius: var(--radius-sm);
+    border-radius: 50px;
     font-weight: 500;
     font-size: 0.9rem;
+    transition: background-color var(--transition-normal) var(--ease-smooth);
 }
 
 .nav-cta:hover {
