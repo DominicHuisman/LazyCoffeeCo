@@ -227,17 +227,24 @@ function initBookingForm() {
     
     if (!form) return;
     
-    // Initialize EmailJS (wrapped in try/catch in case SDK hasn't loaded)
+    // Initialize EmailJS
     try {
         if (typeof emailjs !== 'undefined') {
-            emailjs.init('xu9T_32dzQRF9iX42');
+            emailjs.init({ publicKey: 'xu9T_32dzQRF9iX42' });
         }
     } catch (e) {
-        console.warn('EmailJS SDK not available:', e);
+        console.warn('EmailJS init error:', e);
     }
     
     form.addEventListener('submit', async function(e) {
         e.preventDefault();
+        
+        // Disable submit button to prevent double-submit
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+        }
         
         const formData = new FormData(form);
         const data = Object.fromEntries(formData.entries());
@@ -245,52 +252,72 @@ function initBookingForm() {
         // Add timestamp
         data.submitted_at = new Date().toISOString();
         
+        let emailSent = false;
+        let firebaseSaved = false;
+        
+        // Send via EmailJS
         try {
-            // Send via EmailJS (emails to client + SMS via carrier gateway)
             if (typeof emailjs !== 'undefined') {
-                await emailjs.send('service_4ttgfi8', 'template_2cssasc', {
-                    name: data.name,
-                    email: data.email,
-                    phone: data.phone,
-                    inquiry_type: data.inquiry_type || 'General',
-                    event_date: data.event_date,
-                    guest_count: data.guest_count,
-                    location: data.location,
-                    message: data.message || 'No additional details'
-                });
+                const result = await emailjs.send(
+                    'service_4ttgfi8',
+                    'template_2cssasc',
+                    {
+                        name: data.name,
+                        email: data.email,
+                        phone: data.phone,
+                        inquiry_type: data.inquiry_type || 'General',
+                        event_date: data.event_date,
+                        guest_count: data.guest_count,
+                        location: data.location,
+                        message: data.message || 'No additional details',
+                        to_email: 'info@lazycoffeeco.com',
+                        reply_to: data.email
+                    },
+                    { publicKey: 'xu9T_32dzQRF9iX42' }
+                );
+                console.log('EmailJS sent:', result.status, result.text);
+                emailSent = true;
+            } else {
+                console.error('EmailJS SDK not loaded');
             }
-            
-            // Save to Firebase for admin portal
-            saveFormSubmission(data);
-            
+        } catch (emailError) {
+            console.error('EmailJS error:', emailError);
+        }
+        
+        // Save to Firebase for admin portal
+        try {
+            await saveFormSubmission(data);
+            firebaseSaved = true;
+        } catch (fbError) {
+            console.error('Firebase error:', fbError);
+        }
+        
+        // Re-enable button
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Request';
+        }
+        
+        if (emailSent || firebaseSaved) {
             // Show success message
             form.style.display = 'none';
             successMessage.style.display = 'block';
             
-            // Reset after 5 seconds
             setTimeout(() => {
                 form.reset();
                 form.style.display = 'block';
                 successMessage.style.display = 'none';
             }, 5000);
-            
-        } catch (error) {
-            console.error('Form submission error:', error);
-            // Still save to Firebase even if email fails
-            saveFormSubmission(data);
-            alert('Thank you! Your request has been received.');
-            form.reset();
+        } else {
+            alert('Something went wrong. Please try again or contact us directly at info@lazycoffeeco.com');
         }
     });
 }
 
-// Save form submissions to localStorage
+// Save form submissions to Firebase
 function saveFormSubmission(data) {
-    // Save to Firebase so it appears in admin portal
     const submissionsRef = firebase.database().ref('formSubmissions');
-    submissionsRef.push(data).catch(err => {
-        console.error('Error saving submission to Firebase:', err);
-    });
+    return submissionsRef.push(data);
 }
 
 /* ===================================
