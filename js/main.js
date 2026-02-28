@@ -255,24 +255,13 @@ function initBookingForm() {
         let emailSent = false;
         let firebaseSaved = false;
         
-        // Send via EmailJS
+        // Send via EmailJS (sendForm sends the HTML form directly)
         try {
             if (typeof emailjs !== 'undefined') {
-                const result = await emailjs.send(
+                const result = await emailjs.sendForm(
                     'service_4ttgfi8',
                     'template_2cssasc',
-                    {
-                        name: data.name,
-                        email: data.email,
-                        phone: data.phone,
-                        inquiry_type: data.inquiry_type || 'General',
-                        event_date: data.event_date,
-                        guest_count: data.guest_count,
-                        location: data.location,
-                        message: data.message || 'No additional details',
-                        to_email: 'info@lazycoffeeco.com',
-                        reply_to: data.email
-                    },
+                    '#booking-form',
                     { publicKey: 'xu9T_32dzQRF9iX42' }
                 );
                 console.log('EmailJS sent:', result.status, result.text);
