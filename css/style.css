@@ -63,6 +63,7 @@
 
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* Force scroll to top on page load */
@@ -79,7 +80,6 @@ body {
     color: var(--gray-dark);
     background-color: var(--cream);
     overflow-x: hidden;
-    padding-top: 80px;
 }
 
 h1, h2, h3, h4, h5, h6 {
