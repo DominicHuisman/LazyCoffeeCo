@@ -297,14 +297,17 @@
     <script>
     function openMaps(e) {
         e.preventDefault();
-        var addr = '10105+Cleary+Blvd+Plantation+FL+33324';
-        var isApple = /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && 'ontouchend' in document;
-        if (isApple || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints === 0)) {
-            // macOS or iOS → Apple Maps
-            window.open('https://maps.apple.com/?address=10105+Cleary+Blvd,Plantation,FL+33324,US', '_blank');
+        var isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+        var isMac = /Macintosh/.test(navigator.userAgent);
+        if (isIOS) {
+            // iOS → Apple Maps app via maps: scheme
+            window.location.href = 'maps:?q=10105+Cleary+Blvd,+Plantation,+FL+33324';
+        } else if (isMac) {
+            // macOS → Apple Maps
+            window.location.href = 'https://maps.apple.com/?address=10105+Cleary+Blvd,Plantation,FL+33324,US';
         } else {
             // Android, Windows, etc. → Google Maps
-            window.open('https://www.google.com/maps/search/?api=1&query=' + addr, '_blank');
+            window.open('https://www.google.com/maps/search/?api=1&query=10105+Cleary+Blvd+Plantation+FL+33324', '_blank');
         }
         return false;
     }
