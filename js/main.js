@@ -83,7 +83,10 @@ function getMapsUrl(address) {
 
 function renderSchedule(scheduleData) {
     const scheduleList = document.getElementById('schedule-list');
-    if (!scheduleList || !scheduleData) return;
+    if (!scheduleList) return;
+    
+    // Normalize: treat null/undefined as empty array
+    if (!scheduleData) scheduleData = [];
     
     // Remove skeleton placeholders
     const skeletons = scheduleList.querySelectorAll('.skeleton-placeholder');
