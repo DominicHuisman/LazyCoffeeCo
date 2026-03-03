@@ -803,6 +803,44 @@ ul {
     flex-wrap: wrap;
 }
 
+/* Schedule Empty State */
+.schedule-empty {
+    text-align: center;
+    padding: var(--spacing-md) var(--spacing-sm);
+}
+
+.schedule-empty svg {
+    color: var(--sage-green);
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.7;
+}
+
+.schedule-empty-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--forest-dark);
+    margin-bottom: var(--spacing-xs);
+}
+
+.schedule-empty-text {
+    font-size: 0.9rem;
+    color: var(--gray);
+    line-height: 1.5;
+}
+
+.schedule-empty-text a {
+    color: var(--sage-dark);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-normal) var(--ease-smooth);
+}
+
+.schedule-empty-text a:hover {
+    color: var(--forest-dark);
+}
+
 /* ===================================
    Catering Section
    =================================== */
