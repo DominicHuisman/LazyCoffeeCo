@@ -1220,7 +1220,7 @@ ul {
 
 .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: var(--spacing-lg);
     margin-bottom: var(--spacing-lg);
 }
@@ -1273,6 +1273,27 @@ ul {
 
 .contact-link:hover {
     color: var(--white);
+}
+
+.footer-location h4 {
+    color: var(--cream);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+}
+
+.footer-location p {
+    color: var(--sage-light);
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.footer-location .footer-hours {
+    margin-bottom: var(--spacing-xs);
+}
+
+.footer-location .contact-link {
+    font-size: 0.85rem;
+    line-height: 1.4;
 }
 
 .footer-bottom {
