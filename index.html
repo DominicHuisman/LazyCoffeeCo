@@ -100,25 +100,27 @@
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                         </svg>
-                        <h3>4Ever Young Med Spa</h3>
-                        <span class="location-city">Plantation</span>
+                        <h3>Cielo Farm Nursery Davie</h3>
+                        <span class="location-city">Southwest Ranches</span>
                     </div>
                     <div class="location-hours">
                         <svg class="location-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"></circle>
                             <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
-                        <p>Monday &ndash; Wednesday<br><strong>10:30 AM &ndash; 3:30 PM</strong></p>
+                        <p>Monday &ndash; Tuesday<br><strong>8:30 AM &ndash; 5:00 PM</strong></p>
+                        <p>Friday &ndash; Saturday<br><strong>8:30 AM &ndash; 8:30 PM</strong></p>
+                        <p>Sunday<br><strong>8:30 AM &ndash; 5:00 PM</strong></p>
                     </div>
                 </div>
                 <div class="location-address">
-                    <a href="https://www.google.com/maps/search/?api=1&query=10105+Cleary+Blvd+Plantation+FL+33324" target="_blank" rel="noopener" class="address-link" id="maps-link" onclick="return openMaps(event)">
+                    <a href="https://www.google.com/maps/search/?api=1&query=4680+Volunteer+Rd+Southwest+Ranches+FL+33330" target="_blank" rel="noopener" class="address-link" id="maps-link" onclick="return openMaps(event)">
                         <svg class="address-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                             <polyline points="15 3 21 3 21 9"></polyline>
                             <line x1="10" y1="14" x2="21" y2="3"></line>
                         </svg>
-                        <span>10105 Cleary Blvd, Plantation, FL 33324, United States</span>
+                        <span>4680 Volunteer Rd, Southwest Ranches, FL 33330</span>
                     </a>
                     <p class="address-hint">Tap to open in Maps</p>
                 </div>
@@ -283,9 +285,9 @@
                 </div>
                 <div class="footer-location">
                     <h4>Location</h4>
-                    <p>4Ever Young Med Spa &mdash; Plantation</p>
-                    <p class="footer-hours">Mon&ndash;Wed, 10:30 AM&ndash;3:30 PM</p>
-                    <a href="#" class="contact-link" onclick="return openMaps(event)">10105 Cleary Blvd, Plantation, FL 33324</a>
+                    <p>Cielo Farm Nursery Davie &mdash; Southwest Ranches</p>
+                    <p class="footer-hours">Mon&ndash;Tue + Sun, 8:30 AM&ndash;5:00 PM | Fri&ndash;Sat, 8:30 AM&ndash;8:30 PM</p>
+                    <a href="#" class="contact-link" onclick="return openMaps(event)">4680 Volunteer Rd, Southwest Ranches, FL 33330</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -307,13 +309,13 @@
         var isMac = /Macintosh/.test(navigator.userAgent);
         if (isIOS) {
             // iOS → Apple Maps app via maps: scheme
-            window.location.href = 'maps:?q=10105+Cleary+Blvd,+Plantation,+FL+33324';
+            window.location.href = 'maps:?q=4680+Volunteer+Rd,+Southwest+Ranches,+FL+33330';
         } else if (isMac) {
             // macOS → Apple Maps
-            window.location.href = 'https://maps.apple.com/?address=10105+Cleary+Blvd,Plantation,FL+33324,US';
+            window.location.href = 'https://maps.apple.com/?address=4680+Volunteer+Rd,Southwest+Ranches,FL+33330,US';
         } else {
             // Android, Windows, etc. → Google Maps
-            window.open('https://www.google.com/maps/search/?api=1&query=10105+Cleary+Blvd+Plantation+FL+33324', '_blank');
+            window.open('https://www.google.com/maps/search/?api=1&query=4680+Volunteer+Rd+Southwest+Ranches+FL+33330', '_blank');
         }
         return false;
     }
