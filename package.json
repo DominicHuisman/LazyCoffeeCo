@@ -1,0 +1,13 @@
+{
+  "name": "lazycoffeeco",
+  "version": "1.0.0",
+  "description": "Lazy Coffee Co. - Premium Coffee & Matcha Pop-Ups",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Static site - no build needed'",
+    "lint": "echo 'No linter configured'"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
